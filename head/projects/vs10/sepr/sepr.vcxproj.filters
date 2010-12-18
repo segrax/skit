@@ -1,0 +1,115 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Source Files\device">
+      <UniqueIdentifier>{403321d8-b808-4855-8100-c4431e38617f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\chips">
+      <UniqueIdentifier>{00ffc935-04a3-4b2e-9542-7ee7a3774f07}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\systems">
+      <UniqueIdentifier>{dad38a3d-063c-4493-8a5b-9a9945a52b0a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\systems\Commodore">
+      <UniqueIdentifier>{b277541d-3f71-4a72-a48b-4d4cb5c5e1be}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\systems\Commodore\C64">
+      <UniqueIdentifier>{34df1263-d3f6-4c81-bd42-3c4dab3c954e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\chips\memory">
+      <UniqueIdentifier>{8a6412c4-f892-45d6-93bf-4839f69a143f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\chips\cpu">
+      <UniqueIdentifier>{857c799b-4b20-4389-ac75-b0c8491afc57}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\chips\cpu\mos">
+      <UniqueIdentifier>{2d8c7c8c-6d27-4b83-b0d1-78227eec1dee}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\chips\cpu\mos\6502">
+      <UniqueIdentifier>{56b1f203-860f-4a0c-a691-37a1bd938746}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\..\src\sepr\device\device.cpp">
+      <Filter>Source Files\device</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\sepr\sepr.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\sepr\systems\Commodore\C64\c64.cpp">
+      <Filter>Source Files\systems\Commodore\C64</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\sepr\chips\memory\rom.cpp">
+      <Filter>Source Files\chips\memory</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\sepr\systems\system.cpp">
+      <Filter>Source Files\systems</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\sepr\chips\cpu\mos\6502\6502.cpp">
+      <Filter>Source Files\chips\cpu\mos\6502</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\sepr\chips\cpu\cpu.cpp">
+      <Filter>Source Files\chips\cpu</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\sepr\chips\cpu\mos\6502\6502_opcodes.cpp">
+      <Filter>Source Files\chips\cpu\mos\6502</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\sepr\chips\cpu\mos\6502\6510.cpp">
+      <Filter>Source Files\chips\cpu\mos\6502</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\sepr\chips\memory\ram.cpp">
+      <Filter>Source Files\chips\memory</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\sepr\chips\cpu\mos\6502\6502_analysis.cpp">
+      <Filter>Source Files\chips\cpu\mos\6502</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\sepr\chips\register.cpp">
+      <Filter>Source Files\chips</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\..\src\sepr\device\device.hpp">
+      <Filter>Source Files\device</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\sepr\device\deviceConnection.hpp">
+      <Filter>Source Files\device</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\sepr\sepr.hpp">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\sepr\chips\memory\rom.hpp">
+      <Filter>Source Files\chips\memory</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\sepr\systems\Commodore\C64\c64.hpp">
+      <Filter>Source Files\systems\Commodore\C64</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\sepr\systems\system.hpp">
+      <Filter>Source Files\systems</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\sepr\systems\systems.hpp">
+      <Filter>Source Files\systems</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\sepr\chips\cpu\cpu.hpp">
+      <Filter>Source Files\chips\cpu</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\sepr\chips\cpu\mos\6502\6502.hpp">
+      <Filter>Source Files\chips\cpu\mos\6502</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\sepr\chips\opcode.hpp">
+      <Filter>Source Files\chips</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\sepr\chips\cpu\mos\6502\6510.hpp">
+      <Filter>Source Files\chips\cpu\mos\6502</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\sepr\chips\memory\ram.hpp">
+      <Filter>Source Files\chips\memory</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\sepr\chips\register.hpp">
+      <Filter>Source Files\chips</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>
