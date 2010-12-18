@@ -87,7 +87,7 @@ cDevice *cSystem_Commodore_64::deviceIOGet( size_t pAddress, bool pRead ) {
 }
 
 cDevice	*cSystem_Commodore_64::deviceGet( size_t pAddress, bool pRead ) {
-	byte	 memoryConfig	= (mCpu->mProcessorPortGet() & 0x07);
+	byte	 memoryConfig	= (mCpu->mProcessorPortGet(1) & 0x07);
 
 	// Ram visible in all areas, or writing
 	if( !memoryConfig ) 
@@ -118,6 +118,9 @@ cDevice	*cSystem_Commodore_64::deviceGet( size_t pAddress, bool pRead ) {
 		if( memoryConfig & 0x02)
 			return mKernal;
 	}
+
+	if( pAddress >= 0 && pAddress <= 1 )
+		return mCpu;
 
 	return mRam;
 }

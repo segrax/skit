@@ -52,6 +52,10 @@ void cDebug::waitUser( cDevice *pDevice ) {
 				mSepr->mSystemGet()->mCyclesRemainingAdd( cpu->mOpcodeCurrentGet()->mCycles );
 			}
 
+			if( input == "x" ) {
+				mContinue = true;
+				pDevice->mDebugSet(false);
+			}
 		}
 
 		return;

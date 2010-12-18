@@ -21,12 +21,24 @@ void cCpu_Mos_6502::opcodesPrepare() {
 
 	// Link the opcodes to the opcode/analysis functions
 	OPCODE(0x20,	o_Jump_Subroutine,				a_Jump_Subroutine,				6);
+	
 	OPCODE(0x60,	o_Return_From_Subroutine,		a_Return_From_Subroutine,		6);
+	
 	OPCODE(0x78,	o_Flag_Interrupt_Disable_Set,	a_Flag_Interrupt_Disable_Set,	2);
+	
+	OPCODE(0x85,	o_Store_Accumulator_ZeroPage,	a_Store_Accumulator_ZeroPage,	3);
+	OPCODE(0x8D,	o_Store_Accumulator_Absolute,	a_Store_Accumulator_Absolute,	4);
 	OPCODE(0x8E,	o_Store_Index_X_Absolute,		a_Store_Index_X_Absolute,		4);
+	
 	OPCODE(0x9A,	o_Transfer_X_to_StackPtr,		a_Transfer_X_to_StackPtr,		2);
+	
 	OPCODE(0xA2,	o_Load_Index_X_Immediate,		a_Load_Index_X_Immediate,		2);
+	OPCODE(0xA9,	o_Load_Accumulator_Immediate,	a_Load_Accumulator_Immediate,	2);
+	
 	OPCODE(0xBD,	o_Load_A_Absolute_X,			a_Load_A_Absolute_X,			4);
+
+	OPCODE(0xCA,	o_Decrease_X,					a_Decrease_X,					2);
+
 	OPCODE(0xD0,	o_Branch_Not_Equal,				a_Branch_Not_Equal,				2);
 	OPCODE(0xD8,	o_Flag_Decimal_Clear,			a_Flag_Decimal_Clear,			2);
 	OPCODE(0xDD,	o_Compare_Absolute_X,			a_Compare_Absolute_X,			4);
@@ -81,7 +93,8 @@ void cCpu_Mos_6502::o_Jump_Subroutine() {
 	CYCLE(1)
 		mTmpByte = mSystem()->busReadByte( regPC++ );
 
-	CYCLE(2);
+	//CYCLE(2)
+	//	;
 
 	CYCLE(3)
 		stackPush( regPC() );
@@ -115,6 +128,29 @@ void cCpu_Mos_6502::o_Flag_Interrupt_Disable_Set() {
 		flagInterrupt = true;
 }
 
+// 85: 
+void cCpu_Mos_6502::o_Store_Accumulator_ZeroPage() {
+	CYCLE(1)
+		mTmpByte = mSystem()->busReadByte( regPC++ );
+
+	CYCLE(2)
+		mSystem()->busWriteByte( mTmpByte, regA() );
+
+}
+
+// 8D:
+void cCpu_Mos_6502::o_Store_Accumulator_Absolute() {
+
+	CYCLE(1)
+		mTmpWord = mSystem()->busReadByte( regPC++ );
+
+	CYCLE(2)
+		mTmpWord |= (mSystem()->busReadByte( regPC++ ) << 8);
+
+	CYCLE(3)
+		mSystem()->busWriteByte( mTmpWord, regA() );
+}
+
 // 8E: Store X Absolute
 void cCpu_Mos_6502::o_Store_Index_X_Absolute() {
 
@@ -141,6 +177,13 @@ void cCpu_Mos_6502::o_Load_Index_X_Immediate() {
 
 	CYCLE(1)
 		regX = mSystem()->busReadByte( regPC++ );
+}
+
+// A9: Load Accumulator with Immediate Value
+void cCpu_Mos_6502::o_Load_Accumulator_Immediate() {
+
+	CYCLE(1)
+		regA = mSystem()->busReadByte( regPC++ );
 }
 
 // BD: Load A from Absolute_X
@@ -173,6 +216,14 @@ void cCpu_Mos_6502::o_Load_A_Absolute_X() {
 		if(mCycles==4)
 			mTmpOpcode = mSystem()->busReadByte( regPC++ );
 	}
+
+}
+
+// CA: 
+void cCpu_Mos_6502::o_Decrease_X() {
+
+	CYCLE(1)
+		--regX;
 
 }
 
@@ -209,6 +260,7 @@ void cCpu_Mos_6502::o_Flag_Decimal_Clear() {
 		flagDecimal = false;
 }
 
+// 
 void cCpu_Mos_6502::o_Compare_Absolute_X() {
 	CYCLE(1)
 		mTmpWord = mSystem()->busReadByte( regPC++ );

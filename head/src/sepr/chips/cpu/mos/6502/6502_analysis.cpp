@@ -26,6 +26,16 @@ void cCpu_Mos_6502::a_Flag_Interrupt_Disable_Set() {
 
 }
 
+// 85: 
+void cCpu_Mos_6502::a_Store_Accumulator_ZeroPage() {
+
+}
+
+// 8D:
+void cCpu_Mos_6502::a_Store_Accumulator_Absolute() {
+
+}
+
 // 8E: Store X Absolute
 void cCpu_Mos_6502::a_Store_Index_X_Absolute() {
 
@@ -41,8 +51,18 @@ void cCpu_Mos_6502::a_Load_Index_X_Immediate() {
 	
 }
 
+// A9: Load Accumulator with Immediate Value
+void cCpu_Mos_6502::a_Load_Accumulator_Immediate() {
+
+}
+
 // BD: Load A from Absolute_X
 void cCpu_Mos_6502::a_Load_A_Absolute_X() {
+
+}
+
+// CA: 
+void cCpu_Mos_6502::a_Decrease_X() {
 
 }
 

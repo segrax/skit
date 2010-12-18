@@ -63,10 +63,14 @@ protected:
 	void					 o_Jump_Subroutine();					// 20: Jump Subroutine
 	void					 o_Return_From_Subroutine();			// 60: Return From Subroutine
 	void					 o_Flag_Interrupt_Disable_Set();		// 78: Set Interrupt Disable
+	void					 o_Store_Accumulator_ZeroPage();		// 85: 
+	void					 o_Store_Accumulator_Absolute();		// 8D: 
 	void					 o_Store_Index_X_Absolute();			// 8E: Store X Absolute
 	void					 o_Transfer_X_to_StackPtr();			// 9A: Transfer X to Stack
 	void					 o_Load_Index_X_Immediate();			// A2: Load X Immediate
+	void					 o_Load_Accumulator_Immediate();		// A9:
 	void					 o_Load_A_Absolute_X();					// BD: Load A from Absolute_X
+	void					 o_Decrease_X();						// CA: Decrease X
 	void					 o_Branch_Not_Equal();					// D0: Branch not Equal
 	void					 o_Flag_Decimal_Clear();				// D8: Clear Direction
 	void					 o_Compare_Absolute_X();				// DD: Compare
@@ -76,10 +80,14 @@ protected:
 	void					 a_Jump_Subroutine();					// 20: Jump Subroutine
 	void					 a_Return_From_Subroutine();			// 60: Return From Subroutine
 	void					 a_Flag_Interrupt_Disable_Set();		// 78: Set Interrupt Disable
+	void					 a_Store_Accumulator_ZeroPage();		// 85: 
+	void					 a_Store_Accumulator_Absolute();		// 8D: 
 	void					 a_Store_Index_X_Absolute();			// 8E: Store X Absolute
 	void					 a_Transfer_X_to_StackPtr();			// 9A: Transfer X to Stack
 	void					 a_Load_Index_X_Immediate();			// A2: Analysis Load X Immediate
+	void					 a_Load_Accumulator_Immediate();		// A9: 
 	void					 a_Load_A_Absolute_X();					// BD: Load A from Absolute_X
+	void					 a_Decrease_X();						// CA: Decrease X
 	void					 a_Branch_Not_Equal();					// D0: Branch not Equal
 	void					 a_Flag_Decimal_Clear();				// D8: Clear Direction
 	void					 a_Compare_Absolute_X();				// DD: Compare

@@ -12,7 +12,17 @@ cCpu_Mos_6510::cCpu_Mos_6510( std::string pName, cSepr *pSepr, cDevice *pParent 
 }
 
 void cCpu_Mos_6510::reset() {
-	mProcessorPort = 0x37;
+	mProcessorPort[0] = 0x2F;
+	mProcessorPort[1] = 0x37;
 
 	cCpu_Mos_6502::reset();
+}
+
+void cCpu_Mos_6510::busWriteByte( size_t pAddress, byte pData ) {
+	if(pAddress == 0 || pAddress == 1)
+		mProcessorPort[pAddress] = pData;
+}
+
+void cCpu_Mos_6510::busWriteWordLE( size_t pAddress, word pData ) {
+
 }
