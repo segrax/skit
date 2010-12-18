@@ -1,3 +1,5 @@
+#include <iomanip>
+
 enum eChip_Data_Type {
 	eData_Type_Byte		= 0,
 	eData_Type_Word		= 1,
@@ -12,15 +14,20 @@ class cCpu;
 class cChip_Register {
 private:
 	std::string					 mName;
-	eChip_Data_Type				 mType;
-
+	
 protected:
+	eChip_Data_Type				 mType;
 	cCpu						*mCpu;
 
 public:
 						 cChip_Register( cCpu *pCpu, std::string pName, eChip_Data_Type pType ) : mName( pName ), mType( pType ), mCpu(pCpu) { }
 
-	inline std::string	 mNameGet() { return mName; }
+	virtual std::string	 debug_CPU_Info_String() {
+
+		return mName + ": ";
+	}
+
+	inline std::string	 mNameGet()		{ return mName; }
 };
 
 // Class which holds ptrs to all the CPU Registers
@@ -70,6 +77,31 @@ public:
 
 		inline tSize	 operator>=(tSize pVal)		{	return cmpSet( mData ); }
 		
+		virtual std::string	 debug_CPU_Info_String() {
+			size_t				value = mData;
+			std::stringstream	msg;
+
+			msg << cChip_Register::debug_CPU_Info_String();
+			msg << "0x" << std::hex;
+			
+			if( mNameGet() == "PC" )
+				--value;
+
+			msg << std::setfill('0');
+			
+			if( mType == eData_Type_Byte )
+				msg << std::setw(2);
+
+			if( mType == eData_Type_Word )
+				msg << std::setw(4);
+
+			if( mType == eData_Type_DWord )
+				msg << std::setw(8);
+
+			msg << value;
+
+			return msg.str();
+		}
 };
 
 class cChip_Register_Byte : public cChip_Register_Value<byte> {
@@ -109,7 +141,15 @@ public:
 	void							 add( cChip_Register_Flag *pRegister );
 	cChip_Register_Flag				*get( std::string pName );
 
+	size_t							 value();
 
+	virtual std::string	 debug_CPU_Info_String() {
+			std::stringstream msg;
+			msg << cChip_Register::debug_CPU_Info_String();
+			msg << "0x" << std::hex << (int) value();
+
+			return msg.str();
+		}
 };
 
 class cChip_Register_Flag : public cChip_Register {
@@ -128,4 +168,7 @@ public:
 	bool				 get()				{ return mSet; }
 	bool				 operator=( bool pVal ) { mSet = pVal; return mSet; }
 	bool				 operator==(bool pVal ) { return pVal == mSet; }
+
+	inline size_t		 mValueGet()	{ return mValue; }
+
 };

@@ -8,7 +8,6 @@ private:
 
 	std::string							 mName;												// Name of the device
 
-	size_t								 mSleepTime;										// Sleep Time between thread() loops, milliseconds
 	bool								 mQuitThread, mCycling;								// Exit cycle thread
 	
 	pthread_t							*mCycleThread;
@@ -16,10 +15,12 @@ private:
 
 protected:
 	bool								 mAnalyse;
+	bool								 mDebug;
 
 	size_t								 mCycle;											// Cycle Count
 	size_t								 mCycles;											// Cycles to be executed for this instruction
 	size_t								 mCyclesTotal;										// Total Cycle Count
+	size_t								 mSleepTime;										// Sleep Time between thread() loops, milliseconds
 
 	cSepr								*mSepr;
 
@@ -31,7 +32,7 @@ public:
 										 cDevice( std::string pName, cSepr *pSepr, cDevice *pParent );	
 										~cDevice(void);										
 	
-	
+
 	virtual bool						 deviceConnect( cDevice *pDevice, size_t pAddress, size_t pSize );	// Connect a device
 	virtual cDevice						*deviceGet( std::string pName, bool pRead );									// Get a device pointer by name
 	virtual cDevice						*deviceGet( size_t pAddress, bool pRead );
@@ -58,4 +59,6 @@ public:
 	inline bool							 mQuitThreadGet()			  { return mQuitThread; }
 	inline void							 mQuitThreadSet()			  { mQuitThread = true; }		// Exit main thread loop
 
+	inline bool							 mDebugGet()			{ return mDebug; }
+	void								 mDebugSet( bool pVal, bool pChildren = true);
 };

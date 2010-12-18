@@ -36,8 +36,8 @@ bool cSystem_Commodore_64::prepare() {
 	if(!mChar->loadFile( systemDataPath( "CHAR.ROM") ))
 		return false;
 
-	deviceConnect( mBasic, 0xA000, 0x2000 );
-	deviceConnect( mChar, 0xD000, 0x1000 );
+	deviceConnect( mBasic,	0xA000, 0x2000 );
+	deviceConnect( mChar,	0xD000, 0x1000 );
 	deviceConnect( mKernal, 0xE000, 0x2000 );
 
 	deviceConnect( mCpu, 0, 2 );
@@ -45,6 +45,11 @@ bool cSystem_Commodore_64::prepare() {
 
 	mCpu->reset();
 	mCpu->threadStart();
+
+	// Force debug mode if compiled as debug build
+#ifdef _DEBUG
+	mCpu->mDebugSet(true);
+#endif
 
 	return true;
 }
@@ -103,7 +108,7 @@ cDevice	*cSystem_Commodore_64::deviceGet( size_t pAddress, bool pRead ) {
 		}
 
 		// Read Char Rom, but only if bit3 is not enabled, and bit1 or 2 is
-		if( ! (memoryConfig & 0x04) && (memoryConfig & 0x03)) {
+		if( (!(memoryConfig & 0x04)) && (memoryConfig & 0x03)) {
 			return mChar;
 		}
 	}
@@ -119,9 +124,11 @@ cDevice	*cSystem_Commodore_64::deviceGet( size_t pAddress, bool pRead ) {
 
 void cSystem_Commodore_64::cycle() {
 
-	if( mCpu->mCyclesRemainingGet() == 0 )
-		mCpu->mCyclesRemainingAdd(1);
+	while( mCpu->mCyclesRemainingGet() != 0 ) {
+		Sleep(mSleepTime);
+	}
 
+	mCpu->mCyclesRemainingAdd(1);
 }
 
 byte cSystem_Commodore_64::busReadByte( size_t pAddress ) {

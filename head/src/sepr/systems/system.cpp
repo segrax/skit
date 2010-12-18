@@ -4,11 +4,11 @@
 #include "system.hpp"
 
 cSystem::cSystem( std::string pName, cSepr *pSepr ) : cDevice( pName, pSepr, 0 ) {
-
+	mDebug = new cDebug( pSepr );
 }
 
 cSystem::~cSystem() {
-
+	delete mDebug;
 }
 
 std::string cSystem::systemDataPath( std::string pFile ) {

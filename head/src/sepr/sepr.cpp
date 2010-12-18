@@ -6,6 +6,7 @@ cSepr::cSepr( std::string pName ) {
 	mSystem = 0;
 
 	mName = pName;
+
 }
 
 cSepr::~cSepr() {

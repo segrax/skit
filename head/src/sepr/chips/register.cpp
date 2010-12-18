@@ -43,3 +43,17 @@ cChip_Register_Flag *cChip_Register_Flags::get( std::string pName ) {
 
 	return mRegisters.find( pName )->second;
 }
+
+size_t cChip_Register_Flags::value() { 
+	size_t val = 0;
+	std::map< std::string, cChip_Register_Flag* >::iterator		regIT;
+
+	for( regIT = mRegisters.begin(); regIT != mRegisters.end(); ++regIT ) {
+
+		// if flag is enabled, OR it into the final value
+		if(regIT->second->get())
+			val |= regIT->second->mValueGet();
+	}
+
+	return val;
+}

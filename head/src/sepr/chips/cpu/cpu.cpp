@@ -52,6 +52,9 @@ void cCpu::opcodeExecute() {
 }
 
 void cCpu::opcodeAnalyse() {
+	
+	mSystem()->mDebugGet()->device( eDebug_Message, mSepr, this, debug_CPU_Info_String() );
+
 	if( !mAnalyse )
 		return;
 
@@ -70,11 +73,13 @@ void cCpu::cycleNext()  {
 void cCpu::o_Unknown_Opcode() {
 	std::stringstream msg;
 
+	msg << debug_CPU_Info_String();
+	msg << "\n";
 	msg << "Unknown Opcode: 0x";
 	msg << std::hex << mOpcodeNumber;
 	msg << std::endl;
 
-	mSystem()->mDebugGet()->device( this, msg.str());
+	mSystem()->mDebugGet()->device( eDebug_Message, mSepr, this, msg.str());
 }
 
 void cCpu::o_Reset() {

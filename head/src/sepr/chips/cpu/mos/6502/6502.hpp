@@ -50,6 +50,7 @@ public:
 	void					 reset();								// Set opcode to reset opcode
 
 protected:
+	virtual std::string		 debug_CPU_Info_String();
 
 	virtual void			 opcodesPrepare();
 	virtual void			 registersPrepare();

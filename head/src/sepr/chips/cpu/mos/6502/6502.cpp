@@ -24,6 +24,29 @@ cCpu_Mos_6502::~cCpu_Mos_6502() {
 
 }
 
+std::string cCpu_Mos_6502::debug_CPU_Info_String() {
+	std::stringstream	msg;
+	
+	if( !mOpcodeCurrent->mOpcodeDescription )
+		return "";
+
+	msg << regPC.debug_CPU_Info_String() << " ";
+	msg << ": 0x" << std::hex << std::uppercase << mOpcodeNumber;
+	
+	msg << "       '" << mOpcodeCurrent->mOpcodeDescription << "'";
+
+	msg << "\n";
+	msg << regA.debug_CPU_Info_String() << " ";
+	msg << regX.debug_CPU_Info_String() << " ";
+	msg << regY.debug_CPU_Info_String() << " ";
+
+	msg << regSP.debug_CPU_Info_String() << " ";
+	msg << regFL.debug_CPU_Info_String() << " ";
+
+	msg << "\n\n";
+	return msg.str();
+}
+
 void cCpu_Mos_6502::reset() {
 
 	mCycle = 0;
@@ -78,9 +101,7 @@ void cCpu_Mos_6502::stackPush( byte pData )	{
 
 byte cCpu_Mos_6502::stackPop() {
 	++regSP;
-	byte tmp = mSystem()->busReadByte( 0x0100 + regSP() );
-	
-	return tmp;
+	return mSystem()->busReadByte( 0x0100 + regSP() );
 }
 
 void cCpu_Mos_6502::registersPrepare() {
@@ -117,4 +138,7 @@ void cCpu_Mos_6502::registersPrepare() {
 	mRegisters.add( mRegStack );
 	mRegisters.add( mRegPC );
 	mRegisters.add( mRegFL );
+
+	// Set the registers to default values
+	(*mFlagReserved) = true;
 }

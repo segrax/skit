@@ -13,10 +13,23 @@ int main() {
 
 	cSystem *system = sepr->mSystemGet();
 
+	system->mCyclesRemainingAdd(1);
+
+	bool step = false;
+
+	sepr->mSystemGet()->mDebugGet()->device( eDebug_Message, sepr, sepr->mSystemGet(), "Starting\n" );
+
 	while( !system->mQuitThreadGet() ) {
 
-		if( system->mCyclesRemainingGet() == 0 )
-			system->mCyclesRemainingAdd(1);
+		if( system->mCyclesRemainingGet() == 0 ) {
+			if(!step) {
+				system->mCyclesRemainingAdd( 10 );
+				continue;
+			}
+
+			system->mDebugGet()->waitUser( system, "System Step" );
+			system->mCyclesRemainingAdd( 1 );
+		}
 
 		Sleep(100);
 

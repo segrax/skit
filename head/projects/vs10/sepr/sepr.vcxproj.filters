@@ -37,9 +37,6 @@
     <ClCompile Include="..\..\..\src\sepr\device\device.cpp">
       <Filter>Source Files\device</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\src\sepr\sepr.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\src\sepr\systems\Commodore\C64\c64.cpp">
       <Filter>Source Files\systems\Commodore\C64</Filter>
     </ClCompile>
@@ -69,6 +66,9 @@
     </ClCompile>
     <ClCompile Include="..\..\..\src\sepr\chips\register.cpp">
       <Filter>Source Files\chips</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\sepr\sepr.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

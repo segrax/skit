@@ -36,13 +36,12 @@ void cCpu_Mos_6502::opcodesPrepare() {
 void cCpu_Mos_6502::o_Unknown_Opcode() {
 	std::stringstream msg;
 
-	msg << "PC: 0x" << std::hex << std::uppercase << regPC();
-	msg << " Opcode: 0x";
-	msg << std::hex << std::uppercase << mOpcodeNumber;
-	msg << " is invalid.";
-	msg << std::endl;
+	msg << debug_CPU_Info_String();
+	msg << "\n" << "Unknown Opcode";
 
-	mSystem()->mDebugGet()->device( this, msg.str());
+	mSystem()->mDebugGet()->device( eDebug_Stop, mSepr, this, msg.str());
+
+	mSystem()->mQuitThreadSet();
 }
 
 void cCpu_Mos_6502::o_Reset() {
@@ -134,7 +133,7 @@ void cCpu_Mos_6502::o_Store_Index_X_Absolute() {
 void cCpu_Mos_6502::o_Transfer_X_to_StackPtr() {
 	
 	CYCLE(1)
-		regSP = regX;
+		regSP = regX();
 }
 
 // A2: Load X Register with Immediate Value

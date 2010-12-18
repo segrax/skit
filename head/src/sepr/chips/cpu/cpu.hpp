@@ -2,7 +2,7 @@ class cChip_Opcode;
 
 class cCpu : public cDevice {
 private:
-	
+
 protected:
 	size_t				 mOpcodeCount, mOpcodeNumber;
 	cChip_Opcode		*mOpcodes;
@@ -13,6 +13,8 @@ protected:
 
 	virtual void		 cycleNext();
 	virtual void		 cycle() = 0;
+
+	virtual std::string	 debug_CPU_Info_String() = 0;
 
 	virtual void		 opcodesPrepare() = 0;
 	void				 opcodeSet( size_t pOp );
@@ -26,6 +28,8 @@ public:
 						~cCpu();
 
 	virtual		void	 registerFlagSet( size_t pData ) = 0;
+
+	const cChip_Opcode	*mOpcodeCurrentGet() { return mOpcodeCurrent; }
 
 protected:
 

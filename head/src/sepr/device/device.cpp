@@ -12,6 +12,7 @@ void *startDevice( void *pDevice ) {
 cDevice::cDevice( std::string pName, cSepr *pSepr, cDevice *pParent ) {
 
 	mAnalyse = false;
+	mDebug = false;
 
 	//
 	mCycling = false;
@@ -22,7 +23,7 @@ cDevice::cDevice( std::string pName, cSepr *pSepr, cDevice *pParent ) {
 	mName = pName;
 
 	//
-	mSleepTime = 0;
+	mSleepTime = 2;
 	mQuitThread = false;
 
 	//
@@ -47,6 +48,17 @@ cDevice::~cDevice(void) {
 	delete mCycleThread;
 
 	pthread_mutex_destroy(&mCycleThreadMutex);
+}
+
+void cDevice::mDebugSet( bool pVal, bool pChildren ) {
+	std::map< std::string, cDeviceConnection*>::iterator	devIT;
+	
+	mDebug = pVal;
+	if(!pChildren)
+		return;
+
+	for( devIT = mConnections.begin(); devIT != mConnections.end(); ++devIT )
+		devIT->second->mDeviceBGet()->mDebugSet( pVal, pChildren );
 }
 
 bool cDevice::deviceConnect( cDevice *pDevice, size_t pAddress, size_t pSize ) {
@@ -91,11 +103,14 @@ void cDevice::thread() {
 
 		if( mCyclesRemaining ) {
 
-			pthread_mutex_lock( &mCycleThreadMutex );
+			//
 			mCycling = true;
 
 			cycle();
 			mCycling = false;
+
+			pthread_mutex_lock( &mCycleThreadMutex );
+			--mCyclesRemaining;
 			pthread_mutex_unlock( &mCycleThreadMutex );
 
 		} else
