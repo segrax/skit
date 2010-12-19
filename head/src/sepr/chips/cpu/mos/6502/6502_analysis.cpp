@@ -16,6 +16,11 @@ void cCpu_Mos_6502::a_Or_Accumulator() {
 
 }
 
+// 10: 
+void cCpu_Mos_6502::a_Branch_If_Negative_Set() {
+
+}
+
 // 18: 
 void cCpu_Mos_6502::a_Flag_Carry_Clear() {
 
@@ -63,6 +68,11 @@ void cCpu_Mos_6502::a_Store_Accumulator_ZeroPage() {
 
 // 86: 
 void cCpu_Mos_6502::a_Store_Index_X_ZeroPage() {
+
+}			
+
+// 88: 
+void cCpu_Mos_6502::a_Decrease_Y() {
 
 }
 
@@ -141,8 +151,18 @@ void cCpu_Mos_6502::a_Load_Accumulator_Absolute() {
 
 }
 
+// B0: 
+void cCpu_Mos_6502::a_Branch_If_CarrySet() {
+
+
+}
 // B1: 
 void cCpu_Mos_6502::a_Load_Accumulator_Indirect_Y() {
+
+}
+
+// B9: 
+void cCpu_Mos_6502::a_Load_Accumulator_Absolute_Y() {
 
 }
 

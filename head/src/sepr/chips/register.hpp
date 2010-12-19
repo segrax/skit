@@ -67,7 +67,7 @@ public:
 		inline tSize	 operator++()				{ size_t ret = ++mData; flagSet(); return ret; }
 		inline tSize	 operator++(int)			{ size_t ret = mData; ++mData; flagSet(); return ret; }		// Return value, and increase
 
-		inline tSize	 operator--()				{ return mData--;	   }
+		inline tSize	 operator--()				{ size_t ret = --mData; flagSet(); return ret;	   }
 		inline tSize	 operator--(int)			{ size_t ret = mData; --mData; flagSet(); return ret; }
 
 		inline tSize	 operator+=(tSize pVal)		{ tSize tmp = mData; mData += pVal; flagSet(); return tmp; }
