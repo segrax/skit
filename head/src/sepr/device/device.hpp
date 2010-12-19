@@ -4,8 +4,6 @@ class cDevice {
 private:
 	std::map< std::string, cDeviceConnection*>	 mConnections;								// Devices which are connected
 
-	size_t								 mCyclesRemaining;									// Cycles Requested to be executed before return
-
 	std::string							 mName;												// Name of the device
 
 	bool								 mQuitThread, mCycling;								// Exit cycle thread
@@ -14,6 +12,8 @@ private:
 	pthread_mutex_t						 mCycleThreadMutex;
 
 protected:
+	size_t								 mCyclesRemaining;									// Cycles Requested to be executed before return
+
 	bool								 mAnalyse;
 	bool								 mDebug;
 

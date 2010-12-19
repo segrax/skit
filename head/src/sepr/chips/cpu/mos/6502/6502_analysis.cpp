@@ -11,8 +11,23 @@ void cCpu_Mos_6502::a_Nop() {
 
 }
 
+// 09: Or
+void cCpu_Mos_6502::a_Or_Accumulator() {
+
+}
+
 // 20: Jump Subroutine
 void cCpu_Mos_6502::a_Jump_Subroutine() {
+
+}
+
+// 29: 
+void cCpu_Mos_6502::a_And_Immediate() {
+
+}
+
+// 4C: Jump
+void cCpu_Mos_6502::a_Jump_Absolute() {
 
 }
 
@@ -26,8 +41,18 @@ void cCpu_Mos_6502::a_Flag_Interrupt_Disable_Set() {
 
 }
 
+// 84: 
+void cCpu_Mos_6502::a_Store_Index_Y_ZeroPage() {
+
+}
+
 // 85: 
 void cCpu_Mos_6502::a_Store_Accumulator_ZeroPage() {
+
+}
+
+// 86: 
+void cCpu_Mos_6502::a_Store_Index_X_ZeroPage() {
 
 }
 
@@ -41,9 +66,24 @@ void cCpu_Mos_6502::a_Store_Index_X_Absolute() {
 
 }
 
+// 91:
+void cCpu_Mos_6502::a_Store_Accumulator_Indirect_Y() {
+
+}
+
+// 99: 
+void cCpu_Mos_6502::a_Store_Accumulator_Absolute_Y() {
+
+}
+
 // 9A: Transfer X to StackPtr
 void cCpu_Mos_6502::a_Transfer_X_to_StackPtr() {
 	
+}
+
+// A0: 
+void cCpu_Mos_6502::a_Load_Index_Y_Immediate() {
+
 }
 
 // A2: Load X Register with Immediate Value
@@ -51,13 +91,38 @@ void cCpu_Mos_6502::a_Load_Index_X_Immediate() {
 	
 }
 
+// A8:
+void cCpu_Mos_6502::a_Transfer_Accumulator_To_Y() {
+
+}
+
 // A9: Load Accumulator with Immediate Value
 void cCpu_Mos_6502::a_Load_Accumulator_Immediate() {
 
 }
 
+// AA:
+void cCpu_Mos_6502::a_Transfer_Accumulator_To_X() {
+
+}
+
+// AD: 
+void cCpu_Mos_6502::a_Load_Accumulator_Absolute() {
+
+}
+
+// B1: 
+void cCpu_Mos_6502::a_Load_Accumulator_Indirect_Y() {
+
+}
+
 // BD: Load A from Absolute_X
 void cCpu_Mos_6502::a_Load_A_Absolute_X() {
+
+}
+
+// C8: 
+void cCpu_Mos_6502::a_Increase_Y() {
 
 }
 
@@ -71,6 +136,11 @@ void cCpu_Mos_6502::a_Branch_Not_Equal() {
 
 }
 
+// D1
+void cCpu_Mos_6502::a_Compare_Indirect_Y() {
+
+}
+
 // D8: Clear Decimal Flag
 void cCpu_Mos_6502::a_Flag_Decimal_Clear() {
 	
@@ -79,4 +149,14 @@ void cCpu_Mos_6502::a_Flag_Decimal_Clear() {
 // DD:
 void cCpu_Mos_6502::a_Compare_Absolute_X() {
 	
+}
+
+// E6: 
+void cCpu_Mos_6502::a_Increment_Memory_ZeroPage() {
+	
+}
+
+// F0: 
+void cCpu_Mos_6502::a_Branch_Equal() {
+
 }

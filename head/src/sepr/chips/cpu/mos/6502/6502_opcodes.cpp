@@ -20,36 +20,54 @@ void cCpu_Mos_6502::opcodesPrepare() {
 	mOpcodes = new cChip_Opcode[0x100];
 
 	// Link the opcodes to the opcode/analysis functions
+	OPCODE(0x09,	o_Or_Accumulator,				a_Or_Accumulator,				2);
 	OPCODE(0x20,	o_Jump_Subroutine,				a_Jump_Subroutine,				6);
-	
+	OPCODE(0x29,	o_And_Accumulator_Immediate,				a_And_Immediate,				2);
+
+	OPCODE(0x4C,	o_Jump_Absolute,				a_Jump_Absolute,				3);	
+
 	OPCODE(0x60,	o_Return_From_Subroutine,		a_Return_From_Subroutine,		6);
 	
 	OPCODE(0x78,	o_Flag_Interrupt_Disable_Set,	a_Flag_Interrupt_Disable_Set,	2);
 	
+	OPCODE(0x84,	o_Store_Index_Y_ZeroPage,		a_Store_Index_Y_ZeroPage,		3);
 	OPCODE(0x85,	o_Store_Accumulator_ZeroPage,	a_Store_Accumulator_ZeroPage,	3);
+	OPCODE(0x86,	o_Store_Index_X_ZeroPage,		a_Store_Index_X_ZeroPage,		3);
 	OPCODE(0x8D,	o_Store_Accumulator_Absolute,	a_Store_Accumulator_Absolute,	4);
 	OPCODE(0x8E,	o_Store_Index_X_Absolute,		a_Store_Index_X_Absolute,		4);
 	
+	OPCODE(0x91,	o_Store_Accumulator_Indirect_Y,	a_Store_Accumulator_Indirect_Y,	6);
+	OPCODE(0x99,	o_Store_Accumulator_Absolute_Y,	a_Store_Accumulator_Absolute_Y, 5);
 	OPCODE(0x9A,	o_Transfer_X_to_StackPtr,		a_Transfer_X_to_StackPtr,		2);
 	
+	OPCODE(0xA0,	o_Load_Index_Y_Immediate,		a_Load_Index_Y_Immediate,		2);
 	OPCODE(0xA2,	o_Load_Index_X_Immediate,		a_Load_Index_X_Immediate,		2);
+	OPCODE(0xA8,	o_Transfer_Accumulator_To_Y,	a_Transfer_Accumulator_To_Y,	2);
 	OPCODE(0xA9,	o_Load_Accumulator_Immediate,	a_Load_Accumulator_Immediate,	2);
-	
+	OPCODE(0xAA,	o_Transfer_Accumulator_To_X,	a_Transfer_Accumulator_To_X,	2);
+	OPCODE(0xAD,	o_Load_Accumulator_Absolute,	a_Load_Accumulator_Absolute,	4);
+
+	OPCODE(0xB1,	o_Load_Accumulator_Indirect_Y,	a_Load_Accumulator_Indirect_Y,	5);
 	OPCODE(0xBD,	o_Load_A_Absolute_X,			a_Load_A_Absolute_X,			4);
 
+	OPCODE(0xC8,	o_Increase_Y,					a_Increase_Y,					2);
 	OPCODE(0xCA,	o_Decrease_X,					a_Decrease_X,					2);
 
 	OPCODE(0xD0,	o_Branch_Not_Equal,				a_Branch_Not_Equal,				2);
+	OPCODE(0xD1,	o_Compare_Indirect_Y,			a_Compare_Indirect_Y,			5);
 	OPCODE(0xD8,	o_Flag_Decimal_Clear,			a_Flag_Decimal_Clear,			2);
 	OPCODE(0xDD,	o_Compare_Absolute_X,			a_Compare_Absolute_X,			4);
 
+	OPCODE(0xE6,	o_Increment_Memory_ZeroPage,	a_Increment_Memory_ZeroPage,	5);
+
+	OPCODE(0xF0,	o_Branch_Equal,					a_Branch_Equal,					2);
 }
 
 void cCpu_Mos_6502::o_Unknown_Opcode() {
 	std::stringstream msg;
 
 	msg << debug_CPU_Info_String();
-	msg << "\n" << "Unknown Opcode";
+	msg << "\n" << "Unknown Opcode! ";
 
 	mSystem()->mDebugGet()->device( eDebug_Stop, mSepr, this, msg.str());
 
@@ -87,6 +105,14 @@ void cCpu_Mos_6502::o_Nop() {
 
 }
 
+// 09: Or
+void cCpu_Mos_6502::o_Or_Accumulator() {
+
+	CYCLE(1)
+		regA |= mSystem()->busReadByte( regPC++ );
+
+}
+
 // 20: Jump Subroutine
 void cCpu_Mos_6502::o_Jump_Subroutine() {
 	
@@ -104,6 +130,25 @@ void cCpu_Mos_6502::o_Jump_Subroutine() {
 
 	CYCLE(5)
 		regPC = mTmpByte | (mSystem()->busReadByte( regPC() ) << 8);
+}
+
+// 29: 
+void cCpu_Mos_6502::o_And_Accumulator_Immediate() {
+
+	CYCLE(1)
+		regA &= mSystem()->busReadByte( regPC++ );
+
+}
+
+// 4C: Jump
+void cCpu_Mos_6502::o_Jump_Absolute() {
+	CYCLE(1)
+		mTmpWord = mSystem()->busReadByte( regPC++ );
+
+	CYCLE(2) {
+		mTmpWord |= (mSystem()->busReadByte( regPC++ ) << 8);
+		regPC = mTmpWord;
+	}
 }
 
 // 60: Return From Subroutine
@@ -128,6 +173,15 @@ void cCpu_Mos_6502::o_Flag_Interrupt_Disable_Set() {
 		flagInterrupt = true;
 }
 
+// 84: 
+void cCpu_Mos_6502::o_Store_Index_Y_ZeroPage() {
+	CYCLE(1)
+		mTmpByte = mSystem()->busReadByte( regPC++ );
+
+	CYCLE(2)
+		mSystem()->busWriteByte( mTmpByte, regY() );
+}
+
 // 85: 
 void cCpu_Mos_6502::o_Store_Accumulator_ZeroPage() {
 	CYCLE(1)
@@ -136,6 +190,15 @@ void cCpu_Mos_6502::o_Store_Accumulator_ZeroPage() {
 	CYCLE(2)
 		mSystem()->busWriteByte( mTmpByte, regA() );
 
+}
+
+// 86: 
+void cCpu_Mos_6502::o_Store_Index_X_ZeroPage() {
+	CYCLE(1)
+		mTmpByte = mSystem()->busReadByte( regPC++ );
+
+	CYCLE(2)
+		mSystem()->busWriteByte( mTmpByte, regX() );
 }
 
 // 8D:
@@ -165,11 +228,53 @@ void cCpu_Mos_6502::o_Store_Index_X_Absolute() {
 
 }
 
+// 91:
+void cCpu_Mos_6502::o_Store_Accumulator_Indirect_Y() {
+	CYCLE(1)
+		mTmpByte = mSystem()->busReadByte( regPC++ );
+
+	CYCLE(2)
+		mTmpWord = mSystem()->busReadByte( mTmpByte++ );
+
+	CYCLE(3)
+		mTmpWord |= (mSystem()->busReadByte( mTmpByte ) << 8);
+
+	CYCLE(4)
+		mTmpWord += regY();
+
+	CYCLE(5)
+		mSystem()->busWriteByte( mTmpWord, regA() );
+}
+
+// 99: 
+void cCpu_Mos_6502::o_Store_Accumulator_Absolute_Y() {
+	
+	CYCLE(1)
+		mTmpWord = mSystem()->busReadByte( regPC++ );
+
+	CYCLE(2)
+		mTmpWord |= (mSystem()->busReadByte( regPC++ ) << 8);
+
+	CYCLE(3)
+		mTmpWord += regY();
+
+	CYCLE(4)
+		mSystem()->busWriteByte( mTmpWord, regA() );
+}
+
 // 9A: Transfer X to StackPtr
 void cCpu_Mos_6502::o_Transfer_X_to_StackPtr() {
 	
 	CYCLE(1)
 		regSP = regX();
+}
+
+// A0: 
+void cCpu_Mos_6502::o_Load_Index_Y_Immediate() {
+	
+	CYCLE(1)
+		regY = mSystem()->busReadByte( regPC++ );
+
 }
 
 // A2: Load X Register with Immediate Value
@@ -179,11 +284,66 @@ void cCpu_Mos_6502::o_Load_Index_X_Immediate() {
 		regX = mSystem()->busReadByte( regPC++ );
 }
 
+// A8:
+void cCpu_Mos_6502::o_Transfer_Accumulator_To_Y() {
+
+	CYCLE(1)
+		regY = regA();
+}
+
 // A9: Load Accumulator with Immediate Value
 void cCpu_Mos_6502::o_Load_Accumulator_Immediate() {
 
 	CYCLE(1)
 		regA = mSystem()->busReadByte( regPC++ );
+}
+
+// AA:
+void cCpu_Mos_6502::o_Transfer_Accumulator_To_X() {
+
+	CYCLE(1)
+		regX = regA();
+}
+
+// AD: 
+void cCpu_Mos_6502::o_Load_Accumulator_Absolute() {
+
+	CYCLE(1)
+		mTmpWord = mSystem()->busReadByte( regPC++ );
+
+	CYCLE(2)
+		mTmpWord |= (mSystem()->busReadByte( regPC++ ) << 8);
+
+	CYCLE(3)
+		regA = mSystem()->busReadByte( mTmpWord );
+	
+}
+
+// B1: 
+void cCpu_Mos_6502::o_Load_Accumulator_Indirect_Y() {
+	CYCLE(1)
+		mTmpByte = mSystem()->busReadByte( regPC++ );
+
+	CYCLE(2)
+		mTmpWord = mSystem()->busReadByte( mTmpByte++ );
+
+	CYCLE(3)
+		mTmpWord |= (mSystem()->busReadByte( mTmpByte ) << 8);
+
+	CYCLE(4) {
+
+		byte highbyte = mTmpWord >> 8;
+		mTmpWord += regY();
+
+		// Page Crossed?
+		if( highbyte != (mTmpWord >> 8) )
+			++mCycles;
+		else
+			mCycle = 5;
+	}
+
+	CYCLE(5)
+		regA = mSystem()->busReadByte( mTmpWord );
 }
 
 // BD: Load A from Absolute_X
@@ -192,11 +352,8 @@ void cCpu_Mos_6502::o_Load_A_Absolute_X() {
 	CYCLE(1)
 		mTmpWord = mSystem()->busReadByte( regPC++ );
 
-	CYCLE(2) {
+	CYCLE(2)
 		mTmpWord |= (mSystem()->busReadByte( regPC++ ) << 8);
-		if(flagCarry.get())
-			mTmpWord += 0x100;
-	}
 
 	CYCLE(3) {
 		byte highbyte = mTmpWord >> 8;
@@ -217,6 +374,13 @@ void cCpu_Mos_6502::o_Load_A_Absolute_X() {
 			mTmpOpcode = mSystem()->busReadByte( regPC++ );
 	}
 
+}
+
+// C8: 
+void cCpu_Mos_6502::o_Increase_Y() {
+
+	CYCLE(1)
+		++regY;
 }
 
 // CA: 
@@ -251,6 +415,42 @@ void cCpu_Mos_6502::o_Branch_Not_Equal() {
 
 	CYCLE(3)
 		regPC = mTmpWord;
+}
+
+// D1
+void cCpu_Mos_6502::o_Compare_Indirect_Y() {
+	CYCLE(1)
+		mTmpByte = mSystem()->busReadByte( regPC++ );
+
+	CYCLE(2)
+		mTmpWord = mSystem()->busReadByte( mTmpByte++ );
+
+	CYCLE(3)
+		mTmpWord |= (mSystem()->busReadByte( mTmpByte ) << 8);
+
+	CYCLE(4) {
+		byte highbyte = mTmpWord >> 8;
+		mTmpWord += (char) mTmpByte;
+
+		// Page Crossed?
+		if( highbyte != (mTmpWord >> 8) )
+			++mCycles;
+		else
+			mCycle = 5;
+	}
+
+	CYCLE(5) {
+		mTmpByte = mSystem()->busReadByte( mTmpWord );
+
+		mTmpByte -= regA();
+		
+		if( mTmpByte >= 0 )
+			flagCarry = true;
+		else
+			flagCarry = false;
+
+		registerFlagSet( mTmpByte );
+	}
 }
 
 // D8: Clear Decimal Flag
@@ -297,4 +497,44 @@ void cCpu_Mos_6502::o_Compare_Absolute_X() {
 			mTmpOpcode = mSystem()->busReadByte( regPC++ );
 	}
 
+}
+
+// E6: 
+void cCpu_Mos_6502::o_Increment_Memory_ZeroPage() {
+	CYCLE(1)
+		mTmpWord = mSystem()->busReadByte( regPC++ );
+
+	CYCLE(2)
+		mTmpByte = mSystem()->busReadByte( mTmpWord );
+
+	CYCLE(3)
+		++mTmpByte;
+
+	CYCLE(4)
+		mSystem()->busWriteByte( mTmpWord, mTmpByte );
+}
+
+// F0: 
+void cCpu_Mos_6502::o_Branch_Equal() {
+	CYCLE(1) {
+		mTmpByte = mSystem()->busReadByte( regPC++ );
+		if( flagZero == true )
+			++mCycles;
+	}
+
+	CYCLE(2) {
+		mTmpWord = regPC();
+
+		byte highbyte = mTmpWord >> 8;
+		mTmpWord += (char) mTmpByte;
+
+		// Page Crossed?
+		if( highbyte != (mTmpWord >> 8) )
+			++mCycles;
+		else
+			mCycle = 3;
+	}
+
+	CYCLE(3)
+		regPC = mTmpWord;
 }

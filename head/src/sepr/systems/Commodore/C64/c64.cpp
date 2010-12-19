@@ -131,7 +131,11 @@ void cSystem_Commodore_64::cycle() {
 		Sleep(mSleepTime);
 	}
 
-	mCpu->mCyclesRemainingAdd(1);
+	size_t count = mCyclesRemaining;
+
+	mCpu->mCyclesRemainingAdd(count);
+
+	mCycle = count;
 }
 
 byte cSystem_Commodore_64::busReadByte( size_t pAddress ) {

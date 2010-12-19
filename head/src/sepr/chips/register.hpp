@@ -64,7 +64,7 @@ public:
 		inline void		 operator*( tSize pVal )	{ mData = pVal; }					// Set value, but don't adjust flags
 		//inline void		 operator=( tSize &pVal )	{ mData = pVal; flagSet(); }		// Set Value, adjust flags (if required)
 
-		inline tSize	 operator++()				{ return mData++;	   }
+		inline tSize	 operator++()				{ size_t ret = ++mData; flagSet(); return ret; }
 		inline tSize	 operator++(int)			{ size_t ret = mData; ++mData; flagSet(); return ret; }		// Return value, and increase
 
 		inline tSize	 operator--()				{ return mData--;	   }

@@ -110,7 +110,7 @@ void cDevice::thread() {
 			mCycling = false;
 
 			pthread_mutex_lock( &mCycleThreadMutex );
-			--mCyclesRemaining;
+			mCyclesRemaining -= mCycle;
 			pthread_mutex_unlock( &mCycleThreadMutex );
 
 		} else
