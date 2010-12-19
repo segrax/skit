@@ -32,7 +32,8 @@ void cCpu_Mos_6502::opcodesPrepare() {
 	OPCODE(0x4C,	o_Jump_Absolute,				a_Jump_Absolute,				3);	
 
 	OPCODE(0x60,	o_Return_From_Subroutine,		a_Return_From_Subroutine,		6);
-	
+	OPCODE(0x69,	o_Add_With_Carry_Immediate,		a_Add_With_Carry_Immediate,		2);
+
 	OPCODE(0x78,	o_Flag_Interrupt_Disable_Set,	a_Flag_Interrupt_Disable_Set,	2);
 	
 	OPCODE(0x84,	o_Store_Index_Y_ZeroPage,		a_Store_Index_Y_ZeroPage,		3);
@@ -44,10 +45,14 @@ void cCpu_Mos_6502::opcodesPrepare() {
 	OPCODE(0x8D,	o_Store_Accumulator_Absolute,	a_Store_Accumulator_Absolute,	4);
 	OPCODE(0x8E,	o_Store_Index_X_Absolute,		a_Store_Index_X_Absolute,		4);
 	
+	OPCODE(0x90,	o_Branch_If_Carry_Clear,		a_Branch_If_Carry_Clear,		2);
 	OPCODE(0x91,	o_Store_Accumulator_Indirect_Y,	a_Store_Accumulator_Indirect_Y,	6);
+	OPCODE(0x94,	o_Store_Index_Y_ZeroPage_X,		a_Store_Index_Y_ZeroPage_X,		4);
+	OPCODE(0x95,	o_Store_Accumulator_ZeroPage_X, a_Store_Accumulator_ZeroPage_X, 4);
 	OPCODE(0x98,	o_Transfer_Index_Y_To_A,		a_Transfer_Index_Y_To_A,		2);
 	OPCODE(0x99,	o_Store_Accumulator_Absolute_Y,	a_Store_Accumulator_Absolute_Y, 5);
 	OPCODE(0x9A,	o_Transfer_X_to_StackPtr,		a_Transfer_X_to_StackPtr,		2);
+	OPCODE(0x9D,	o_Store_Accumulator_Absolute_X,	a_Store_Accumulator_Absolute_X, 5);
 	
 	OPCODE(0xA0,	o_Load_Index_Y_Immediate,		a_Load_Index_Y_Immediate,		2);
 	OPCODE(0xA2,	o_Load_Index_X_Immediate,		a_Load_Index_X_Immediate,		2);
@@ -70,7 +75,9 @@ void cCpu_Mos_6502::opcodesPrepare() {
 	OPCODE(0xD8,	o_Flag_Decimal_Clear,			a_Flag_Decimal_Clear,			2);
 	OPCODE(0xDD,	o_Compare_Absolute_X,			a_Compare_Absolute_X,			4);
 
+	OPCODE(0xE0,	o_Compare_Index_X_Immediate,	a_Compare_Index_X_Immediate,	2);
 	OPCODE(0xE6,	o_Increment_Memory_ZeroPage,	a_Increment_Memory_ZeroPage,	5);
+	OPCODE(0xE8,	o_Increase_X,					a_Increase_X,					2);
 
 	OPCODE(0xF0,	o_Branch_If_Zero_Set,					a_Branch_Equal,					2);
 }
@@ -228,6 +235,17 @@ void cCpu_Mos_6502::o_Return_From_Subroutine() {
 		regPC = mTmpWord + 1;
 }
 
+// 69: 
+void cCpu_Mos_6502::o_Add_With_Carry_Immediate() {
+
+	CYCLE(1) {
+		mTmpByte = mSystem()->busReadByte( regPC++ );
+
+		o__AddWithCarry();
+	}
+
+}
+
 // 78: Disable Interrupt Flag
 void cCpu_Mos_6502::o_Flag_Interrupt_Disable_Set() {
 
@@ -318,6 +336,31 @@ void cCpu_Mos_6502::o_Store_Index_X_Absolute() {
 
 }
 
+// 90: 
+void cCpu_Mos_6502::o_Branch_If_Carry_Clear() {
+	CYCLE(1) {
+		mTmpByte = mSystem()->busReadByte( regPC++ );
+		if( flagCarry == false )
+			++mCycles;
+	}
+
+	CYCLE(2) {
+		mTmpWord = regPC();
+
+		byte highbyte = mTmpWord >> 8;
+		mTmpWord += (char) mTmpByte;
+
+		// Page Crossed?
+		if( highbyte != (mTmpWord >> 8) )
+			++mCycles;
+		else
+			mCycle = 3;
+	}
+
+	CYCLE(3)
+		regPC = mTmpWord;
+}
+
 // 91:
 void cCpu_Mos_6502::o_Store_Accumulator_Indirect_Y() {
 	CYCLE(1)
@@ -334,6 +377,30 @@ void cCpu_Mos_6502::o_Store_Accumulator_Indirect_Y() {
 
 	CYCLE(5)
 		mSystem()->busWriteByte( mTmpWord, regA() );
+}
+
+// 94: 
+void cCpu_Mos_6502::o_Store_Index_Y_ZeroPage_X() {
+	CYCLE(1)
+		mTmpByte = mSystem()->busReadByte( regPC++ );
+
+	CYCLE(2)
+		mTmpByte += regX();
+
+	CYCLE(3)
+		mSystem()->busWriteByte( mTmpByte, regY() );
+}
+
+// 95: 
+void cCpu_Mos_6502::o_Store_Accumulator_ZeroPage_X() {
+	CYCLE(1)
+		mTmpByte = mSystem()->busReadByte( regPC++ );
+
+	CYCLE(2)
+		mTmpByte += regX();
+
+	CYCLE(3)
+		mSystem()->busWriteByte( mTmpByte, regA() );
 }
 
 // 98:
@@ -364,6 +431,21 @@ void cCpu_Mos_6502::o_Transfer_X_to_StackPtr() {
 	
 	CYCLE(1)
 		regSP = regX();
+}
+
+// 9D: 
+void cCpu_Mos_6502::o_Store_Accumulator_Absolute_X() {
+	CYCLE(1)
+		mTmpWord = mSystem()->busReadByte( regPC++ );
+
+	CYCLE(2)
+		mTmpWord |= (mSystem()->busReadByte( regPC++ ) << 8);
+
+	CYCLE(3)
+		mTmpWord += regX();
+
+	CYCLE(4)
+		mSystem()->busWriteByte( mTmpWord, regA() );
 }
 
 // A0: 
@@ -597,13 +679,12 @@ void cCpu_Mos_6502::o_Compare_Indirect_Y() {
 	CYCLE(5) {
 		mTmpByte = mSystem()->busReadByte( mTmpWord );
 
-		mTmpByte -= regA();
-		
-		if( mTmpByte >= 0 )
+		if( mTmpByte >= regA() )
 			flagCarry = true;
 		else
 			flagCarry = false;
-
+		
+		mTmpByte -= regA();
 		registerFlagSet( mTmpByte );
 	}
 }
@@ -639,19 +720,34 @@ void cCpu_Mos_6502::o_Compare_Absolute_X() {
 
 	CYCLE(4) {
 		mTmpByte = mSystem()->busReadByte( mTmpWord );
-		mTmpByte -= regA();
 		
-		if( mTmpByte >= 0 )
+		if( mTmpByte >= regA() )
 			flagCarry = true;
 		else
 			flagCarry = false;
 
+		mTmpByte -= regA();
 		registerFlagSet( mTmpByte );
 
 		if(mCycles==4)
 			mTmpOpcode = mSystem()->busReadByte( regPC++ );
 	}
 
+}
+
+// E0:
+void cCpu_Mos_6502::o_Compare_Index_X_Immediate() {
+	CYCLE(1) {
+		mTmpByte = mSystem()->busReadByte( regPC++ );
+
+		if( mTmpByte >= regX() )
+			flagCarry = true;
+		else
+			flagCarry = false;
+
+		mTmpByte -= regX();
+		registerFlagSet( mTmpByte );
+	}
 }
 
 // E6: 
@@ -667,6 +763,12 @@ void cCpu_Mos_6502::o_Increment_Memory_ZeroPage() {
 
 	CYCLE(4)
 		mSystem()->busWriteByte( mTmpWord, mTmpByte );
+}
+
+// E8: 
+void cCpu_Mos_6502::o_Increase_X(){						
+	CYCLE(1)
+		++regX;
 }
 
 // F0: 

@@ -51,6 +51,11 @@ void cCpu_Mos_6502::a_Return_From_Subroutine() {
 
 }
 
+// 69: 
+void cCpu_Mos_6502::a_Add_With_Carry_Immediate() {
+
+}
+
 // 78: Disable Interrupt Flag
 void cCpu_Mos_6502::a_Flag_Interrupt_Disable_Set() {
 
@@ -96,8 +101,23 @@ void cCpu_Mos_6502::a_Store_Index_X_Absolute() {
 
 }
 
+// 90: 
+void cCpu_Mos_6502::a_Branch_If_Carry_Clear() {
+
+}
+
 // 91:
 void cCpu_Mos_6502::a_Store_Accumulator_Indirect_Y() {
+
+}
+
+// 94: 
+void cCpu_Mos_6502::a_Store_Index_Y_ZeroPage_X() {
+
+}
+
+// 95: 
+void cCpu_Mos_6502::a_Store_Accumulator_ZeroPage_X() {
 
 }
 
@@ -114,6 +134,11 @@ void cCpu_Mos_6502::a_Store_Accumulator_Absolute_Y() {
 // 9A: Transfer X to StackPtr
 void cCpu_Mos_6502::a_Transfer_X_to_StackPtr() {
 	
+}
+
+// 9D: 
+void cCpu_Mos_6502::a_Store_Accumulator_Absolute_X() {
+
 }
 
 // A0: 
@@ -201,9 +226,19 @@ void cCpu_Mos_6502::a_Compare_Absolute_X() {
 	
 }
 
+// E0:
+void cCpu_Mos_6502::a_Compare_Index_X_Immediate() {
+
+}
+
 // E6: 
 void cCpu_Mos_6502::a_Increment_Memory_ZeroPage() {
 	
+}
+
+// E8: 
+void cCpu_Mos_6502::a_Increase_X(){						
+
 }
 
 // F0: 

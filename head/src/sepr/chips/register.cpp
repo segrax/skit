@@ -56,4 +56,19 @@ size_t cChip_Register_Flags::value() {
 	}
 
 	return val;
+}	
+
+void cChip_Register_Flags::valueSet( size_t pNewValue ) {
+	size_t val = 0;
+	std::map< std::string, cChip_Register_Flag* >::iterator		regIT;
+
+	for( regIT = mRegisters.begin(); regIT != mRegisters.end(); ++regIT ) {
+		val = regIT->second->mValueGet();
+
+		if( pNewValue & val )
+			(*regIT->second) = true;
+		else
+			(*regIT->second) = false;
+	}
+
 }

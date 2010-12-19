@@ -11,6 +11,7 @@
 #define		flagCarry		(*mFlagCarry)
 #define		flagZero		(*mFlagZero)
 #define		flagNegative	(*mFlagNegative)
+#define		flagOverflow	(*mFlagOverflow)
 
 enum eChip_Cpu_Mos_6502_Flags {
 	flagCARRY		= 0x01,
@@ -60,6 +61,8 @@ protected:
 
 	// Opcodes
 	void					 o_Nop();
+	void					 o__AddWithCarry();
+
 	void					 o_Or_Accumulator();					// 09: Or
 	void					 o_Branch_If_Negative_Set();			// 10: 
 	void					 o_Flag_Carry_Clear();					// 18: 
@@ -68,6 +71,7 @@ protected:
 	void					 o_Roll_Accumulator_Left();				// 2A: 
 	void					 o_Jump_Absolute();						// 4C: Jump
 	void					 o_Return_From_Subroutine();			// 60: Return From Subroutine
+	void					 o_Add_With_Carry_Immediate();			// 69: 
 	void					 o_Flag_Interrupt_Disable_Set();		// 78: Set Interrupt Disable
 	void					 o_Store_Index_Y_ZeroPage();			// 84:
 	void					 o_Store_Accumulator_ZeroPage();		// 85: 
@@ -77,10 +81,14 @@ protected:
 	void					 o_Store_Index_Y_Absolute();			// 8C:
 	void					 o_Store_Accumulator_Absolute();		// 8D: 
 	void					 o_Store_Index_X_Absolute();			// 8E: Store X Absolute
+	void					 o_Branch_If_Carry_Clear();				// 90: 
 	void					 o_Store_Accumulator_Indirect_Y();		// 91:
+	void					 o_Store_Index_Y_ZeroPage_X();			// 94:
+	void					 o_Store_Accumulator_ZeroPage_X();		// 95: 
 	void					 o_Transfer_Index_Y_To_A();				// 98: 
 	void					 o_Store_Accumulator_Absolute_Y();		// 99: 
 	void					 o_Transfer_X_to_StackPtr();			// 9A: Transfer X to Stack
+	void					 o_Store_Accumulator_Absolute_X();		// 9D: 
 	void					 o_Load_Index_Y_Immediate();			// A0: Load Y Immediate
 	void					 o_Load_Index_X_Immediate();			// A2: Load X Immediate
 	void					 o_Load_Index_Y_ZeroPage();				// A4: 
@@ -98,7 +106,9 @@ protected:
 	void					 o_Compare_Indirect_Y();				// D1: 
 	void					 o_Flag_Decimal_Clear();				// D8: Clear Direction
 	void					 o_Compare_Absolute_X();				// DD: Compare
+	void					 o_Compare_Index_X_Immediate();			// E0: 
 	void					 o_Increment_Memory_ZeroPage();			// E6: 
+	void					 o_Increase_X();						// E8: 
 	void					 o_Branch_If_Zero_Set();						// F0: Branch If Equal
 
 	// Analyse Opcodes
@@ -111,6 +121,7 @@ protected:
 	void					 a_Roll_Accumulator_Left();				// 2A: 
 	void					 a_Jump_Absolute();						// 4C: Jump
 	void					 a_Return_From_Subroutine();			// 60: Return From Subroutine
+	void					 a_Add_With_Carry_Immediate();			// 69: 
 	void					 a_Flag_Interrupt_Disable_Set();		// 78: Set Interrupt Disable
 	void					 a_Store_Index_Y_ZeroPage();			// 84:
 	void					 a_Store_Accumulator_ZeroPage();		// 85: 
@@ -120,10 +131,14 @@ protected:
 	void					 a_Store_Index_Y_Absolute();			// 8C:
 	void					 a_Store_Accumulator_Absolute();		// 8D: 
 	void					 a_Store_Index_X_Absolute();			// 8E: Store X Absolute
+	void					 a_Branch_If_Carry_Clear();				// 90: 
 	void					 a_Store_Accumulator_Indirect_Y();		// 91:
+	void					 a_Store_Index_Y_ZeroPage_X();			// 94:
+	void					 a_Store_Accumulator_ZeroPage_X();		// 95: 
 	void					 a_Transfer_Index_Y_To_A();				// 98: 
 	void					 a_Store_Accumulator_Absolute_Y();		// 99: 
 	void					 a_Transfer_X_to_StackPtr();			// 9A: Transfer X to Stack
+	void					 a_Store_Accumulator_Absolute_X();		// 9D: 
 	void					 a_Load_Index_Y_Immediate();			// A0: Load Y Immediate
 	void					 a_Load_Index_X_Immediate();			// A2: Load X Immediate
 	void					 a_Load_Index_Y_ZeroPage();				// A4: 
@@ -141,6 +156,8 @@ protected:
 	void					 a_Compare_Indirect_Y();				// D1: 
 	void					 a_Flag_Decimal_Clear();				// D8: Clear Direction
 	void					 a_Compare_Absolute_X();				// DD: Compare
+	void					 a_Compare_Index_X_Immediate();			// E0: 
 	void					 a_Increment_Memory_ZeroPage();			// E6: 
+	void					 a_Increase_X();						// E8: 
 	void					 a_Branch_Equal();						// F0: Branch If Equal
 };

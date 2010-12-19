@@ -144,6 +144,7 @@ public:
 	cChip_Register_Flag				*get( std::string pName );
 
 	size_t							 value();
+	void							 valueSet( size_t pNewValue );
 
 	virtual std::string	 debug_CPU_Info_String() {
 			std::stringstream msg;
@@ -168,6 +169,8 @@ public:
 						 }
 
 	bool				 get()				{ return mSet; }
+	int					 getInt()			{ return (mSet == true) ? 1 : 0; }
+
 	bool				 operator=( bool pVal ) { mSet = pVal; return mSet; }
 	bool				 operator==(bool pVal ) { return pVal == mSet; }
 

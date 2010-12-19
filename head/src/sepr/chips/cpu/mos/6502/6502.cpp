@@ -142,3 +142,30 @@ void cCpu_Mos_6502::registersPrepare() {
 	// Set the registers to default values
 	(*mFlagReserved) = true;
 }
+
+void cCpu_Mos_6502::o__AddWithCarry() {
+	byte flags = regFL.value();
+
+	// Decimal Add
+	if( flagDecimal == true ) {
+		//TODO
+		flagCarry = ((mTmpWord > 0xFF ) ? true : false);
+
+		regA = (byte) mTmpWord;
+	} else {
+	// Binary Add
+		mTmpWord = regA();
+		mTmpWord += mTmpByte + flagCarry.getInt();
+
+		// Turn off all flags which are modified
+		flags &= ~ (flagNEGATIVE | flagOVERFLOW | flagZERO | flagCARRY);
+		
+		flags |= (~(regA() ^ mTmpByte) & (regA() ^ mTmpByte) & 0x80 ? flagOverflow.getInt() : 0);
+
+		regFL.valueSet( flags );
+		regA = (byte) mTmpWord;
+
+		flagCarry = ((mTmpWord > 0xFF ) ? true : false);
+	}
+
+}
