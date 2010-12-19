@@ -77,6 +77,8 @@ public:
 
 		inline tSize	 operator>=(tSize pVal)		{	return cmpSet( mData ); }
 		
+		inline tSize	 operator<<=(tSize pVal)	{	return (mData <<= pVal); }
+
 		virtual std::string	 debug_CPU_Info_String() {
 			size_t				value = mData;
 			std::stringstream	msg;

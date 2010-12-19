@@ -61,21 +61,27 @@ protected:
 	// Opcodes
 	void					 o_Nop();
 	void					 o_Or_Accumulator();					// 09: Or
+	void					 o_Flag_Carry_Clear();					// 18: 
 	void					 o_Jump_Subroutine();					// 20: Jump Subroutine
-	void					 o_And_Accumulator_Immediate();						// 29: 
+	void					 o_And_Accumulator_Immediate();			// 29: 
+	void					 o_Roll_Accumulator_Left();				// 2A: 
 	void					 o_Jump_Absolute();						// 4C: Jump
 	void					 o_Return_From_Subroutine();			// 60: Return From Subroutine
 	void					 o_Flag_Interrupt_Disable_Set();		// 78: Set Interrupt Disable
 	void					 o_Store_Index_Y_ZeroPage();			// 84:
 	void					 o_Store_Accumulator_ZeroPage();		// 85: 
 	void					 o_Store_Index_X_ZeroPage();			// 86: 
+	void					 o_Transfer_Index_X_To_A();				// 8A: 
+	void					 o_Store_Index_Y_Absolute();			// 8C:
 	void					 o_Store_Accumulator_Absolute();		// 8D: 
 	void					 o_Store_Index_X_Absolute();			// 8E: Store X Absolute
 	void					 o_Store_Accumulator_Indirect_Y();		// 91:
+	void					 o_Transfer_Index_Y_To_A();				// 98: 
 	void					 o_Store_Accumulator_Absolute_Y();		// 99: 
 	void					 o_Transfer_X_to_StackPtr();			// 9A: Transfer X to Stack
 	void					 o_Load_Index_Y_Immediate();			// A0: Load Y Immediate
 	void					 o_Load_Index_X_Immediate();			// A2: Load X Immediate
+	void					 o_Load_Index_Y_ZeroPage();				// A4: 
 	void					 o_Transfer_Accumulator_To_Y();			// A8: 
 	void					 o_Load_Accumulator_Immediate();		// A9:
 	void					 o_Transfer_Accumulator_To_X();			// AA:
@@ -94,21 +100,27 @@ protected:
 	// Analyse Opcodes
 	void					 a_Nop();
 	void					 a_Or_Accumulator();					// 09: Or
+	void					 a_Flag_Carry_Clear();					// 18: 
 	void					 a_Jump_Subroutine();					// 20: Jump Subroutine
 	void					 a_And_Immediate();						// 29: 
+	void					 a_Roll_Accumulator_Left();				// 2A: 
 	void					 a_Jump_Absolute();						// 4C: Jump
 	void					 a_Return_From_Subroutine();			// 60: Return From Subroutine
 	void					 a_Flag_Interrupt_Disable_Set();		// 78: Set Interrupt Disable
 	void					 a_Store_Index_Y_ZeroPage();			// 84:
 	void					 a_Store_Accumulator_ZeroPage();		// 85: 
 	void					 a_Store_Index_X_ZeroPage();			// 86: 
+	void					 a_Transfer_Index_X_To_A();				// 8A: 
+	void					 a_Store_Index_Y_Absolute();			// 8C:
 	void					 a_Store_Accumulator_Absolute();		// 8D: 
 	void					 a_Store_Index_X_Absolute();			// 8E: Store X Absolute
 	void					 a_Store_Accumulator_Indirect_Y();		// 91:
+	void					 a_Transfer_Index_Y_To_A();				// 98: 
 	void					 a_Store_Accumulator_Absolute_Y();		// 99: 
 	void					 a_Transfer_X_to_StackPtr();			// 9A: Transfer X to Stack
 	void					 a_Load_Index_Y_Immediate();			// A0: Load Y Immediate
 	void					 a_Load_Index_X_Immediate();			// A2: Load X Immediate
+	void					 a_Load_Index_Y_ZeroPage();				// A4: 
 	void					 a_Transfer_Accumulator_To_Y();			// A8: 
 	void					 a_Load_Accumulator_Immediate();		// A9: 
 	void					 a_Transfer_Accumulator_To_X();			// AA:

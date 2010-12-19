@@ -16,6 +16,11 @@ void cCpu_Mos_6502::a_Or_Accumulator() {
 
 }
 
+// 18: 
+void cCpu_Mos_6502::a_Flag_Carry_Clear() {
+
+}
+
 // 20: Jump Subroutine
 void cCpu_Mos_6502::a_Jump_Subroutine() {
 
@@ -23,6 +28,11 @@ void cCpu_Mos_6502::a_Jump_Subroutine() {
 
 // 29: 
 void cCpu_Mos_6502::a_And_Immediate() {
+
+}
+
+// 2A: 
+void cCpu_Mos_6502::a_Roll_Accumulator_Left() {
 
 }
 
@@ -56,6 +66,16 @@ void cCpu_Mos_6502::a_Store_Index_X_ZeroPage() {
 
 }
 
+// 8A: 
+void cCpu_Mos_6502::a_Transfer_Index_X_To_A() {
+
+}
+
+// 8C: 
+void cCpu_Mos_6502::a_Store_Index_Y_Absolute() {
+
+}
+
 // 8D:
 void cCpu_Mos_6502::a_Store_Accumulator_Absolute() {
 
@@ -69,6 +89,11 @@ void cCpu_Mos_6502::a_Store_Index_X_Absolute() {
 // 91:
 void cCpu_Mos_6502::a_Store_Accumulator_Indirect_Y() {
 
+}
+
+// 98:
+void cCpu_Mos_6502::a_Transfer_Index_Y_To_A() {
+	
 }
 
 // 99: 
@@ -89,6 +114,11 @@ void cCpu_Mos_6502::a_Load_Index_Y_Immediate() {
 // A2: Load X Register with Immediate Value
 void cCpu_Mos_6502::a_Load_Index_X_Immediate() {
 	
+}
+
+// A4: 
+void cCpu_Mos_6502::a_Load_Index_Y_ZeroPage() {
+
 }
 
 // A8:
@@ -136,7 +166,7 @@ void cCpu_Mos_6502::a_Branch_Not_Equal() {
 
 }
 
-// D1
+// D1: 
 void cCpu_Mos_6502::a_Compare_Indirect_Y() {
 
 }
