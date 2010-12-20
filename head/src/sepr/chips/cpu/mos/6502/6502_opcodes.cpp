@@ -101,8 +101,9 @@ void cCpu_Mos_6502::opcodesPrepare() {
 	OPCODE(0xE6,	o_Increment_Memory_ZeroPage,	a_Increment_Memory_ZeroPage,	5);
 	OPCODE(0xE8,	o_Increase_X,					a_Increase_X,					2);
 	OPCODE(0xE9,	o_Subtract_With_Carry_Immediate,a_Subtract_With_Carry_Immediate,2);
+	OPCODE(0xEE,	o_Increase_Memory_Absolute,		a_Increase_Memory_Absolute,		6);
 
-	OPCODE(0xF0,	o_Branch_If_Zero_Set,					a_Branch_Equal,					2);
+	OPCODE(0xF0,	o_Branch_If_Zero_Set,			a_Branch_Equal,					2);
 }
 
 void cCpu_Mos_6502::o_Unknown_Opcode() {
@@ -1061,6 +1062,24 @@ void cCpu_Mos_6502::o_Subtract_With_Carry_Immediate() {
 
 		o__SubWithCarry();
 	}
+}
+
+// EE:
+void cCpu_Mos_6502::o_Increase_Memory_Absolute() {
+	CYCLE(1)
+		mTmpWord = mSystem()->busReadByte( regPC++ );
+
+	CYCLE(2)
+		mTmpWord |= (mSystem()->busReadByte( regPC++ ) << 8);
+
+	CYCLE(3)
+		mTmpByte = mSystem()->busReadByte( mTmpWord );
+
+	CYCLE(4)
+		++mTmpByte;
+
+	CYCLE(5)
+		mSystem()->busWriteByte( mTmpWord, mTmpByte );
 }
 
 // F0: 

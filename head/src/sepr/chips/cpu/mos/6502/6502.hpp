@@ -132,6 +132,7 @@ protected:
 	void					 o_Increment_Memory_ZeroPage();			// E6: 
 	void					 o_Increase_X();						// E8: 
 	void					 o_Subtract_With_Carry_Immediate();		// E9:
+	void					 o_Increase_Memory_Absolute();			// EE: 
 	void					 o_Branch_If_Zero_Set();						// F0: Branch If Equal
 
 	// Analyse Opcodes
@@ -204,5 +205,6 @@ protected:
 	void					 a_Increment_Memory_ZeroPage();			// E6: 
 	void					 a_Increase_X();						// E8: 
 	void					 a_Subtract_With_Carry_Immediate();		// E9:
+	void					 a_Increase_Memory_Absolute();			// EE: 
 	void					 a_Branch_Equal();						// F0: Branch If Equal
 };

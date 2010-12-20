@@ -301,6 +301,11 @@ void cCpu_Mos_6502::a_Decrease_X() {
 
 }
 
+// CE:
+void cCpu_Mos_6502::a_Decrease_Memory_Absolute() {
+
+}
+
 // D0: Branch not Equal
 void cCpu_Mos_6502::a_Branch_Not_Equal() {
 
@@ -338,6 +343,11 @@ void cCpu_Mos_6502::a_Increase_X(){
 
 // E9:
 void cCpu_Mos_6502::a_Subtract_With_Carry_Immediate() {
+
+}
+
+// EE:
+void cCpu_Mos_6502::a_Increase_Memory_Absolute() {
 
 }
 
