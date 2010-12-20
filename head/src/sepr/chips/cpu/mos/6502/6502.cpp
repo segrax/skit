@@ -62,6 +62,9 @@ void cCpu_Mos_6502::cycle() {
 
 	// No Instruction, lets fetch one, or use a pre-fetched one
 	if( !mOpcodeCurrent ) {
+		if(regPC() == 0xb6ae )
+			mDebug = true;
+
 		byte op = mTmpOpcode;
 
 		if( !op )
@@ -129,7 +132,7 @@ void cCpu_Mos_6502::registersPrepare() {
 	mRegA		= new cChip_Register_Byte( this,	"A", 0, true);
 	mRegX		= new cChip_Register_Byte( this,	"X", 0, true); 
 	mRegY		= new cChip_Register_Byte( this,	"Y", 0, true);
-	mRegStack	= new cChip_Register_Byte( this,	"Stack", 0, true);
+	mRegStack	= new cChip_Register_Byte( this,	"Stack", 0, false);
 	mRegPC		= new cChip_Register_Word( this,	"PC", 0, false);
 
 	mRegisters.add( mRegA );
@@ -160,7 +163,7 @@ void cCpu_Mos_6502::o__AddWithCarry() {
 		// Turn off all flags which are modified
 		flags &= ~ (flagNEGATIVE | flagOVERFLOW | flagZERO | flagCARRY);
 		
-		flags |= (~(regA() ^ mTmpByte) & (regA() ^ mTmpByte) & 0x80 ? flagOverflow.getInt() : 0);
+		flags |= (~(regA() ^ mTmpByte) & (regA() ^ (mTmpWord & 0xFF)) & 0x80 ? flagOVERFLOW : 0);
 
 		regFL.valueSet( flags );
 		regA = (byte) mTmpWord;
@@ -183,7 +186,7 @@ void cCpu_Mos_6502::o__SubWithCarry() {
 		mTmpWord -= mTmpByte + ( !flagCarry.getInt() );
 		
 		flags &= ~ (flagNEGATIVE | flagOVERFLOW | flagZERO | flagCARRY);
-		flags |= ((regA() ^ mTmpByte) & (regA() ^ mTmpWord) & 0x80 ? flagOVERFLOW : 0);
+		flags |= ((regA() ^ mTmpByte) & (regA() ^ (mTmpWord & 0xFF)) & 0x80 ? flagOVERFLOW : 0);
 		
 		regFL.valueSet( flags );
 		regA = (byte) mTmpWord;

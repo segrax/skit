@@ -12,6 +12,7 @@
 #define		flagZero		(*mFlagZero)
 #define		flagNegative	(*mFlagNegative)
 #define		flagOverflow	(*mFlagOverflow)
+#define		flagReserved	(*mFlagReserved)
 
 enum eChip_Cpu_Mos_6502_Flags {
 	flagCARRY		= 0x01,
@@ -68,6 +69,7 @@ protected:
 	void					 o_Or_Accumulator();					// 09: Or
 	void					 o_Or_Accumulator_Absolute();			// 0D: Or
 	void					 o_Branch_If_Negative_Clear();			// 10: 
+	void					 o_Arith_Shift_Left_ZeroPage_X();		// 16:
 	void					 o_Flag_Carry_Clear();					// 18: 
 	void					 o_Jump_Subroutine();					// 20: Jump Subroutine
 	void					 o_Pull_Flags();						// 28: 
@@ -77,6 +79,7 @@ protected:
 	void					 o_Flag_Carry_Set();					// 38: 
 	void					 o_Push_Accumulator();					// 48:
 	void					 o_Jump_Absolute();						// 4C: Jump
+	void					 o_Logical_Shift_Right_ZeroPage_X();	// 56: 
 	void					 o_Flag_Interrupt_Clear();				// 58: 
 	void					 o_Return_From_Subroutine();			// 60: Return From Subroutine
 	void					 o_Add_With_Carry_ZeroPage();			// 65:
@@ -141,6 +144,7 @@ protected:
 	void					 a_Or_Accumulator();					// 09: Or
 	void					 a_Or_Accumulator_Absolute();			// 0D: Or				 
 	void					 a_Branch_If_Negative_Clear();			// 10: 
+	void					 a_Arith_Shift_Left_ZeroPage_X();		// 16:
 	void					 a_Flag_Carry_Clear();					// 18: 
 	void					 a_Jump_Subroutine();					// 20: Jump Subroutine
 	void					 a_Pull_Flags();						// 28: 
@@ -150,6 +154,7 @@ protected:
 	void					 a_Flag_Carry_Set();					// 38: 
 	void					 a_Push_Accumulator();					// 48:
 	void					 a_Jump_Absolute();						// 4C: Jump
+	void					 a_Logical_Shift_Right_ZeroPage_X();	// 56: 
 	void					 a_Flag_Interrupt_Clear();				// 58: 
 	void					 a_Return_From_Subroutine();			// 60: Return From Subroutine
 	void					 a_Add_With_Carry_ZeroPage();			// 65:

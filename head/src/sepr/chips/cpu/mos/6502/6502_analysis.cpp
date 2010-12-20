@@ -31,6 +31,11 @@ void cCpu_Mos_6502::a_Branch_If_Negative_Clear() {
 
 }
 
+// 16: 
+void cCpu_Mos_6502::a_Arith_Shift_Left_ZeroPage_X() {
+
+}
+
 // 18: 
 void cCpu_Mos_6502::a_Flag_Carry_Clear() {
 
@@ -73,6 +78,11 @@ void cCpu_Mos_6502::a_Push_Accumulator() {
 
 // 4C: Jump
 void cCpu_Mos_6502::a_Jump_Absolute() {
+
+}
+
+// 56:
+void cCpu_Mos_6502::a_Logical_Shift_Right_ZeroPage_X() {
 
 }
 

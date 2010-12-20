@@ -7,6 +7,8 @@ cChip_Ram::cChip_Ram( std::string pName, cSepr *pSepr, cDevice *pParent, size_t 
 	
 	mMemory = new byte[ pSize ];
 	mMemorySize = pSize;
+
+	memset( mMemory, 0, pSize );
 }
 
 void cChip_Ram::busWriteByte( size_t pAddress, byte pData ) {
