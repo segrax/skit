@@ -26,6 +26,7 @@ protected:
 	cSepr								*mSepr;
 
 	cSystem								*mSystem();
+	template< class tSystem > tSystem	*mSystem() { return dynamic_cast<tSystem*>( mSystem() ); }
 
 	virtual void						 cycle() = 0;										// Main device cycle
 	
@@ -40,6 +41,8 @@ public:
 
 	void								 thread();											// Device Thread Loop
 	void								 threadStart();
+
+	virtual byte						 deviceReadByte( cDevice *pFromDevice, size_t pAddress);
 
 	virtual byte						 busReadByte( size_t pAddress );
 	virtual word						 busReadWordLE( size_t pAddress );

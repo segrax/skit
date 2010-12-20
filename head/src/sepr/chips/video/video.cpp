@@ -22,13 +22,18 @@ cVideo::cVideo( std::string pName, cSepr *pSepr, cDevice *pParent,
 	mBufferSize = (pWidth * pHeight) * mPixelBytes;
 	mBuffer = new byte[ mBufferSize ];
 
+	memset( mBuffer, 0, mBufferSize );
+
 	mWindow = 0;
+	mSDLSurface = 0;
 }
 
 cVideo::~cVideo() {
 
 	delete[] mBuffer;
 	delete[] mPalette;
+
+	SDL_FreeSurface( mSDLSurface );
 }
 
 bool cVideo::windowSet( cVideoWindow *pWindow ) {
@@ -41,4 +46,24 @@ bool cVideo::windowSet( cVideoWindow *pWindow ) {
 
 void cVideo::cycle() {
 
+}
+
+SDL_Surface	*cVideo::surfaceGet() {
+	if(!mSDLSurface)
+		mSDLSurface = SDL_CreateRGBSurface( SDL_SWSURFACE, mWidth, mHeight, 32, 0, 0, 0, 0); 
+
+	dword *dst = (dword*) mSDLSurface->pixels;
+	byte  *src = mBuffer;
+
+	if(!mPalette)
+		return 0;
+
+	for( size_t y = 0; y < mHeight; ++y )  {
+		for( size_t x = 0; x < mWidth; ++x ) {
+
+			*dst++ = mPalette[ *src++ ];
+		}
+	}
+
+	return mSDLSurface;
 }

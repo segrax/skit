@@ -5,6 +5,7 @@ class cVideoWindow;
 class cVideo : public cDevice {
 protected:
 	byte					*mBuffer;					// Screen Buffer
+	byte					*mBufferPtr;				// Current Screen Ptr
 	dword					*mPalette;					// SDL Palette Colors
 
 	bool					 mFullScreen;
@@ -13,6 +14,7 @@ protected:
 	size_t					 mWidth, mHeight, mScale;	// Surface Details
 
 	cVideoWindow			*mWindow;
+	SDL_Surface				*mSDLSurface;
 
 protected:
 	virtual void			 cycle();

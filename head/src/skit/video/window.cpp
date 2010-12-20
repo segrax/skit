@@ -36,6 +36,8 @@ void cVideoWindow::clear( byte color ) {
 
 void cVideoWindow::blit( SDL_Surface *source, word x, word y, word pSourceX, word pSourceY ) {
 	SDL_Rect srcRect, destRect;
+	if(!source)
+		return;
 
 	srcRect.x = pSourceX;
 	srcRect.y = pSourceY;

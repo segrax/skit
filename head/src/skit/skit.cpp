@@ -3,6 +3,7 @@
 #include "sepr/device/device.hpp"
 #include "sepr/device/deviceConnection.hpp"
 #include "sepr/systems/system.hpp"
+#include "video/window.hpp"
 
 cSkit::cSkit() {
 
@@ -36,6 +37,9 @@ bool cSkit::systemStart( std::string pSystemName ) {
 	while( !mSystem->mQuitThreadGet() ) {
 
 		SDL_PollEvent( &mEvent );
+
+		mSystem->mWindowGet()->blit( mSystem->videoGet(), 0, 0 );
+
 
 		if( mSystem->mCyclesRemainingGet() == 0 ) {
 			if(!step) {

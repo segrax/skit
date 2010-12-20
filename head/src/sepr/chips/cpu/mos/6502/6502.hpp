@@ -62,7 +62,9 @@ protected:
 	// Opcodes
 	void					 o_Nop();
 	void					 o__AddWithCarry();
+	void					 o__SubWithCarry();
 
+	void					 o_Push_Flags();						// 08: 
 	void					 o_Or_Accumulator();					// 09: Or
 	void					 o_Or_Accumulator_Absolute();			// 0D: Or
 	void					 o_Branch_If_Negative_Clear();			// 10: 
@@ -71,10 +73,14 @@ protected:
 	void					 o_And_Accumulator_Immediate();			// 29: 
 	void					 o_Roll_Accumulator_Left();				// 2A: 
 	void					 o_Branch_If_Negative_Set();			// 30:
+	void					 o_Flag_Carry_Set();					// 38: 
+	void					 o_Push_Accumulator();					// 48:
 	void					 o_Jump_Absolute();						// 4C: Jump
 	void					 o_Flag_Interrupt_Clear();				// 58: 
 	void					 o_Return_From_Subroutine();			// 60: Return From Subroutine
+	void					 o_Add_With_Carry_ZeroPage();			// 65:
 	void					 o_Add_With_Carry_Immediate();			// 69: 
+	void					 o_Jump_Indirect();						// 6C: 
 	void					 o_Flag_Interrupt_Disable_Set();		// 78: Set Interrupt Disable
 	void					 o_Store_Index_Y_ZeroPage();			// 84:
 	void					 o_Store_Accumulator_ZeroPage();		// 85: 
@@ -100,14 +106,19 @@ protected:
 	void					 o_Transfer_Accumulator_To_Y();			// A8: 
 	void					 o_Load_Accumulator_Immediate();		// A9:
 	void					 o_Transfer_Accumulator_To_X();			// AA:
+	void					 o_Load_Index_Y_Absolute();				// AC:
 	void					 o_Load_Accumulator_Absolute();			// AD:
+	void					 o_Load_Index_X_Absolute();				// AE:
 	void					 o_Branch_If_CarrySet();				// B0: 
 	void					 o_Load_Accumulator_Indirect_Y();		// B1: 
 	void					 o_Load_Index_Y_ZeroPage_X();			// B4: 
 	void					 o_Load_Accumulator_ZeroPage_X();		// B5: 
 	void					 o_Load_Accumulator_Absolute_Y();		// B9: 
 	void					 o_Load_A_Absolute_X();					// BD: Load A from Absolute_X
-	void					 o_Increase_Y();						// C8: 
+	void					 o_Compare_Index_Y_ZeroPage();			// C4:
+	void					 o_Compare_Accumulator_ZeroPage();		// C5:
+	void					 o_Increase_Y();						// C8:
+	void					 o_Compare_Accumulator_Immediate();		// C9: 
 	void					 o_Decrease_X();						// CA: Decrease X
 	void					 o_Branch_Not_Equal();					// D0: Branch not Equal
 	void					 o_Compare_Indirect_Y();				// D1: 
@@ -116,10 +127,12 @@ protected:
 	void					 o_Compare_Index_X_Immediate();			// E0: 
 	void					 o_Increment_Memory_ZeroPage();			// E6: 
 	void					 o_Increase_X();						// E8: 
+	void					 o_Subtract_With_Carry_Immediate();		// E9:
 	void					 o_Branch_If_Zero_Set();						// F0: Branch If Equal
 
 	// Analyse Opcodes
 	void					 a_Nop();
+	void					 a_Push_Flags();						// 08: 
 	void					 a_Or_Accumulator();					// 09: Or
 	void					 a_Or_Accumulator_Absolute();			// 0D: Or				 
 	void					 a_Branch_If_Negative_Clear();			// 10: 
@@ -128,10 +141,14 @@ protected:
 	void					 a_And_Immediate();						// 29: 
 	void					 a_Roll_Accumulator_Left();				// 2A: 
 	void					 a_Branch_If_Negative_Set();			// 30:
+	void					 a_Flag_Carry_Set();					// 38: 
+	void					 a_Push_Accumulator();					// 48:
 	void					 a_Jump_Absolute();						// 4C: Jump
 	void					 a_Flag_Interrupt_Clear();				// 58: 
 	void					 a_Return_From_Subroutine();			// 60: Return From Subroutine
+	void					 a_Add_With_Carry_ZeroPage();			// 65:
 	void					 a_Add_With_Carry_Immediate();			// 69: 
+	void					 a_Jump_Indirect();						// 6C:
 	void					 a_Flag_Interrupt_Disable_Set();		// 78: Set Interrupt Disable
 	void					 a_Store_Index_Y_ZeroPage();			// 84:
 	void					 a_Store_Accumulator_ZeroPage();		// 85: 
@@ -157,14 +174,19 @@ protected:
 	void					 a_Transfer_Accumulator_To_Y();			// A8: 
 	void					 a_Load_Accumulator_Immediate();		// A9: 
 	void					 a_Transfer_Accumulator_To_X();			// AA:
+	void					 a_Load_Index_Y_Absolute();				// AC:
 	void					 a_Load_Accumulator_Absolute();			// AD: 
+	void					 a_Load_Index_X_Absolute();				// AE:
 	void					 a_Branch_If_CarrySet();				// B0: 
 	void					 a_Load_Accumulator_Indirect_Y();		// B1: 
 	void					 a_Load_Index_Y_ZeroPage_X();			// B4: 
 	void					 a_Load_Accumulator_ZeroPage_X();		// B5: 
 	void					 a_Load_Accumulator_Absolute_Y();		// B9: 
 	void					 a_Load_A_Absolute_X();					// BD: Load A from Absolute_X
+	void					 a_Compare_Index_Y_ZeroPage();			// C4:
+	void					 a_Compare_Accumulator_ZeroPage();		// C5:
 	void					 a_Increase_Y();						// C8: 
+	void					 a_Compare_Accumulator_Immediate();		// C9: 
 	void					 a_Decrease_X();						// CA: Decrease X
 	void					 a_Branch_Not_Equal();					// D0: Branch not Equal
 	void					 a_Compare_Indirect_Y();				// D1: 
@@ -173,5 +195,6 @@ protected:
 	void					 a_Compare_Index_X_Immediate();			// E0: 
 	void					 a_Increment_Memory_ZeroPage();			// E6: 
 	void					 a_Increase_X();						// E8: 
+	void					 a_Subtract_With_Carry_Immediate();		// E9:
 	void					 a_Branch_Equal();						// F0: Branch If Equal
 };

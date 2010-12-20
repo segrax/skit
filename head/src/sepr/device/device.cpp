@@ -134,6 +134,10 @@ cSystem *cDevice::mSystem() {
 	return mSepr->mSystemGet();
 }
 
+byte cDevice::deviceReadByte( cDevice *pFromDevice, size_t pAddress ) {
+	return 0;
+}
+
 byte cDevice::busReadByte( size_t pAddress ) {
 	return 0;
 }

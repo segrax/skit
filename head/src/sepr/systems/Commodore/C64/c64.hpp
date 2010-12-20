@@ -10,7 +10,6 @@ private:
 	cChip_Rom					*mBasic, *mKernal, *mChar;
 	cCpu_Mos_6510				*mCpu;
 	cVideo_Mos_8567				*mVideo;
-	cVideoWindow				*mWindow;
 
 protected:
 	void						 cycle();
@@ -19,14 +18,19 @@ public:
 
 								 cSystem_Commodore_64( cSepr *pSepr );
 								~cSystem_Commodore_64();
-	
+
+	virtual byte				 deviceReadByte( cDevice *pFromDevice, size_t pAddress );
 	virtual byte				 busReadByte( size_t pAddress );
 	virtual word				 busReadWordLE( size_t pAddress );
 	virtual void				 busWriteByte( size_t pAddress, byte pData );
 	virtual void				 busWriteWordLE( size_t pAddress, word pData );
 
+	cDevice						*busVicGet(	size_t pAddress, bool pRead );
+
 	cDevice						*deviceGet( size_t pAddress, bool pRead );
 	cDevice						*deviceIOGet( size_t pAddress, bool pRead );
 
 	bool						 prepare();
+	SDL_Surface					*videoGet();
+
 };

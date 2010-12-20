@@ -1,10 +1,13 @@
 class cDebug;
+class cVideoWindow;
 
 class cSystem : public cDevice {
 private:
 	cDebug					*mDebug;
 
 protected:
+	cVideoWindow			*mWindow;
+
 	virtual void			 cycle();
 
 public:
@@ -20,6 +23,9 @@ public:
 	virtual cDebug			*mDebugGet() { return mDebug; }
 
 	virtual bool			 prepare() = 0;
+	virtual SDL_Surface		*videoGet() = 0;
 
 	std::string				 systemDataPath( std::string pFile );
+	cVideoWindow			*mWindowGet() { return mWindow; }
+
 };

@@ -169,3 +169,25 @@ void cCpu_Mos_6502::o__AddWithCarry() {
 	}
 
 }
+
+void cCpu_Mos_6502::o__SubWithCarry() {
+	byte flags = regFL.value();
+	
+	if( flagDecimal == true ) {
+		// Decimal Add
+		// TODO
+
+	} else {
+		// Binary Add
+		mTmpWord = regA();
+		mTmpWord -= mTmpByte + ( !flagCarry.getInt() );
+		
+		flags &= ~ (flagNEGATIVE | flagOVERFLOW | flagZERO | flagCARRY);
+		flags |= ((regA() ^ mTmpByte) & (regA() ^ mTmpWord) & 0x80 ? flagOVERFLOW : 0);
+		
+		regFL.valueSet( flags );
+		regA = (byte) mTmpWord;
+
+		flagCarry = ((mTmpWord < 0x100 ) ? true : false);
+	}
+}

@@ -52,8 +52,8 @@ void cCpu::opcodeExecute() {
 }
 
 void cCpu::opcodeAnalyse() {
-	
-	mSystem()->mDebugGet()->device( eDebug_Message, mSepr, this, debug_CPU_Info_String() );
+	if( mDebug )
+		mSystem()->mDebugGet()->device( eDebug_Message, mSepr, this, debug_CPU_Info_String() );
 
 	if( !mAnalyse )
 		return;

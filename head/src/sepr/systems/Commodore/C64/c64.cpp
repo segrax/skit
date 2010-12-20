@@ -68,6 +68,16 @@ bool cSystem_Commodore_64::prepare() {
 	return true;
 }
 
+cDevice *cSystem_Commodore_64::busVicGet(	size_t pAddress, bool pRead ) {
+		word	address = pAddress; // | CIAPins	// Need to read pin14/15 from the CIA
+
+		if((address & 0x7000) == 0x1000) {
+			return mChar;
+		}
+
+		return mRam;
+	}
+
 cDevice *cSystem_Commodore_64::deviceIOGet( size_t pAddress, bool pRead ) {
 	// VIC-II
 	if( pAddress >= 0xD000 && pAddress <= 0xD3FF )
@@ -155,6 +165,16 @@ void cSystem_Commodore_64::cycle() {
 	mCycle = count;
 }
 
+byte cSystem_Commodore_64::deviceReadByte( cDevice *pFromDevice, size_t pAddress ) {
+
+	if( pFromDevice->mNameGet() == "VIDEO" ) {
+
+		return busVicGet( pAddress, true )->busReadByte( pAddress );
+	}
+
+	return 0;
+}
+
 byte cSystem_Commodore_64::busReadByte( size_t pAddress ) {
 	cDevice *device = deviceGet( pAddress, true );
 
@@ -177,4 +197,9 @@ void cSystem_Commodore_64::busWriteWordLE( size_t pAddress, word pData ) {
 	cDevice *device = deviceGet( pAddress, false );
 
 	device->busWriteWordLE( pAddress, pData );
+}
+
+SDL_Surface	*cSystem_Commodore_64::videoGet() {
+
+	return mVideo->surfaceGet();
 }
