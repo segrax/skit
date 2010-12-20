@@ -70,6 +70,7 @@ protected:
 	void					 o_Branch_If_Negative_Clear();			// 10: 
 	void					 o_Flag_Carry_Clear();					// 18: 
 	void					 o_Jump_Subroutine();					// 20: Jump Subroutine
+	void					 o_Pull_Flags();						// 28: 
 	void					 o_And_Accumulator_Immediate();			// 29: 
 	void					 o_Roll_Accumulator_Left();				// 2A: 
 	void					 o_Branch_If_Negative_Set();			// 30:
@@ -79,6 +80,7 @@ protected:
 	void					 o_Flag_Interrupt_Clear();				// 58: 
 	void					 o_Return_From_Subroutine();			// 60: Return From Subroutine
 	void					 o_Add_With_Carry_ZeroPage();			// 65:
+	void					 o_Pull_Accumulator();					// 68: 
 	void					 o_Add_With_Carry_Immediate();			// 69: 
 	void					 o_Jump_Indirect();						// 6C: 
 	void					 o_Flag_Interrupt_Disable_Set();		// 78: Set Interrupt Disable
@@ -138,6 +140,7 @@ protected:
 	void					 a_Branch_If_Negative_Clear();			// 10: 
 	void					 a_Flag_Carry_Clear();					// 18: 
 	void					 a_Jump_Subroutine();					// 20: Jump Subroutine
+	void					 a_Pull_Flags();						// 28: 
 	void					 a_And_Immediate();						// 29: 
 	void					 a_Roll_Accumulator_Left();				// 2A: 
 	void					 a_Branch_If_Negative_Set();			// 30:
@@ -147,6 +150,7 @@ protected:
 	void					 a_Flag_Interrupt_Clear();				// 58: 
 	void					 a_Return_From_Subroutine();			// 60: Return From Subroutine
 	void					 a_Add_With_Carry_ZeroPage();			// 65:
+	void					 a_Pull_Accumulator();					// 68: 
 	void					 a_Add_With_Carry_Immediate();			// 69: 
 	void					 a_Jump_Indirect();						// 6C:
 	void					 a_Flag_Interrupt_Disable_Set();		// 78: Set Interrupt Disable

@@ -27,6 +27,7 @@ void cCpu_Mos_6502::opcodesPrepare() {
 	OPCODE(0x18,	o_Flag_Carry_Clear,				a_Flag_Carry_Clear,				2);
 
 	OPCODE(0x20,	o_Jump_Subroutine,				a_Jump_Subroutine,				6);
+	OPCODE(0x28,	o_Pull_Flags,					a_Pull_Flags,					4);
 	OPCODE(0x29,	o_And_Accumulator_Immediate,	a_And_Immediate,				2);
 	OPCODE(0x2A,	o_Roll_Accumulator_Left,		a_Roll_Accumulator_Left,		2);
 
@@ -40,6 +41,7 @@ void cCpu_Mos_6502::opcodesPrepare() {
 
 	OPCODE(0x60,	o_Return_From_Subroutine,		a_Return_From_Subroutine,		6);
 	OPCODE(0x65,	o_Add_With_Carry_ZeroPage,		a_Add_With_Carry_ZeroPage,		3);
+	OPCODE(0x68,	o_Pull_Accumulator,				a_Pull_Accumulator,				4);
 	OPCODE(0x69,	o_Add_With_Carry_Immediate,		a_Add_With_Carry_Immediate,		2);
 	OPCODE(0x6C,	o_Jump_Indirect,				a_Jump_Indirect,				5);
 
@@ -221,6 +223,14 @@ void cCpu_Mos_6502::o_Jump_Subroutine() {
 		regPC = mTmpByte | (mSystem()->busReadByte( regPC() ) << 8);
 }
 
+// 28: 
+void cCpu_Mos_6502::o_Pull_Flags() {
+	CYCLE(1);
+	CYCLE(2);
+	CYCLE(3)
+		regFL.valueSet( stackPop() );
+}
+
 // 29: 
 void cCpu_Mos_6502::o_And_Accumulator_Immediate() {
 
@@ -330,6 +340,14 @@ void cCpu_Mos_6502::o_Add_With_Carry_ZeroPage() {
 		o__AddWithCarry();
 	}
 
+}
+
+// 68: 
+void cCpu_Mos_6502::o_Pull_Accumulator() {
+	CYCLE(1);
+	CYCLE(2);
+	CYCLE(3)
+		regA = stackPop();
 }
 
 // 69: 

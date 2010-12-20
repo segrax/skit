@@ -41,6 +41,11 @@ void cCpu_Mos_6502::a_Jump_Subroutine() {
 
 }
 
+// 28: 
+void cCpu_Mos_6502::a_Pull_Flags() {
+
+}
+
 // 29: 
 void cCpu_Mos_6502::a_And_Immediate() {
 
@@ -83,6 +88,11 @@ void cCpu_Mos_6502::a_Return_From_Subroutine() {
 
 // 65:
 void cCpu_Mos_6502::a_Add_With_Carry_ZeroPage() {
+
+}
+
+// 68: 
+void cCpu_Mos_6502::a_Pull_Accumulator() {
 
 }
 
