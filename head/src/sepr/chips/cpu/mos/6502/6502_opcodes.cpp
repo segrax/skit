@@ -86,9 +86,11 @@ void cCpu_Mos_6502::opcodesPrepare() {
 
 	OPCODE(0xC4,	o_Compare_Index_Y_ZeroPage,		a_Compare_Index_Y_ZeroPage,		3);
 	OPCODE(0xC5,	o_Compare_Accumulator_ZeroPage,	a_Compare_Accumulator_ZeroPage,	3);
+	OPCODE(0xC6,	o_Decrease_Memory_ZeroPage,		a_Decrease_ZeroPage,			5);
 	OPCODE(0xC8,	o_Increase_Y,					a_Increase_Y,					2);
 	OPCODE(0xC9,	o_Compare_Accumulator_Immediate,a_Compare_Accumulator_Immediate,2);
 	OPCODE(0xCA,	o_Decrease_X,					a_Decrease_X,					2);
+	OPCODE(0xCE,	o_Decrease_Memory_Absolute,		a_Decrease_Memory_Absolute,		6);
 
 	OPCODE(0xD0,	o_Branch_Not_Equal,				a_Branch_Not_Equal,				2);
 	OPCODE(0xD1,	o_Compare_Indirect_Y,			a_Compare_Indirect_Y,			5);
@@ -847,6 +849,21 @@ void cCpu_Mos_6502::o_Compare_Accumulator_ZeroPage() {
 	}
 }
 
+// C6:
+void cCpu_Mos_6502::o_Decrease_Memory_ZeroPage() {
+	CYCLE(1)
+		mTmpWord = mSystem()->busReadByte( regPC++ );
+
+	CYCLE(2)
+		mTmpByte = mSystem()->busReadByte( mTmpWord );
+
+	CYCLE(3)
+		--mTmpByte;
+
+	CYCLE(4)
+		mSystem()->busWriteByte( mTmpWord, mTmpByte );
+}
+
 // C8: 
 void cCpu_Mos_6502::o_Increase_Y() {
 
@@ -877,6 +894,24 @@ void cCpu_Mos_6502::o_Decrease_X() {
 	CYCLE(1)
 		--regX;
 
+}
+
+// CE:
+void cCpu_Mos_6502::o_Decrease_Memory_Absolute() {
+	CYCLE(1)
+		mTmpWord = mSystem()->busReadByte( regPC++ );
+
+	CYCLE(2)
+		mTmpWord |= (mSystem()->busReadByte( regPC++ ) << 8);
+
+	CYCLE(3)
+		mTmpByte = mSystem()->busReadByte( mTmpWord );
+
+	CYCLE(4)
+		--mTmpByte;
+
+	CYCLE(5)
+		mSystem()->busWriteByte( mTmpWord, mTmpByte );
 }
 
 // D0: Branch not Equal

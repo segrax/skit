@@ -281,6 +281,11 @@ void cCpu_Mos_6502::a_Compare_Accumulator_ZeroPage() {
 
 }
 
+// C6:
+void cCpu_Mos_6502::a_Decrease_ZeroPage() {
+
+}
+
 // C8: 
 void cCpu_Mos_6502::a_Increase_Y() {
 

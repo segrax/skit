@@ -119,9 +119,11 @@ protected:
 	void					 o_Load_A_Absolute_X();					// BD: Load A from Absolute_X
 	void					 o_Compare_Index_Y_ZeroPage();			// C4:
 	void					 o_Compare_Accumulator_ZeroPage();		// C5:
+	void					 o_Decrease_Memory_ZeroPage();			// C6:
 	void					 o_Increase_Y();						// C8:
 	void					 o_Compare_Accumulator_Immediate();		// C9: 
 	void					 o_Decrease_X();						// CA: Decrease X
+	void					 o_Decrease_Memory_Absolute();			// CE: 
 	void					 o_Branch_Not_Equal();					// D0: Branch not Equal
 	void					 o_Compare_Indirect_Y();				// D1: 
 	void					 o_Flag_Decimal_Clear();				// D8: Clear Direction
@@ -189,9 +191,11 @@ protected:
 	void					 a_Load_A_Absolute_X();					// BD: Load A from Absolute_X
 	void					 a_Compare_Index_Y_ZeroPage();			// C4:
 	void					 a_Compare_Accumulator_ZeroPage();		// C5:
+	void					 a_Decrease_ZeroPage();					// C6:
 	void					 a_Increase_Y();						// C8: 
 	void					 a_Compare_Accumulator_Immediate();		// C9: 
 	void					 a_Decrease_X();						// CA: Decrease X
+	void					 a_Decrease_Memory_Absolute();			// CE: 
 	void					 a_Branch_Not_Equal();					// D0: Branch not Equal
 	void					 a_Compare_Indirect_Y();				// D1: 
 	void					 a_Flag_Decimal_Clear();				// D8: Clear Direction
