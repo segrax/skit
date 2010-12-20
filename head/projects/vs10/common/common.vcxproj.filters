@@ -5,6 +5,9 @@
       <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
       <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
     </Filter>
+    <Filter Include="Source Files\scale2x">
+      <UniqueIdentifier>{fddeacf2-9de4-4ea9-8b9b-c623e1c45330}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\src\common\file.hpp">
@@ -16,10 +19,28 @@
     <ClInclude Include="..\..\..\src\common\endian.hpp">
       <Filter>Source Files</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\src\common\scale2x\scale2x.hpp">
+      <Filter>Source Files\scale2x</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\common\scale2x\scale3x.hpp">
+      <Filter>Source Files\scale2x</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\common\scale2x\scalebit.hpp">
+      <Filter>Source Files\scale2x</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\src\common\file.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\common\scale2x\scale2x.cpp">
+      <Filter>Source Files\scale2x</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\common\scale2x\scale3x.cpp">
+      <Filter>Source Files\scale2x</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\common\scale2x\scalebit.cpp">
+      <Filter>Source Files\scale2x</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

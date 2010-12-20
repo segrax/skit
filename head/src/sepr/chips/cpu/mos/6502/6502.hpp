@@ -64,11 +64,13 @@ protected:
 	void					 o__AddWithCarry();
 
 	void					 o_Or_Accumulator();					// 09: Or
-	void					 o_Branch_If_Negative_Set();			// 10: 
+	void					 o_Or_Accumulator_Absolute();			// 0D: Or
+	void					 o_Branch_If_Negative_Clear();			// 10: 
 	void					 o_Flag_Carry_Clear();					// 18: 
 	void					 o_Jump_Subroutine();					// 20: Jump Subroutine
 	void					 o_And_Accumulator_Immediate();			// 29: 
 	void					 o_Roll_Accumulator_Left();				// 2A: 
+	void					 o_Branch_If_Negative_Set();			// 30:
 	void					 o_Jump_Absolute();						// 4C: Jump
 	void					 o_Return_From_Subroutine();			// 60: Return From Subroutine
 	void					 o_Add_With_Carry_Immediate();			// 69: 
@@ -92,12 +94,16 @@ protected:
 	void					 o_Load_Index_Y_Immediate();			// A0: Load Y Immediate
 	void					 o_Load_Index_X_Immediate();			// A2: Load X Immediate
 	void					 o_Load_Index_Y_ZeroPage();				// A4: 
+	void					 o_Load_Accumulator_ZeroPage();			// A5: 
+	void					 o_Load_Index_X_ZeroPage();				// A6: 
 	void					 o_Transfer_Accumulator_To_Y();			// A8: 
 	void					 o_Load_Accumulator_Immediate();		// A9:
 	void					 o_Transfer_Accumulator_To_X();			// AA:
 	void					 o_Load_Accumulator_Absolute();			// AD:
 	void					 o_Branch_If_CarrySet();				// B0: 
 	void					 o_Load_Accumulator_Indirect_Y();		// B1: 
+	void					 o_Load_Index_Y_ZeroPage_X();			// B4: 
+	void					 o_Load_Accumulator_ZeroPage_X();		// B5: 
 	void					 o_Load_Accumulator_Absolute_Y();		// B9: 
 	void					 o_Load_A_Absolute_X();					// BD: Load A from Absolute_X
 	void					 o_Increase_Y();						// C8: 
@@ -114,11 +120,13 @@ protected:
 	// Analyse Opcodes
 	void					 a_Nop();
 	void					 a_Or_Accumulator();					// 09: Or
-	void					 a_Branch_If_Negative_Set();			// 10: 
+	void					 a_Or_Accumulator_Absolute();			// 0D: Or				 
+	void					 a_Branch_If_Negative_Clear();			// 10: 
 	void					 a_Flag_Carry_Clear();					// 18: 
 	void					 a_Jump_Subroutine();					// 20: Jump Subroutine
 	void					 a_And_Immediate();						// 29: 
 	void					 a_Roll_Accumulator_Left();				// 2A: 
+	void					 a_Branch_If_Negative_Set();			// 30:
 	void					 a_Jump_Absolute();						// 4C: Jump
 	void					 a_Return_From_Subroutine();			// 60: Return From Subroutine
 	void					 a_Add_With_Carry_Immediate();			// 69: 
@@ -142,12 +150,16 @@ protected:
 	void					 a_Load_Index_Y_Immediate();			// A0: Load Y Immediate
 	void					 a_Load_Index_X_Immediate();			// A2: Load X Immediate
 	void					 a_Load_Index_Y_ZeroPage();				// A4: 
+	void					 a_Load_Accumulator_ZeroPage();			// A5: 
+	void					 a_Load_Index_X_ZeroPage();				// A6:
 	void					 a_Transfer_Accumulator_To_Y();			// A8: 
 	void					 a_Load_Accumulator_Immediate();		// A9: 
 	void					 a_Transfer_Accumulator_To_X();			// AA:
 	void					 a_Load_Accumulator_Absolute();			// AD: 
 	void					 a_Branch_If_CarrySet();				// B0: 
 	void					 a_Load_Accumulator_Indirect_Y();		// B1: 
+	void					 a_Load_Index_Y_ZeroPage_X();			// B4: 
+	void					 a_Load_Accumulator_ZeroPage_X();		// B5: 
 	void					 a_Load_Accumulator_Absolute_Y();		// B9: 
 	void					 a_Load_A_Absolute_X();					// BD: Load A from Absolute_X
 	void					 a_Increase_Y();						// C8: 

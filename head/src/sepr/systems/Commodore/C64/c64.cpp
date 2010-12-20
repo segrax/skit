@@ -8,6 +8,8 @@
 #include "chips/cpu/mos/6502/6502.hpp"
 #include "chips/cpu/mos/6502/6510.hpp"
 #include "systems/system.hpp"
+#include "chips/video/video.hpp"
+#include "chips/video/mos/8567.hpp"
 #include "c64.hpp"
 
 cSystem_Commodore_64::cSystem_Commodore_64( cSepr *pSepr ) : cSystem("Commodore64", pSepr) {
@@ -16,7 +18,10 @@ cSystem_Commodore_64::cSystem_Commodore_64( cSepr *pSepr ) : cSystem("Commodore6
 	mKernal = new cChip_Rom("KERNAL", pSepr, this );
 	mChar	= new cChip_Rom("CHAR", pSepr, this );
 
+	mRam = new cChip_Ram("RAM", mSepr, this, 0x10000);
+
 	mCpu = new cCpu_Mos_6510("CPU", pSepr, this );
+	mVideo = new cVideo_Mos_8567("VIDEO", pSepr, this );
 }
 
 cSystem_Commodore_64::~cSystem_Commodore_64() {
@@ -24,8 +29,6 @@ cSystem_Commodore_64::~cSystem_Commodore_64() {
 }
 
 bool cSystem_Commodore_64::prepare() {
-
-	mRam = new cChip_Ram("RAM", mSepr, this, 0x10000);
 
 	if(!mBasic->loadFile( systemDataPath( "BASIC.ROM" ) ))
 		return false;
@@ -40,11 +43,16 @@ bool cSystem_Commodore_64::prepare() {
 	deviceConnect( mChar,	0xD000, 0x1000 );
 	deviceConnect( mKernal, 0xE000, 0x2000 );
 
-	deviceConnect( mCpu, 0, 2 );
-	deviceConnect( mRam, 0, 0x10000 );
+	deviceConnect( mCpu,	0x0000, 0x0002 );
+	deviceConnect( mRam,	0x0000, 0x10000 );
+
+	deviceConnect( mVideo,  0xD000, 0x0400 );
 
 	mCpu->reset();
 	mCpu->threadStart();
+
+	mVideo->reset();
+	mVideo->threadStart();
 
 	// Force debug mode if compiled as debug build
 #ifdef _DEBUG

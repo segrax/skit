@@ -18,6 +18,8 @@
     <ClInclude Include="..\..\..\src\sepr\chips\memory\rom.hpp" />
     <ClInclude Include="..\..\..\src\sepr\chips\opcode.hpp" />
     <ClInclude Include="..\..\..\src\sepr\chips\register.hpp" />
+    <ClInclude Include="..\..\..\src\sepr\chips\video\mos\8567.hpp" />
+    <ClInclude Include="..\..\..\src\sepr\chips\video\video.hpp" />
     <ClInclude Include="..\..\..\src\sepr\device\device.hpp" />
     <ClInclude Include="..\..\..\src\sepr\device\deviceConnection.hpp" />
     <ClInclude Include="..\..\..\src\sepr\sepr.hpp" />
@@ -34,6 +36,8 @@
     <ClCompile Include="..\..\..\src\sepr\chips\memory\ram.cpp" />
     <ClCompile Include="..\..\..\src\sepr\chips\memory\rom.cpp" />
     <ClCompile Include="..\..\..\src\sepr\chips\register.cpp" />
+    <ClCompile Include="..\..\..\src\sepr\chips\video\mos\8567.cpp" />
+    <ClCompile Include="..\..\..\src\sepr\chips\video\video.cpp" />
     <ClCompile Include="..\..\..\src\sepr\device\device.cpp" />
     <ClCompile Include="..\..\..\src\sepr\sepr.cpp" />
     <ClCompile Include="..\..\..\src\sepr\systems\Commodore\C64\c64.cpp" />

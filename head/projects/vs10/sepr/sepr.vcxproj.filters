@@ -32,6 +32,12 @@
     <Filter Include="Source Files\chips\cpu\mos\6502">
       <UniqueIdentifier>{56b1f203-860f-4a0c-a691-37a1bd938746}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\chips\video">
+      <UniqueIdentifier>{3200d397-eea0-47b8-a50c-a7a7c5651e4a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\chips\video\mos">
+      <UniqueIdentifier>{29adb21d-66e2-458c-ae80-cc9e6e39ccbb}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\src\sepr\device\device.cpp">
@@ -69,6 +75,12 @@
     </ClCompile>
     <ClCompile Include="..\..\..\src\sepr\sepr.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\sepr\chips\video\mos\8567.cpp">
+      <Filter>Source Files\chips\video\mos</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\sepr\chips\video\video.cpp">
+      <Filter>Source Files\chips\video</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -110,6 +122,12 @@
     </ClInclude>
     <ClInclude Include="..\..\..\src\sepr\chips\register.hpp">
       <Filter>Source Files\chips</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\sepr\chips\video\mos\8567.hpp">
+      <Filter>Source Files\chips\video\mos</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\sepr\chips\video\video.hpp">
+      <Filter>Source Files\chips\video</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

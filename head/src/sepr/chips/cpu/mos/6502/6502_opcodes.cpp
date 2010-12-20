@@ -21,14 +21,15 @@ void cCpu_Mos_6502::opcodesPrepare() {
 
 	// Link the opcodes to the opcode/analysis functions
 	OPCODE(0x09,	o_Or_Accumulator,				a_Or_Accumulator,				2);
-	
-	OPCODE(0x10,	o_Branch_If_Negative_Set,		a_Branch_If_Negative_Set,		2);
+	OPCODE(0x0D,	o_Or_Accumulator_Absolute,		a_Or_Accumulator_Absolute,		4);
+	OPCODE(0x10,	o_Branch_If_Negative_Clear,		a_Branch_If_Negative_Clear,		2);
 	OPCODE(0x18,	o_Flag_Carry_Clear,				a_Flag_Carry_Clear,				2);
 
 	OPCODE(0x20,	o_Jump_Subroutine,				a_Jump_Subroutine,				6);
 	OPCODE(0x29,	o_And_Accumulator_Immediate,	a_And_Immediate,				2);
 	OPCODE(0x2A,	o_Roll_Accumulator_Left,		a_Roll_Accumulator_Left,		2);
 
+	OPCODE(0x30,	o_Branch_If_Negative_Set,		a_Branch_If_Negative_Set,		2);
 	OPCODE(0x4C,	o_Jump_Absolute,				a_Jump_Absolute,				3);	
 
 	OPCODE(0x60,	o_Return_From_Subroutine,		a_Return_From_Subroutine,		6);
@@ -57,6 +58,8 @@ void cCpu_Mos_6502::opcodesPrepare() {
 	OPCODE(0xA0,	o_Load_Index_Y_Immediate,		a_Load_Index_Y_Immediate,		2);
 	OPCODE(0xA2,	o_Load_Index_X_Immediate,		a_Load_Index_X_Immediate,		2);
 	OPCODE(0xA4,	o_Load_Index_Y_ZeroPage,		a_Load_Index_Y_ZeroPage,		3);
+	OPCODE(0xA5,	o_Load_Accumulator_ZeroPage,	a_Load_Accumulator_ZeroPage,	3);
+	OPCODE(0xA6,	o_Load_Index_X_ZeroPage,		a_Load_Index_X_ZeroPage,		3);
 	OPCODE(0xA8,	o_Transfer_Accumulator_To_Y,	a_Transfer_Accumulator_To_Y,	2);
 	OPCODE(0xA9,	o_Load_Accumulator_Immediate,	a_Load_Accumulator_Immediate,	2);
 	OPCODE(0xAA,	o_Transfer_Accumulator_To_X,	a_Transfer_Accumulator_To_X,	2);
@@ -64,6 +67,8 @@ void cCpu_Mos_6502::opcodesPrepare() {
 
 	OPCODE(0xB0,	o_Branch_If_CarrySet,			a_Branch_If_CarrySet,			2);
 	OPCODE(0xB1,	o_Load_Accumulator_Indirect_Y,	a_Load_Accumulator_Indirect_Y,	5);
+	OPCODE(0xB4,	o_Load_Index_Y_ZeroPage_X,		a_Load_Index_Y_ZeroPage_X,		4);
+	OPCODE(0xB5,	o_Load_Accumulator_ZeroPage_X,	a_Load_Accumulator_ZeroPage_X,	4);
 	OPCODE(0xB9,	o_Load_Accumulator_Absolute_Y,	a_Load_Accumulator_Absolute_Y,	4);
 	OPCODE(0xBD,	o_Load_A_Absolute_X,			a_Load_A_Absolute_X,			4);
 
@@ -132,12 +137,24 @@ void cCpu_Mos_6502::o_Or_Accumulator() {
 
 }
 
+// 0D: Or
+void cCpu_Mos_6502::o_Or_Accumulator_Absolute() {
+	CYCLE(1)
+		mTmpWord = mSystem()->busReadByte( regPC++ );
+
+	CYCLE(2)
+		mTmpWord |= (mSystem()->busReadByte( regPC++ ) << 8);
+	
+	CYCLE(3)
+		regA |= mSystem()->busReadByte( mTmpWord );
+}
+
 // 10: 
-void cCpu_Mos_6502::o_Branch_If_Negative_Set() {
+void cCpu_Mos_6502::o_Branch_If_Negative_Clear() {
 
 	CYCLE(1) {
 		mTmpByte = mSystem()->busReadByte( regPC++ );
-		if( flagNegative == true )
+		if( flagNegative == false )
 			++mCycles;
 	}
 
@@ -207,6 +224,31 @@ void cCpu_Mos_6502::o_Roll_Accumulator_Left() {
 		if(cf)
 			regA |= 0x01;
 	}
+}
+
+// 30: 
+void cCpu_Mos_6502::o_Branch_If_Negative_Set() {
+	CYCLE(1) {
+		mTmpByte = mSystem()->busReadByte( regPC++ );
+		if( flagNegative == true )
+			++mCycles;
+	}
+
+	CYCLE(2) {
+		mTmpWord = regPC();
+
+		byte highbyte = mTmpWord >> 8;
+		mTmpWord += (char) mTmpByte;
+
+		// Page Crossed?
+		if( highbyte != (mTmpWord >> 8) )
+			++mCycles;
+		else
+			mCycle = 3;
+	}
+
+	CYCLE(3)
+		regPC = mTmpWord;
 }
 
 // 4C: Jump
@@ -472,6 +514,24 @@ void cCpu_Mos_6502::o_Load_Index_Y_ZeroPage() {
 		regY = mSystem()->busReadByte( mTmpByte );
 }
 
+// A5: 
+void cCpu_Mos_6502::o_Load_Accumulator_ZeroPage() {
+	CYCLE(1)
+		mTmpByte = mSystem()->busReadByte( regPC++ );
+
+	CYCLE(2)
+		regA = mSystem()->busReadByte( mTmpByte );
+}
+
+// A6: 
+void cCpu_Mos_6502::o_Load_Index_X_ZeroPage() {
+	CYCLE(1)
+		mTmpByte = mSystem()->busReadByte( regPC++ );
+
+	CYCLE(2)
+		regX = mSystem()->busReadByte( mTmpByte );
+}
+
 // A8:
 void cCpu_Mos_6502::o_Transfer_Accumulator_To_Y() {
 
@@ -557,6 +617,30 @@ void cCpu_Mos_6502::o_Load_Accumulator_Indirect_Y() {
 
 	CYCLE(5)
 		regA = mSystem()->busReadByte( mTmpWord );
+}
+
+// B4: 
+void cCpu_Mos_6502::o_Load_Index_Y_ZeroPage_X() {
+	CYCLE(1)
+		mTmpByte = mSystem()->busReadByte( regPC++ );
+
+	CYCLE(2)
+		mTmpByte += regX();
+
+	CYCLE(3)
+		regY = mSystem()->busReadByte( mTmpByte );
+}
+
+// B5: 
+void cCpu_Mos_6502::o_Load_Accumulator_ZeroPage_X() {
+	CYCLE(1)
+		mTmpByte = mSystem()->busReadByte( regPC++ );
+
+	CYCLE(2)
+		mTmpByte += regX();
+
+	CYCLE(3)
+		regA = mSystem()->busReadByte( mTmpByte );
 }
 
 // B9: 

@@ -13,10 +13,16 @@
   <ItemGroup>
     <ClInclude Include="..\..\..\src\common\endian.hpp" />
     <ClInclude Include="..\..\..\src\common\file.hpp" />
+    <ClInclude Include="..\..\..\src\common\scale2x\scale2x.hpp" />
+    <ClInclude Include="..\..\..\src\common\scale2x\scale3x.hpp" />
+    <ClInclude Include="..\..\..\src\common\scale2x\scalebit.hpp" />
     <ClInclude Include="..\..\..\src\common\types.hpp" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\src\common\file.cpp" />
+    <ClCompile Include="..\..\..\src\common\scale2x\scale2x.cpp" />
+    <ClCompile Include="..\..\..\src\common\scale2x\scale3x.cpp" />
+    <ClCompile Include="..\..\..\src\common\scale2x\scalebit.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{1C0B87DF-0AFD-4A2C-AA95-6D7830206414}</ProjectGuid>

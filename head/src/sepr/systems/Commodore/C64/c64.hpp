@@ -1,12 +1,14 @@
 class cChip_Rom;
 class cChip_Ram;
 class cCpu_Mos_6510;
+class cVideo_Mos_8567;
 
 class cSystem_Commodore_64 : public cSystem {
 private:
 	cChip_Ram					*mRam;
 	cChip_Rom					*mBasic, *mKernal, *mChar;
-	cCpu_Mos_6510			*mCpu;
+	cCpu_Mos_6510				*mCpu;
+	cVideo_Mos_8567				*mVideo;
 
 protected:
 	void						 cycle();

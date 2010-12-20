@@ -12,11 +12,15 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\src\skit\debug.cpp" />
+    <ClCompile Include="..\..\..\src\skit\skit.cpp" />
     <ClCompile Include="..\..\..\src\skit\stdafx.cpp" />
+    <ClCompile Include="..\..\..\src\skit\video\window.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\src\skit\debug.hpp" />
+    <ClInclude Include="..\..\..\src\skit\skit.hpp" />
     <ClInclude Include="..\..\..\src\skit\stdafx.hpp" />
+    <ClInclude Include="..\..\..\src\skit\video\window.hpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{7B0258A3-4E91-4A81-849E-C7145224788D}</ProjectGuid>
@@ -66,7 +70,7 @@
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>sepr.lib;common.lib;pthreadVC2.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>sepr.lib;common.lib;pthreadVC2.lib;opengl32.lib;glu32.lib;sdl.lib;sdlmain.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
