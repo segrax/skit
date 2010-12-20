@@ -29,23 +29,16 @@ cVideo::~cVideo() {
 
 	delete[] mBuffer;
 	delete[] mPalette;
-	delete mWindow;
 }
 
-bool cVideo::windowOpen( ) {
+bool cVideo::windowSet( cVideoWindow *pWindow ) {
 
-	delete mWindow;
-	mWindow = new cVideoWindow( mWidth * mScale, mHeight * mScale, mPixelBytes, mFullScreen );
-	if(!mWindow->isOpen()) 
-		return false;
-
+	mWindow = pWindow;
 	mWindow->titleSet( mSepr->mNameGet() );
 
 	return true;
 }	
 
-void cVideo::mScaleSet( size_t pScale ) {
-	mScale = pScale;
+void cVideo::cycle() {
 
-	windowOpen();
 }

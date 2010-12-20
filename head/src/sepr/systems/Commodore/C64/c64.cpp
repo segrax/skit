@@ -10,6 +10,7 @@
 #include "systems/system.hpp"
 #include "chips/video/video.hpp"
 #include "chips/video/mos/8567.hpp"
+#include "skit/video/window.hpp"
 #include "c64.hpp"
 
 cSystem_Commodore_64::cSystem_Commodore_64( cSepr *pSepr ) : cSystem("Commodore64", pSepr) {
@@ -22,10 +23,15 @@ cSystem_Commodore_64::cSystem_Commodore_64( cSepr *pSepr ) : cSystem("Commodore6
 
 	mCpu = new cCpu_Mos_6510("CPU", pSepr, this );
 	mVideo = new cVideo_Mos_8567("VIDEO", pSepr, this );
+
+	mWindow = new cVideoWindow( 320, 200, 1, false );
+
+	mVideo->windowSet( mWindow );
 }
 
 cSystem_Commodore_64::~cSystem_Commodore_64() {
 
+	delete mWindow;
 }
 
 bool cSystem_Commodore_64::prepare() {
@@ -64,8 +70,8 @@ bool cSystem_Commodore_64::prepare() {
 
 cDevice *cSystem_Commodore_64::deviceIOGet( size_t pAddress, bool pRead ) {
 	// VIC-II
-	//if( pAddress >= 0xD000 && pAddress <= 0xD3FF )
-	//	return mVic;
+	if( pAddress >= 0xD000 && pAddress <= 0xD3FF )
+		return mVideo;
 
 	// SID
 	if( pAddress >= 0xD400 && pAddress <= 0xD7FF )
@@ -135,12 +141,15 @@ cDevice	*cSystem_Commodore_64::deviceGet( size_t pAddress, bool pRead ) {
 
 void cSystem_Commodore_64::cycle() {
 
+	cSystem::cycle();
+
 	while( mCpu->mCyclesRemainingGet() != 0 ) {
 		Sleep(mSleepTime);
 	}
 
 	size_t count = mCyclesRemaining;
 
+	mVideo->mCyclesRemainingAdd(count);
 	mCpu->mCyclesRemainingAdd(count);
 
 	mCycle = count;

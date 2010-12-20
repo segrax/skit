@@ -20,6 +20,7 @@ protected:
 	size_t								 mCycle;											// Cycle Count
 	size_t								 mCycles;											// Cycles to be executed for this instruction
 	size_t								 mCyclesTotal;										// Total Cycle Count
+
 	size_t								 mSleepTime;										// Sleep Time between thread() loops, milliseconds
 
 	cSepr								*mSepr;

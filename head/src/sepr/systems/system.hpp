@@ -4,6 +4,9 @@ class cSystem : public cDevice {
 private:
 	cDebug					*mDebug;
 
+protected:
+	virtual void			 cycle();
+
 public:
 							 cSystem( std::string pName, cSepr *pSepr );
 							~cSystem();

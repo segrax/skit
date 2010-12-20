@@ -2,6 +2,7 @@ class cChip_Rom;
 class cChip_Ram;
 class cCpu_Mos_6510;
 class cVideo_Mos_8567;
+class cVideoWindow;
 
 class cSystem_Commodore_64 : public cSystem {
 private:
@@ -9,6 +10,7 @@ private:
 	cChip_Rom					*mBasic, *mKernal, *mChar;
 	cCpu_Mos_6510				*mCpu;
 	cVideo_Mos_8567				*mVideo;
+	cVideoWindow				*mWindow;
 
 protected:
 	void						 cycle();

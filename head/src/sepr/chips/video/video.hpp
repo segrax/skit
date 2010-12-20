@@ -1,4 +1,3 @@
-#include <SDL.h>
 #include "common/scale2x/scalebit.hpp"
 
 class cVideoWindow;
@@ -16,9 +15,7 @@ protected:
 	cVideoWindow			*mWindow;
 
 protected:
-	virtual void			 cycle() = 0;
-
-	virtual bool			 windowOpen();
+	virtual void			 cycle();
 
 public:
 							 cVideo( std::string pName, cSepr *pSepr, cDevice *pParent, size_t pWidth, size_t pHeight, size_t pBytesPerPixel );
@@ -26,8 +23,9 @@ public:
 	
 	virtual void			 paletteLoad() = 0;
 	
-	void					 mScaleSet( size_t pScale );
+	void					 mScaleSet( size_t pScale ) { mScale = pScale; }
 
 	SDL_Surface				*surfaceGet();
-
+	
+	bool					 windowSet( cVideoWindow *pWindow );
 };

@@ -56,6 +56,11 @@ void cCpu_Mos_6502::a_Jump_Absolute() {
 
 }
 
+// 58: 
+void cCpu_Mos_6502::o_Flag_Interrupt_Clear() {
+
+}
+
 // 60: Return From Subroutine
 void cCpu_Mos_6502::a_Return_From_Subroutine() {
 

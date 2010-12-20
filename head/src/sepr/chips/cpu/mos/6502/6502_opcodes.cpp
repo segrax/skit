@@ -30,7 +30,10 @@ void cCpu_Mos_6502::opcodesPrepare() {
 	OPCODE(0x2A,	o_Roll_Accumulator_Left,		a_Roll_Accumulator_Left,		2);
 
 	OPCODE(0x30,	o_Branch_If_Negative_Set,		a_Branch_If_Negative_Set,		2);
+	
 	OPCODE(0x4C,	o_Jump_Absolute,				a_Jump_Absolute,				3);	
+
+	OPCODE(0x58,	o_Flag_Interrupt_Clear,			a_Flag_Interrupt_Clear,			2);
 
 	OPCODE(0x60,	o_Return_From_Subroutine,		a_Return_From_Subroutine,		6);
 	OPCODE(0x69,	o_Add_With_Carry_Immediate,		a_Add_With_Carry_Immediate,		2);
@@ -260,6 +263,14 @@ void cCpu_Mos_6502::o_Jump_Absolute() {
 		mTmpWord |= (mSystem()->busReadByte( regPC++ ) << 8);
 		regPC = mTmpWord;
 	}
+}
+
+// 58: 
+void cCpu_Mos_6502::o_Flag_Interrupt_Clear() {
+	
+	CYCLE(1)
+		flagInterrupt = false;
+
 }
 
 // 60: Return From Subroutine

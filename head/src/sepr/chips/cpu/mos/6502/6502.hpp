@@ -72,6 +72,7 @@ protected:
 	void					 o_Roll_Accumulator_Left();				// 2A: 
 	void					 o_Branch_If_Negative_Set();			// 30:
 	void					 o_Jump_Absolute();						// 4C: Jump
+	void					 o_Flag_Interrupt_Clear();				// 58: 
 	void					 o_Return_From_Subroutine();			// 60: Return From Subroutine
 	void					 o_Add_With_Carry_Immediate();			// 69: 
 	void					 o_Flag_Interrupt_Disable_Set();		// 78: Set Interrupt Disable
@@ -128,6 +129,7 @@ protected:
 	void					 a_Roll_Accumulator_Left();				// 2A: 
 	void					 a_Branch_If_Negative_Set();			// 30:
 	void					 a_Jump_Absolute();						// 4C: Jump
+	void					 a_Flag_Interrupt_Clear();				// 58: 
 	void					 a_Return_From_Subroutine();			// 60: Return From Subroutine
 	void					 a_Add_With_Carry_Immediate();			// 69: 
 	void					 a_Flag_Interrupt_Disable_Set();		// 78: Set Interrupt Disable

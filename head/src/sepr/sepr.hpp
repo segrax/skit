@@ -16,6 +16,8 @@
 
 #include "skit/debug.hpp"
 
+#include <SDL.h>
+
 class cSystem;
 
 class cSepr {
@@ -23,11 +25,14 @@ private:
 	std::string					 mName;
 	cSystem						*mSystem;
 	
-
 public:
 								 cSepr( std::string pName );
 								~cSepr();
 
 	bool						 systemPrepare();
+
 	cSystem						*mSystemGet() { return mSystem; }
+	inline std::string			 mNameGet()	  { return mName; }
+
+	
 };
