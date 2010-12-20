@@ -77,7 +77,9 @@ protected:
 	void					 o_Roll_Accumulator_Left();				// 2A: 
 	void					 o_Branch_If_Negative_Set();			// 30:
 	void					 o_Flag_Carry_Set();					// 38: 
+	void					 o_Logical_Shift_Right_ZeroPage();		// 46: 
 	void					 o_Push_Accumulator();					// 48:
+	void					 o_Exclusive_Or();						// 49: 
 	void					 o_Jump_Absolute();						// 4C: Jump
 	void					 o_Logical_Shift_Right_ZeroPage_X();	// 56: 
 	void					 o_Flag_Interrupt_Clear();				// 58: 
@@ -132,6 +134,7 @@ protected:
 	void					 o_Flag_Decimal_Clear();				// D8: Clear Direction
 	void					 o_Compare_Absolute_X();				// DD: Compare
 	void					 o_Compare_Index_X_Immediate();			// E0: 
+	void					 o_Subtract_With_Carry_ZeroPage();		// E5:
 	void					 o_Increment_Memory_ZeroPage();			// E6: 
 	void					 o_Increase_X();						// E8: 
 	void					 o_Subtract_With_Carry_Immediate();		// E9:
@@ -152,7 +155,9 @@ protected:
 	void					 a_Roll_Accumulator_Left();				// 2A: 
 	void					 a_Branch_If_Negative_Set();			// 30:
 	void					 a_Flag_Carry_Set();					// 38: 
+	void					 a_Logical_Shift_Right_ZeroPage();		// 46: 
 	void					 a_Push_Accumulator();					// 48:
+	void					 a_Exclusive_Or();						// 49: 
 	void					 a_Jump_Absolute();						// 4C: Jump
 	void					 a_Logical_Shift_Right_ZeroPage_X();	// 56: 
 	void					 a_Flag_Interrupt_Clear();				// 58: 
@@ -207,6 +212,7 @@ protected:
 	void					 a_Flag_Decimal_Clear();				// D8: Clear Direction
 	void					 a_Compare_Absolute_X();				// DD: Compare
 	void					 a_Compare_Index_X_Immediate();			// E0: 
+	void					 a_Subtract_With_Carry_ZeroPage();		// E5:
 	void					 a_Increment_Memory_ZeroPage();			// E6: 
 	void					 a_Increase_X();						// E8: 
 	void					 a_Subtract_With_Carry_Immediate();		// E9:

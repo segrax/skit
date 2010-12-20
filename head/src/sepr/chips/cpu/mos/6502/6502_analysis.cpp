@@ -71,8 +71,18 @@ void cCpu_Mos_6502::a_Flag_Carry_Set() {
 
 }
 
+// 46: 
+void cCpu_Mos_6502::a_Logical_Shift_Right_ZeroPage() {
+
+}
+
 // 48: 
 void cCpu_Mos_6502::a_Push_Accumulator() {
+
+}
+
+// 49
+void cCpu_Mos_6502::a_Exclusive_Or() {
 
 }
 
@@ -338,6 +348,11 @@ void cCpu_Mos_6502::a_Compare_Absolute_X() {
 
 // E0:
 void cCpu_Mos_6502::a_Compare_Index_X_Immediate() {
+
+}
+
+// E5:
+void cCpu_Mos_6502::a_Subtract_With_Carry_ZeroPage() {
 
 }
 

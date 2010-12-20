@@ -36,7 +36,9 @@ void cCpu_Mos_6502::opcodesPrepare() {
 	OPCODE(0x30,	o_Branch_If_Negative_Set,		a_Branch_If_Negative_Set,		2);
 	OPCODE(0x38,	o_Flag_Carry_Set,				a_Flag_Carry_Set,				2);
 
+	OPCODE(0x46,	o_Logical_Shift_Right_ZeroPage,	a_Logical_Shift_Right_ZeroPage, 5);
 	OPCODE(0x48,	o_Push_Accumulator,				a_Push_Accumulator,				3);
+	OPCODE(0x49,	o_Exclusive_Or,					a_Exclusive_Or,					2);
 	OPCODE(0x4C,	o_Jump_Absolute,				a_Jump_Absolute,				3);	
 
 	OPCODE(0x56,	o_Logical_Shift_Right_ZeroPage_X,a_Logical_Shift_Right_ZeroPage_X, 6);
@@ -101,6 +103,7 @@ void cCpu_Mos_6502::opcodesPrepare() {
 	OPCODE(0xDD,	o_Compare_Absolute_X,			a_Compare_Absolute_X,			4);
 
 	OPCODE(0xE0,	o_Compare_Index_X_Immediate,	a_Compare_Index_X_Immediate,	2);
+	OPCODE(0xE5,	o_Subtract_With_Carry_ZeroPage,	a_Subtract_With_Carry_ZeroPage,	3);
 	OPCODE(0xE6,	o_Increment_Memory_ZeroPage,	a_Increment_Memory_ZeroPage,	5);
 	OPCODE(0xE8,	o_Increase_X,					a_Increase_X,					2);
 	OPCODE(0xE9,	o_Subtract_With_Carry_Immediate,a_Subtract_With_Carry_Immediate,2);
@@ -322,10 +325,38 @@ void cCpu_Mos_6502::o_Flag_Carry_Set() {
 		flagCarry = true;
 }
 
+// 46: 
+void cCpu_Mos_6502::o_Logical_Shift_Right_ZeroPage() {
+	CYCLE(1)
+		mTmpWord = mSystem()->busReadByte( regPC++ );
+
+	CYCLE(2)
+		mTmpByte = mSystem()->busReadByte( mTmpWord );
+
+	CYCLE(3) {
+		flagCarry = ((mTmpByte & 0x01) ? true : false);
+		mTmpByte >>= 1;
+		registerFlagSet(mTmpByte);
+	}
+
+	CYCLE(4)
+		mSystem()->busWriteByte( mTmpWord, mTmpByte );
+}
+
 // 48: 
 void cCpu_Mos_6502::o_Push_Accumulator() {
 	CYCLE(2)
 		stackPush( regA());
+
+}
+
+// 49: 
+void cCpu_Mos_6502::o_Exclusive_Or() {
+	CYCLE(1) {
+		mTmpByte = mSystem()->busReadByte( regPC++ );
+
+		regA ^= mTmpByte;
+	}
 
 }
 
@@ -1101,6 +1132,18 @@ void cCpu_Mos_6502::o_Compare_Index_X_Immediate() {
 		mTmpByte = regX();
 		mTmpByte -= mTmpWord;
 		registerFlagSet( mTmpByte );
+	}
+}
+
+// E5:
+void cCpu_Mos_6502::o_Subtract_With_Carry_ZeroPage() {
+	CYCLE(1)
+		mTmpWord = mSystem()->busReadByte( regPC++ );
+
+	CYCLE(2) {
+		mTmpByte = mSystem()->busReadByte( mTmpWord );
+
+		o__SubWithCarry();
 	}
 }
 

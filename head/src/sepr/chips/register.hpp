@@ -75,9 +75,8 @@ public:
 		inline tSize	 operator&=(tSize pVal)		{ mData &= pVal; flagSet(); return mData; }
 		inline tSize	 operator|=(tSize pVal)		{ mData |= pVal; flagSet(); return mData; }
 
-		inline tSize	 operator>=(tSize pVal)		{	return cmpSet( mData ); }
-		
-		inline tSize	 operator<<=(tSize pVal)	{	return (mData <<= pVal); }
+		inline tSize	 operator^=(tSize pVal)		{ mData ^= pVal; flagSet(); return mData; }
+		inline tSize	 operator<<=(tSize pVal)	{ mData <<= pVal; flagSet();return mData; }
 
 		virtual std::string	 debug_CPU_Info_String() {
 			size_t				value = mData;
