@@ -19,10 +19,12 @@ cSystem_Commodore_64::cSystem_Commodore_64( cSepr *pSepr ) : cSystem("Commodore6
 	mKernal = new cChip_Rom("KERNAL", pSepr, this );
 	mChar	= new cChip_Rom("CHAR", pSepr, this );
 
-	mRam = new cChip_Ram("RAM", mSepr, this, 0x10000);
+	mRam = new cChip_Ram("RAM", pSepr, this, 0x10000);
 
 	mCpu = new cCpu_Mos_6510("CPU", pSepr, this );
 	mVideo = new cVideo_Mos_8567("VIDEO", pSepr, this );
+
+	mRamColor = new cChip_Ram("COLOR", pSepr, this, 0x400);
 
 	mWindow = new cVideoWindow( 320, 200, 1, false );
 
@@ -45,14 +47,15 @@ bool cSystem_Commodore_64::prepare() {
 	if(!mChar->loadFile( systemDataPath( "CHAR.ROM") ))
 		return false;
 
-	deviceConnect( mBasic,	0xA000, 0x2000 );
-	deviceConnect( mChar,	0xD000, 0x1000 );
-	deviceConnect( mKernal, 0xE000, 0x2000 );
+	deviceConnect( mBasic,		0xA000, 0x2000 );
+	deviceConnect( mChar,		0xD000, 0x1000 );
+	deviceConnect( mKernal,		0xE000, 0x2000 );
 
-	deviceConnect( mCpu,	0x0000, 0x0002 );
-	deviceConnect( mRam,	0x0000, 0x10000 );
+	deviceConnect( mCpu,		0x0000, 0x0002 );
+	deviceConnect( mRam,		0x0000, 0x10000 );
+	deviceConnect( mRamColor,	0xD800, 0x400 );
 
-	deviceConnect( mVideo,  0xD000, 0x0400 );
+	deviceConnect( mVideo,		0xD000, 0x0400 );
 
 	mCpu->reset();
 	mCpu->threadStart();
@@ -89,7 +92,7 @@ cDevice *cSystem_Commodore_64::deviceIOGet( size_t pAddress, bool pRead ) {
 
 	// Color Ram
 	if( pAddress >= 0xD800 && pAddress <= 0xDBFF )
-		;
+		return mRamColor;
 
 	// CIA 1
 	//if( pAddress >= 0xDC00 && pAddress <= 0xDCFF )
@@ -165,10 +168,20 @@ void cSystem_Commodore_64::cycle() {
 	mCycle = count;
 }
 
+word cSystem_Commodore_64::deviceReadWord( cVideo_Mos_8567 *pVic, size_t pAddress ) {
+	word ret = busVicGet( pAddress, true )->busReadByte( pAddress );
+
+	byte color = mRamColor->busReadByte( pAddress & 0x3FF );
+
+	ret &= 0xF0;
+	ret |= (color << 8) & 0xF00;
+
+	return ret;
+}
+
 byte cSystem_Commodore_64::deviceReadByte( cDevice *pFromDevice, size_t pAddress ) {
 
 	if( pFromDevice->mNameGet() == "VIDEO" ) {
-
 		return busVicGet( pAddress, true )->busReadByte( pAddress );
 	}
 

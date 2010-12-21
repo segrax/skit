@@ -11,6 +11,16 @@ void cCpu_Mos_6502::a_Nop() {
 
 }
 
+// 05:
+void cCpu_Mos_6502::a_Or_Accumulator_ZeroPage() {
+
+}
+
+// 06: 
+void cCpu_Mos_6502::a_Arith_Shift_Left_ZeroPage() {
+
+}
+
 // 08: 
 void cCpu_Mos_6502::a_Push_Flags() {
 
@@ -46,6 +56,11 @@ void cCpu_Mos_6502::a_Jump_Subroutine() {
 
 }
 
+// 24: 
+void cCpu_Mos_6502::a_Bit_ZeroPage() {
+	
+}
+
 // 28: 
 void cCpu_Mos_6502::a_Pull_Flags() {
 
@@ -68,6 +83,11 @@ void cCpu_Mos_6502::a_Branch_If_Negative_Set() {
 
 // 38: 
 void cCpu_Mos_6502::a_Flag_Carry_Set() {
+
+}
+
+// 45:
+void cCpu_Mos_6502::a_Exclusive_Or_ZeroPage() {
 
 }
 
@@ -111,6 +131,11 @@ void cCpu_Mos_6502::a_Add_With_Carry_ZeroPage() {
 
 }
 
+// 66:
+void cCpu_Mos_6502::a_Rotate_Right_ZeroPage() {
+
+}
+
 // 68: 
 void cCpu_Mos_6502::a_Pull_Accumulator() {
 
@@ -121,13 +146,28 @@ void cCpu_Mos_6502::a_Add_With_Carry_Immediate() {
 
 }
 
+// 6A: 
+void cCpu_Mos_6502::a_Rotate_Right_Accumulator() {
+
+}
+
 // 6C:
 void cCpu_Mos_6502::a_Jump_Indirect() {
 
 }
 
+// 76: 
+void cCpu_Mos_6502::a_Rotate_Right_ZeroPage_X() {
+
+}
+
 // 78: Disable Interrupt Flag
 void cCpu_Mos_6502::a_Flag_Interrupt_Disable_Set() {
+
+}
+
+// 79: 
+void cCpu_Mos_6502::a_Add_With_Carry_Absolute_Y() {
 
 }
 
@@ -291,6 +331,11 @@ void cCpu_Mos_6502::a_Load_A_Absolute_X() {
 
 }
 
+// C0:
+void cCpu_Mos_6502::a_Compare_Index_Y_Immediate() {
+
+}
+
 // C4:
 void cCpu_Mos_6502::a_Compare_Index_Y_ZeroPage() {
 
@@ -348,6 +393,11 @@ void cCpu_Mos_6502::a_Compare_Absolute_X() {
 
 // E0:
 void cCpu_Mos_6502::a_Compare_Index_X_Immediate() {
+
+}
+
+// E4:
+void cCpu_Mos_6502::a_Compare_Index_X_ZeroPage() {
 
 }
 

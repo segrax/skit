@@ -38,6 +38,7 @@ bool cSkit::systemStart( std::string pSystemName ) {
 
 		SDL_PollEvent( &mEvent );
 
+		mSystem->mWindowGet()->clear(0);
 		mSystem->mWindowGet()->blit( mSystem->videoGet(), 0, 0 );
 
 

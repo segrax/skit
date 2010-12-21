@@ -62,8 +62,8 @@ void cCpu_Mos_6502::cycle() {
 
 	// No Instruction, lets fetch one, or use a pre-fetched one
 	if( !mOpcodeCurrent ) {
-		if(regPC() == 0xb6ae )
-			mDebug = true;
+		//if(regPC() == 0xb6ae )
+		//	mDebug = true;
 
 		byte op = mTmpOpcode;
 
@@ -144,6 +144,23 @@ void cCpu_Mos_6502::registersPrepare() {
 
 	// Set the registers to default values
 	(*mFlagReserved) = true;
+}
+
+void cCpu_Mos_6502::o__Bit() {
+	byte		flags	= regFL.value();
+
+	mTmpWord			= mTmpByte & regA();
+
+	// Clear flags
+	flags &= ~(flagZERO | flagOVERFLOW | flagNEGATIVE);
+	
+	flags |= (mTmpByte & (flagOVERFLOW | flagNEGATIVE));
+
+	regFL.valueSet(flags);
+	if( mTmpWord )
+		flagZero = false;
+	else
+		flagZero = true;
 }
 
 void cCpu_Mos_6502::o__AddWithCarry() {

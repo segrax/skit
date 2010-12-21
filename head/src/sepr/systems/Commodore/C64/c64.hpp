@@ -6,7 +6,7 @@ class cVideoWindow;
 
 class cSystem_Commodore_64 : public cSystem {
 private:
-	cChip_Ram					*mRam;
+	cChip_Ram					*mRam,	 *mRamColor;
 	cChip_Rom					*mBasic, *mKernal, *mChar;
 	cCpu_Mos_6510				*mCpu;
 	cVideo_Mos_8567				*mVideo;
@@ -19,7 +19,9 @@ public:
 								 cSystem_Commodore_64( cSepr *pSepr );
 								~cSystem_Commodore_64();
 
+	virtual word				 deviceReadWord( cVideo_Mos_8567 *pVic, size_t pAddress ) ;
 	virtual byte				 deviceReadByte( cDevice *pFromDevice, size_t pAddress );
+
 	virtual byte				 busReadByte( size_t pAddress );
 	virtual word				 busReadWordLE( size_t pAddress );
 	virtual void				 busWriteByte( size_t pAddress, byte pData );

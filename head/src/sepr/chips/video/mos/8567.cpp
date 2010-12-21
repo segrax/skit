@@ -6,7 +6,7 @@
 #include "systems/system.hpp"
 #include "systems/Commodore/C64/c64.hpp"
 
-cVideo_Mos_8567::cVideo_Mos_8567( std::string pName, cSepr *pSepr, cDevice *pParent ) : cVideo(pName, pSepr, pParent, 505, 313, 1 ) {
+cVideo_Mos_8567::cVideo_Mos_8567( std::string pName, cSepr *pSepr, cDevice *pParent ) : cVideo(pName, pSepr, pParent, 504, 313, 1 ) {
 	
 	mScaleSet(2);
 	paletteLoad();
@@ -355,25 +355,34 @@ void cVideo_Mos_8567::busWriteByte( size_t pAddress, byte pData ) {
 }
 
 void cVideo_Mos_8567::decode_StandardText() {
-	byte	color = mRegBackgroundColor[0];
 	dword	data;
 	size_t	X = mRegRowCounter * 8;
+	cSystem_Commodore_64	*system = mSystem<cSystem_Commodore_64>();
 
 	// Read char pointer from video
-	data = mSystem<cSystem_Commodore_64>()->deviceReadByte( this, mVidSrc ) << 3;
+	data = system->deviceReadByte( this, mVidSrc ) << 3;
 	mVidSrc++;
 
 	// Get memory address in char rom
 	mVidChar = mVidBaseChar + data;
 
 	// Read char row
-	data = mSystem()->busReadByte( mVidChar + (mRegRasterY % 8) );
-		
+	data = system->deviceReadByte( this, mVidChar + (mRegRasterY % 8) );
+	
+	word colorP = ((mRegMemoryPtrs & 0xF0)<< 4) + (mRegRasterY * mWidth) + X;
+
+	mBufferPtr = mBuffer + ((mRegRasterY * mPixelBytes) * mWidth) + (X * mPixelBytes);
+
 	// Lets draw 8 bits
 	for( size_t bit = 0; bit < 8; bit++, ++mBufferPtr ) {
+		word col = system->deviceReadWord( this, colorP++ );
 
 		if( data & 0x80 )
+			*mBufferPtr = (col >> 8) & 0x0f;
+		else
 			*mBufferPtr = mRegBackgroundColor[0];
+
+		data <<= 1;
 	}
 		
 	mRegRowCounter++;

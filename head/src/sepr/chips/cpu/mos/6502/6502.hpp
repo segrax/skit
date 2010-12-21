@@ -62,9 +62,12 @@ protected:
 
 	// Opcodes
 	void					 o_Nop();
+	void					 o__Bit();
 	void					 o__AddWithCarry();
 	void					 o__SubWithCarry();
 
+	void					 o_Or_Accumulator_ZeroPage();			// 05:
+	void					 o_Arith_Shift_Left_ZeroPage();			// 06:
 	void					 o_Push_Flags();						// 08: 
 	void					 o_Or_Accumulator();					// 09: Or
 	void					 o_Or_Accumulator_Absolute();			// 0D: Or
@@ -72,11 +75,13 @@ protected:
 	void					 o_Arith_Shift_Left_ZeroPage_X();		// 16:
 	void					 o_Flag_Carry_Clear();					// 18: 
 	void					 o_Jump_Subroutine();					// 20: Jump Subroutine
+	void					 o_Bit_ZeroPage();						// 24: 
 	void					 o_Pull_Flags();						// 28: 
 	void					 o_And_Accumulator_Immediate();			// 29: 
 	void					 o_Roll_Accumulator_Left();				// 2A: 
 	void					 o_Branch_If_Negative_Set();			// 30:
 	void					 o_Flag_Carry_Set();					// 38: 
+	void					 o_Exclusive_Or_ZeroPage();				// 45:
 	void					 o_Logical_Shift_Right_ZeroPage();		// 46: 
 	void					 o_Push_Accumulator();					// 48:
 	void					 o_Exclusive_Or();						// 49: 
@@ -85,10 +90,14 @@ protected:
 	void					 o_Flag_Interrupt_Clear();				// 58: 
 	void					 o_Return_From_Subroutine();			// 60: Return From Subroutine
 	void					 o_Add_With_Carry_ZeroPage();			// 65:
+	void 					 o_Rotate_Right_ZeroPage();				// 66: 
 	void					 o_Pull_Accumulator();					// 68: 
 	void					 o_Add_With_Carry_Immediate();			// 69: 
+	void					 o_Rotate_Right_Accumulator();			// 6A: 
 	void					 o_Jump_Indirect();						// 6C: 
+	void					 o_Rotate_Right_ZeroPage_X();			// 76: 
 	void					 o_Flag_Interrupt_Disable_Set();		// 78: Set Interrupt Disable
+	void					 o_Add_With_Carry_Absolute_Y();			// 79: 
 	void					 o_Store_Index_Y_ZeroPage();			// 84:
 	void					 o_Store_Accumulator_ZeroPage();		// 85: 
 	void					 o_Store_Index_X_ZeroPage();			// 86: 
@@ -122,6 +131,7 @@ protected:
 	void					 o_Load_Accumulator_ZeroPage_X();		// B5: 
 	void					 o_Load_Accumulator_Absolute_Y();		// B9: 
 	void					 o_Load_A_Absolute_X();					// BD: Load A from Absolute_X
+	void					 o_Compare_Index_Y_Immediate();			// C0:
 	void					 o_Compare_Index_Y_ZeroPage();			// C4:
 	void					 o_Compare_Accumulator_ZeroPage();		// C5:
 	void					 o_Decrease_Memory_ZeroPage();			// C6:
@@ -134,6 +144,7 @@ protected:
 	void					 o_Flag_Decimal_Clear();				// D8: Clear Direction
 	void					 o_Compare_Absolute_X();				// DD: Compare
 	void					 o_Compare_Index_X_Immediate();			// E0: 
+	void					 o_Compare_Index_X_ZeroPage();			// E4:
 	void					 o_Subtract_With_Carry_ZeroPage();		// E5:
 	void					 o_Increment_Memory_ZeroPage();			// E6: 
 	void					 o_Increase_X();						// E8: 
@@ -143,6 +154,8 @@ protected:
 
 	// Analyse Opcodes
 	void					 a_Nop();
+	void					 a_Or_Accumulator_ZeroPage();			// 05:
+	void					 a_Arith_Shift_Left_ZeroPage();			// 06: 
 	void					 a_Push_Flags();						// 08: 
 	void					 a_Or_Accumulator();					// 09: Or
 	void					 a_Or_Accumulator_Absolute();			// 0D: Or				 
@@ -150,11 +163,13 @@ protected:
 	void					 a_Arith_Shift_Left_ZeroPage_X();		// 16:
 	void					 a_Flag_Carry_Clear();					// 18: 
 	void					 a_Jump_Subroutine();					// 20: Jump Subroutine
+	void					 a_Bit_ZeroPage();						// 24:
 	void					 a_Pull_Flags();						// 28: 
 	void					 a_And_Immediate();						// 29: 
 	void					 a_Roll_Accumulator_Left();				// 2A: 
 	void					 a_Branch_If_Negative_Set();			// 30:
 	void					 a_Flag_Carry_Set();					// 38: 
+	void					 a_Exclusive_Or_ZeroPage();				// 45:
 	void					 a_Logical_Shift_Right_ZeroPage();		// 46: 
 	void					 a_Push_Accumulator();					// 48:
 	void					 a_Exclusive_Or();						// 49: 
@@ -163,10 +178,14 @@ protected:
 	void					 a_Flag_Interrupt_Clear();				// 58: 
 	void					 a_Return_From_Subroutine();			// 60: Return From Subroutine
 	void					 a_Add_With_Carry_ZeroPage();			// 65:
+	void 					 a_Rotate_Right_ZeroPage();				// 66: 
 	void					 a_Pull_Accumulator();					// 68: 
 	void					 a_Add_With_Carry_Immediate();			// 69: 
+	void					 a_Rotate_Right_Accumulator();			// 6A: 
 	void					 a_Jump_Indirect();						// 6C:
+	void					 a_Rotate_Right_ZeroPage_X();			// 76: 
 	void					 a_Flag_Interrupt_Disable_Set();		// 78: Set Interrupt Disable
+	void					 a_Add_With_Carry_Absolute_Y();			// 79: 
 	void					 a_Store_Index_Y_ZeroPage();			// 84:
 	void					 a_Store_Accumulator_ZeroPage();		// 85: 
 	void					 a_Store_Index_X_ZeroPage();			// 86: 
@@ -200,6 +219,7 @@ protected:
 	void					 a_Load_Accumulator_ZeroPage_X();		// B5: 
 	void					 a_Load_Accumulator_Absolute_Y();		// B9: 
 	void					 a_Load_A_Absolute_X();					// BD: Load A from Absolute_X
+	void					 a_Compare_Index_Y_Immediate();			// C0:
 	void					 a_Compare_Index_Y_ZeroPage();			// C4:
 	void					 a_Compare_Accumulator_ZeroPage();		// C5:
 	void					 a_Decrease_ZeroPage();					// C6:
@@ -212,6 +232,7 @@ protected:
 	void					 a_Flag_Decimal_Clear();				// D8: Clear Direction
 	void					 a_Compare_Absolute_X();				// DD: Compare
 	void					 a_Compare_Index_X_Immediate();			// E0: 
+	void					 a_Compare_Index_X_ZeroPage();			// E4:
 	void					 a_Subtract_With_Carry_ZeroPage();		// E5:
 	void					 a_Increment_Memory_ZeroPage();			// E6: 
 	void					 a_Increase_X();						// E8: 

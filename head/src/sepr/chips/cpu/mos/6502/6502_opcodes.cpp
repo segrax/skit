@@ -20,6 +20,8 @@ void cCpu_Mos_6502::opcodesPrepare() {
 	mOpcodes = new cChip_Opcode[0x100];
 
 	// Link the opcodes to the opcode/analysis functions
+	OPCODE(0x05,	o_Or_Accumulator_ZeroPage,		o_Or_Accumulator_ZeroPage,		3);
+	OPCODE(0x06,	o_Arith_Shift_Left_ZeroPage,	a_Arith_Shift_Left_ZeroPage,	5);
 	OPCODE(0x08,	o_Push_Flags,					a_Push_Flags,					3);
 	OPCODE(0x09,	o_Or_Accumulator,				a_Or_Accumulator,				2);
 	OPCODE(0x0D,	o_Or_Accumulator_Absolute,		a_Or_Accumulator_Absolute,		4);
@@ -29,6 +31,7 @@ void cCpu_Mos_6502::opcodesPrepare() {
 	OPCODE(0x18,	o_Flag_Carry_Clear,				a_Flag_Carry_Clear,				2);
 
 	OPCODE(0x20,	o_Jump_Subroutine,				a_Jump_Subroutine,				6);
+	OPCODE(0x24,	o_Bit_ZeroPage,					a_Bit_ZeroPage,					3);
 	OPCODE(0x28,	o_Pull_Flags,					a_Pull_Flags,					4);
 	OPCODE(0x29,	o_And_Accumulator_Immediate,	a_And_Immediate,				2);
 	OPCODE(0x2A,	o_Roll_Accumulator_Left,		a_Roll_Accumulator_Left,		2);
@@ -36,6 +39,7 @@ void cCpu_Mos_6502::opcodesPrepare() {
 	OPCODE(0x30,	o_Branch_If_Negative_Set,		a_Branch_If_Negative_Set,		2);
 	OPCODE(0x38,	o_Flag_Carry_Set,				a_Flag_Carry_Set,				2);
 
+	OPCODE(0x45,	o_Exclusive_Or_ZeroPage,		a_Exclusive_Or_ZeroPage,		3);
 	OPCODE(0x46,	o_Logical_Shift_Right_ZeroPage,	a_Logical_Shift_Right_ZeroPage, 5);
 	OPCODE(0x48,	o_Push_Accumulator,				a_Push_Accumulator,				3);
 	OPCODE(0x49,	o_Exclusive_Or,					a_Exclusive_Or,					2);
@@ -46,12 +50,15 @@ void cCpu_Mos_6502::opcodesPrepare() {
 
 	OPCODE(0x60,	o_Return_From_Subroutine,		a_Return_From_Subroutine,		6);
 	OPCODE(0x65,	o_Add_With_Carry_ZeroPage,		a_Add_With_Carry_ZeroPage,		3);
+	OPCODE(0x66,	o_Rotate_Right_ZeroPage,		a_Rotate_Right_ZeroPage,		5);
 	OPCODE(0x68,	o_Pull_Accumulator,				a_Pull_Accumulator,				4);
 	OPCODE(0x69,	o_Add_With_Carry_Immediate,		a_Add_With_Carry_Immediate,		2);
+	OPCODE(0x6A,	o_Rotate_Right_Accumulator,		a_Rotate_Right_Accumulator,		2);
 	OPCODE(0x6C,	o_Jump_Indirect,				a_Jump_Indirect,				5);
 
+	OPCODE(0x76,	o_Rotate_Right_ZeroPage_X,		a_Rotate_Right_ZeroPage_X,		6);
 	OPCODE(0x78,	o_Flag_Interrupt_Disable_Set,	a_Flag_Interrupt_Disable_Set,	2);
-	
+	OPCODE(0x79,	o_Add_With_Carry_Absolute_Y,	a_Add_With_Carry_Absolute_Y,	4);
 	OPCODE(0x84,	o_Store_Index_Y_ZeroPage,		a_Store_Index_Y_ZeroPage,		3);
 	OPCODE(0x85,	o_Store_Accumulator_ZeroPage,	a_Store_Accumulator_ZeroPage,	3);
 	OPCODE(0x86,	o_Store_Index_X_ZeroPage,		a_Store_Index_X_ZeroPage,		3);
@@ -89,6 +96,7 @@ void cCpu_Mos_6502::opcodesPrepare() {
 	OPCODE(0xB9,	o_Load_Accumulator_Absolute_Y,	a_Load_Accumulator_Absolute_Y,	4);
 	OPCODE(0xBD,	o_Load_A_Absolute_X,			a_Load_A_Absolute_X,			4);
 
+	OPCODE(0xC0,	o_Compare_Index_Y_Immediate,	a_Compare_Index_Y_Immediate,	2);
 	OPCODE(0xC4,	o_Compare_Index_Y_ZeroPage,		a_Compare_Index_Y_ZeroPage,		3);
 	OPCODE(0xC5,	o_Compare_Accumulator_ZeroPage,	a_Compare_Accumulator_ZeroPage,	3);
 	OPCODE(0xC6,	o_Decrease_Memory_ZeroPage,		a_Decrease_ZeroPage,			5);
@@ -103,6 +111,7 @@ void cCpu_Mos_6502::opcodesPrepare() {
 	OPCODE(0xDD,	o_Compare_Absolute_X,			a_Compare_Absolute_X,			4);
 
 	OPCODE(0xE0,	o_Compare_Index_X_Immediate,	a_Compare_Index_X_Immediate,	2);
+	OPCODE(0xE4,	o_Compare_Index_X_ZeroPage,		a_Compare_Index_X_ZeroPage,		3);
 	OPCODE(0xE5,	o_Subtract_With_Carry_ZeroPage,	a_Subtract_With_Carry_ZeroPage,	3);
 	OPCODE(0xE6,	o_Increment_Memory_ZeroPage,	a_Increment_Memory_ZeroPage,	5);
 	OPCODE(0xE8,	o_Increase_X,					a_Increase_X,					2);
@@ -155,6 +164,37 @@ void cCpu_Mos_6502::o_Reset() {
 
 void cCpu_Mos_6502::o_Nop() {
 
+}
+
+// 05:
+void cCpu_Mos_6502::o_Or_Accumulator_ZeroPage() {
+	CYCLE(1)
+		mTmpWord = mSystem()->busReadByte( regPC++ );
+	
+	CYCLE(2)
+		regA |= mSystem()->busReadByte( mTmpWord );
+}
+
+// 06: 
+void cCpu_Mos_6502::o_Arith_Shift_Left_ZeroPage() {
+	CYCLE(1)
+		mTmpWord = mSystem()->busReadByte( regPC++ );
+
+	CYCLE(2)
+		mTmpByte = mSystem()->busReadByte( mTmpWord );
+
+	CYCLE(3) {
+		if( mTmpByte & 0x80 )
+			flagCarry = true;
+		else
+			flagCarry = false;
+
+		mTmpByte <<= 1;
+		registerFlagSet(mTmpByte);
+	}
+
+	CYCLE(4)
+		mSystem()->busWriteByte( mTmpWord, mTmpByte );
 }
 
 // 08: 
@@ -260,6 +300,17 @@ void cCpu_Mos_6502::o_Jump_Subroutine() {
 		regPC = mTmpByte | (mSystem()->busReadByte( regPC() ) << 8);
 }
 
+// 24: 
+void cCpu_Mos_6502::o_Bit_ZeroPage() {
+	CYCLE(1)
+		mTmpWord = mSystem()->busReadByte( regPC++ );
+
+	CYCLE(2) {
+		mTmpByte = mSystem()->busReadByte( mTmpWord );
+		o__Bit();
+	}
+}
+
 // 28: 
 void cCpu_Mos_6502::o_Pull_Flags() {
 	CYCLE(1);
@@ -323,6 +374,17 @@ void cCpu_Mos_6502::o_Branch_If_Negative_Set() {
 void cCpu_Mos_6502::o_Flag_Carry_Set() {
 	CYCLE(1)
 		flagCarry = true;
+}
+
+// 45:
+void cCpu_Mos_6502::o_Exclusive_Or_ZeroPage() {
+	CYCLE(1)
+		mTmpByte = mSystem()->busReadByte( regPC++ );
+
+	CYCLE(2) {
+		mTmpByte = mSystem()->busReadByte( mTmpByte );
+		regA ^= mTmpByte;
+	}
 }
 
 // 46: 
@@ -432,6 +494,31 @@ void cCpu_Mos_6502::o_Add_With_Carry_ZeroPage() {
 
 }
 
+// 66: 
+void cCpu_Mos_6502::o_Rotate_Right_ZeroPage() {
+	CYCLE(1)
+		mTmpWord = mSystem()->busReadByte( regPC++ );
+
+	CYCLE(2)
+		mTmpByte = mSystem()->busReadByte( mTmpWord );
+
+	CYCLE(3) {
+		bool carry = false;
+
+		if(mTmpByte & 0x01)
+			carry = true;
+
+		mTmpByte >>= 1;
+		if(flagCarry == true)
+			mTmpByte |= 0x80;
+
+		flagCarry = carry;
+		registerFlagSet( mTmpByte );
+	}
+
+	CYCLE(4)
+		mSystem()->busWriteByte( mTmpWord, mTmpByte );
+}
 // 68: 
 void cCpu_Mos_6502::o_Pull_Accumulator() {
 	CYCLE(1);
@@ -451,6 +538,23 @@ void cCpu_Mos_6502::o_Add_With_Carry_Immediate() {
 
 }
 
+// 6A: 
+void cCpu_Mos_6502::o_Rotate_Right_Accumulator() {
+
+	CYCLE(1) {
+		bool carry = false;
+
+		if( regA() & 0x01)
+			carry = true;
+
+		regA >>= 1;
+		if(flagCarry == true)
+			regA |= 0x80;
+
+		flagCarry = carry;
+	}
+}
+
 // 6C:
 void cCpu_Mos_6502::o_Jump_Indirect() {
 	CYCLE(1)
@@ -467,11 +571,66 @@ void cCpu_Mos_6502::o_Jump_Indirect() {
 
 }
 
+// 76: 
+void cCpu_Mos_6502::o_Rotate_Right_ZeroPage_X() {
+	CYCLE(1)
+		mTmpWord = mSystem()->busReadByte( regPC++ );
+
+	CYCLE(2)
+		mTmpWord += regX();
+
+	CYCLE(3)
+		mTmpByte = mSystem()->busReadByte( mTmpWord );
+
+	CYCLE(4) {
+		bool carry = false;
+
+		if(mTmpByte & 0x01)
+			carry = true;
+
+		mTmpByte >>= 1;
+		if(flagCarry == true)
+			mTmpByte |= 0x80;
+
+		flagCarry = carry;
+		registerFlagSet( mTmpByte );
+	}
+
+	CYCLE(5)
+		mSystem()->busWriteByte( mTmpWord, mTmpByte );
+}
+
 // 78: Disable Interrupt Flag
 void cCpu_Mos_6502::o_Flag_Interrupt_Disable_Set() {
 
 	CYCLE(1)
 		flagInterrupt = true;
+}
+
+// 79: 
+void cCpu_Mos_6502::o_Add_With_Carry_Absolute_Y() {
+	CYCLE(1)
+		mTmpWord = mSystem()->busReadByte( regPC++ );
+
+	CYCLE(2)
+		mTmpWord |= (mSystem()->busReadByte( regPC++ ) << 8);
+
+	CYCLE(3) {
+		byte highbyte = mTmpWord >> 8;
+		mTmpWord += regY();
+
+		// Page Crossed?
+		if( highbyte != (mTmpWord >> 8) )
+			++mCycles;
+		else {
+			mCycle = 4;
+		}
+	}
+
+	CYCLE(4) {
+		mTmpByte = mSystem()->busReadByte( mTmpWord );
+		o__AddWithCarry();
+	}
 }
 
 // 84: 
@@ -902,6 +1061,22 @@ void cCpu_Mos_6502::o_Load_A_Absolute_X() {
 
 }
 
+// C0:
+void cCpu_Mos_6502::o_Compare_Index_Y_Immediate() {
+	CYCLE(1) {
+		mTmpWord = mSystem()->busReadByte( regPC++ );
+
+		if( regY() >= mTmpWord )
+			flagCarry = true;
+		else
+			flagCarry = false;
+		
+		mTmpByte = regY();
+		mTmpByte -= mTmpWord;
+		registerFlagSet( mTmpByte );
+	}
+}
+
 // C4:
 void cCpu_Mos_6502::o_Compare_Index_Y_ZeroPage() {
 	CYCLE(1)
@@ -1123,6 +1298,26 @@ void cCpu_Mos_6502::o_Compare_Absolute_X() {
 void cCpu_Mos_6502::o_Compare_Index_X_Immediate() {
 	CYCLE(1) {
 		mTmpWord = mSystem()->busReadByte( regPC++ );
+
+		if( regX() >= mTmpWord )
+			flagCarry = true;
+		else
+			flagCarry = false;
+		
+		mTmpByte = regX();
+		mTmpByte -= mTmpWord;
+		registerFlagSet( mTmpByte );
+	}
+}
+
+// E4:
+void cCpu_Mos_6502::o_Compare_Index_X_ZeroPage() {
+	CYCLE(1) {
+		mTmpWord = mSystem()->busReadByte( regPC++ );
+	}
+
+	CYCLE(2) {
+		mTmpWord = mSystem()->busReadByte( mTmpWord );
 
 		if( regX() >= mTmpWord )
 			flagCarry = true;
