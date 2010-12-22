@@ -64,7 +64,10 @@ size_t cVideo_Mos_8567::cycle() {
 		++mRegRowCounter;
 		return mCycle;
 	}
-
+	
+	// Calculate the screen destination starting pixel
+	mBufferPtr = mBuffer + ((mRegRasterY * mPixelBytes) * mWidth) + ((mRegRowCounter * 8) * mPixelBytes);
+	
 	if(mVidBaseSrc) {
 		// ECM (Extended Color Mode)	
 		if( mRegControl1 & 0x40 ) {
@@ -379,9 +382,7 @@ void cVideo_Mos_8567::decode_StandardText() {
 	// ColorRam Pointer
 	word colorP = ((mRegMemoryPtrs & 0xF0) << 4) + (mDrawY % 8) + mRegRowCounter;
 
-	// Screen buffer
-	mBufferPtr = mBuffer + ((mRegRasterY * mPixelBytes) * mWidth) + (X * mPixelBytes);
-	
+	// The color
 	word col = system->deviceReadWord( this, colorP );
 
 	// Lets draw 8 bits
