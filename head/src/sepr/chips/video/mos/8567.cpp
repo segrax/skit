@@ -28,6 +28,11 @@ size_t cVideo_Mos_8567::cycle() {
 		if( mRegRasterY > 50)
 			mVidSrc = mVidBaseSrc + (40 * (mDrawY / 8));
 
+		// Calculate the screen destination row
+		mBufferPtr = mBuffer + ((mRegRasterY * mPixelBytes) * mWidth);
+
+		// Calculate X position on this row
+		mBufferPtr += ((mRegRowCounter * 8) * mPixelBytes);
 		//board()->clockPulse()
 	}
 
@@ -36,9 +41,11 @@ size_t cVideo_Mos_8567::cycle() {
 		mRegRowCounter = 0;
 		mRegRasterY = 0;
 		mDrawY = 0;
+
+		// Back to start of screen dest buffer
 		mBufferPtr = mBuffer;
 
-		// Back to start of screenbuffer
+		// Back to start of screen src buffer
 		mVidSrc = mVidBaseSrc;
 		//board()->clockPulse();
 
@@ -49,26 +56,36 @@ size_t cVideo_Mos_8567::cycle() {
 
 		//interruptRasterFire();
 	}
-	
-	// Border
+
+	// Left & Right Border
 	if( mRegRowCounter < 4 || mRegRowCounter > 43 ) {
+		
+		// 8 Pixels per row
+		for(int i = 0; i < 8; ++i)
+			*mBufferPtr++ = mRegBorderColor;
+
 		++mRegRowCounter;
 		
+		// Reached end of raster?
 		if( mRegRowCounter == 64 && mRegRasterY > 50)
 			++mDrawY;
 
 		return mCycle;
 	}
 
+	// Top and Bottom Border
 	if(  mRegRasterY < 51 || mRegRasterY > 249 ) {
+
+		// 8 Pixels per row
+		for(int i = 0; i < 8; ++i)
+			*mBufferPtr++ = mRegBorderColor;
+
 		++mRegRowCounter;
 		return mCycle;
 	}
 	
-	// Calculate the screen destination starting pixel
-	mBufferPtr = mBuffer + ((mRegRasterY * mPixelBytes) * mWidth) + ((mRegRowCounter * 8) * mPixelBytes);
-	
 	if(mVidBaseSrc) {
+
 		// ECM (Extended Color Mode)	
 		if( mRegControl1 & 0x40 ) {
 
@@ -366,12 +383,10 @@ void cVideo_Mos_8567::busWriteByte( size_t pAddress, byte pData ) {
 }
 
 void cVideo_Mos_8567::decode_StandardText() {
-	dword	data;
-	size_t	X = (mRegRowCounter * 8);
 	cSystem_Commodore_64	*system = mSystem<cSystem_Commodore_64>();
 
 	// Read char pointer from video
-	data = system->deviceReadByte( this, mVidSrc++ ) << 3;
+	byte data = system->deviceReadByte( this, mVidSrc++ ) << 3;
 
 	// Get memory address in char rom
 	mVidChar = mVidBaseChar + data;
@@ -383,14 +398,13 @@ void cVideo_Mos_8567::decode_StandardText() {
 	word colorP = ((mRegMemoryPtrs & 0xF0) << 4) + (mDrawY % 8) + mRegRowCounter;
 
 	// The color
-	word col = system->deviceReadWord( this, colorP );
+	word color = system->deviceReadWord( this, colorP );
 
 	// Lets draw 8 bits
-	for( size_t bit = 0; bit < 8; bit++, ++mBufferPtr ) {
+	for( size_t bit = 0; bit < 8; ++bit, ++mBufferPtr ) {
 		
-
 		if( data & 0x80 )
-			*mBufferPtr = (col >> 8) & 0x0f;
+			*mBufferPtr = (color >> 8) & 0x0f;
 		else
 			*mBufferPtr = mRegBackgroundColor[0];
 
