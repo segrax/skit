@@ -13,8 +13,9 @@ cChip_Rom::~cChip_Rom() {
 	delete mMemory;
 }
 
-void cChip_Rom::cycle() {
+size_t cChip_Rom::cycle() {
 
+	return 0;
 }
 
 bool cChip_Rom::loadFile( std::string pFile ) {

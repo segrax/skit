@@ -8,7 +8,7 @@ private:
 protected:
 	cVideoWindow			*mWindow;
 
-	virtual void			 cycle();
+	virtual size_t			 cycle();
 
 public:
 							 cSystem( std::string pName, cSepr *pSepr );

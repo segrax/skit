@@ -12,7 +12,7 @@ private:
 	cVideo_Mos_8567				*mVideo;
 
 protected:
-	void						 cycle();
+	size_t						 cycle();
 
 public:
 

@@ -14,6 +14,7 @@ enum eDebug_Level {
 class cDebug {
 private:
 	bool				 mContinue;
+	std::string			 mCommand;
 
 	eDebug_Level		 mLevel;
 	cSepr				*mSepr;

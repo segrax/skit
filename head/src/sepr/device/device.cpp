@@ -23,7 +23,7 @@ cDevice::cDevice( std::string pName, cSepr *pSepr, cDevice *pParent ) {
 	mName = pName;
 
 	//
-	mSleepTime = 2;
+	mSleepTime =1;
 	mQuitThread = false;
 
 	//
@@ -106,12 +106,16 @@ void cDevice::thread() {
 			//
 			mCycling = true;
 
-			cycle();
+			size_t count = cycle();
 			mCycling = false;
 
-			pthread_mutex_lock( &mCycleThreadMutex );
-			mCyclesRemaining -= mCycle;
-			pthread_mutex_unlock( &mCycleThreadMutex );
+			if( (int) mCyclesRemaining > 0 ) {
+				pthread_mutex_lock( &mCycleThreadMutex );
+				mCyclesRemaining -= count;
+				mCyclesTotal += count;
+				pthread_mutex_unlock( &mCycleThreadMutex );
+			}
+			
 
 		} else
 			Sleep(mSleepTime);

@@ -17,7 +17,7 @@ protected:
 	SDL_Surface				*mSDLSurface;
 
 protected:
-	virtual void			 cycle();
+	virtual size_t			 cycle();
 
 public:
 							 cVideo( std::string pName, cSepr *pSepr, cDevice *pParent, size_t pWidth, size_t pHeight, size_t pBytesPerPixel );

@@ -23,6 +23,7 @@ std::string cSystem::systemDataPath( std::string pFile ) {
 	return path.str();
 }
 
-void cSystem::cycle() {
+size_t cSystem::cycle() {
 
+	return 0;
 }

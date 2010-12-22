@@ -4,7 +4,7 @@ protected:
 	byte				*mMemory;
 	size_t				 mMemorySize;
 
-	virtual void		 cycle();
+	virtual size_t		 cycle();
 
 public:
 						 cChip_Rom( std::string pName, cSepr *pSepr, cDevice *pParent );

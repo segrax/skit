@@ -48,7 +48,7 @@ public:
 
 	virtual		void		 registerFlagSet( size_t pData );
 
-	void					 cycle();
+	size_t					 cycle();
 	void					 reset();								// Set opcode to reset opcode
 
 protected:

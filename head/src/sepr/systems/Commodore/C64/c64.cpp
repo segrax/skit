@@ -26,7 +26,7 @@ cSystem_Commodore_64::cSystem_Commodore_64( cSepr *pSepr ) : cSystem("Commodore6
 
 	mRamColor = new cChip_Ram("COLOR", pSepr, this, 0x400);
 
-	mWindow = new cVideoWindow( 320, 200, 1, false );
+	mWindow = new cVideoWindow( 403, 284, 1, false );
 
 	mVideo->windowSet( mWindow );
 }
@@ -58,10 +58,10 @@ bool cSystem_Commodore_64::prepare() {
 	deviceConnect( mVideo,		0xD000, 0x0400 );
 
 	mCpu->reset();
-	mCpu->threadStart();
+	//mCpu->threadStart();
 
 	mVideo->reset();
-	mVideo->threadStart();
+	//mVideo->threadStart();
 
 	// Force debug mode if compiled as debug build
 #ifdef _DEBUG
@@ -152,20 +152,20 @@ cDevice	*cSystem_Commodore_64::deviceGet( size_t pAddress, bool pRead ) {
 	return mRam;
 }
 
-void cSystem_Commodore_64::cycle() {
+size_t cSystem_Commodore_64::cycle() {
 
-	cSystem::cycle();
-
-	while( mCpu->mCyclesRemainingGet() != 0 ) {
+	/*while( mCpu->mCyclesRemainingGet() != 0 || mVideo->mCyclesRemainingGet() != 0 ) {
 		Sleep(mSleepTime);
 	}
 
-	size_t count = mCyclesRemaining;
+	mVideo->mCyclesRemainingAdd(1);
+	mCpu->mCyclesRemainingAdd(1);*/
 
-	mVideo->mCyclesRemainingAdd(count);
-	mCpu->mCyclesRemainingAdd(count);
+	size_t cycles = mVideo->cycle();
+	mCpu->cycle();
 
-	mCycle = count;
+
+	return cycles;
 }
 
 word cSystem_Commodore_64::deviceReadWord( cVideo_Mos_8567 *pVic, size_t pAddress ) {

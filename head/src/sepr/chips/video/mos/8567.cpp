@@ -7,7 +7,6 @@
 #include "systems/Commodore/C64/c64.hpp"
 
 cVideo_Mos_8567::cVideo_Mos_8567( std::string pName, cSepr *pSepr, cDevice *pParent ) : cVideo(pName, pSepr, pParent, 504, 313, 1 ) {
-	
 	mScaleSet(2);
 	paletteLoad();
 }
@@ -16,24 +15,27 @@ cVideo_Mos_8567::~cVideo_Mos_8567() {
 	
 }
 
-void cVideo_Mos_8567::cycle() {
-	
-	if(mRegRowCounter == 40) {
+size_t cVideo_Mos_8567::cycle() {
+	mCycle = 1;
+
+	// End of screen row?
+	if(mRegRowCounter == 64) {
 		mRegRowCounter = 0;
 
-		mRegRasterY++;
+		++mRegRasterY;
 
 		// Reset video source to start of current rasterline
-		mVidSrc = mVidBaseSrc;
-		mVidSrc += (40 * (mRegRasterY / 8));
+		if( mRegRasterY > 50)
+			mVidSrc = mVidBaseSrc + (40 * (mDrawY / 8));
 
 		//board()->clockPulse()
 	}
 
+	// End of screen
 	if( mRegRasterY >= 312 ) {
 		mRegRowCounter = 0;
 		mRegRasterY = 0;
-
+		mDrawY = 0;
 		mBufferPtr = mBuffer;
 
 		// Back to start of screenbuffer
@@ -47,50 +49,56 @@ void cVideo_Mos_8567::cycle() {
 
 		//interruptRasterFire();
 	}
+	
+	// Border
+	if( mRegRowCounter < 4 || mRegRowCounter > 43 ) {
+		++mRegRowCounter;
+		
+		if( mRegRowCounter == 64 && mRegRasterY > 50)
+			++mDrawY;
 
-	if(!mVidBaseSrc)
-		return;
-
-	// 
-	if( mRegRasterY >= 284 ) {
-		mRegRowCounter++;
-		mVidSrc++;
-		return;
+		return mCycle;
 	}
 
-	// ECM (Extended Color Mode)	
-	if( mRegControl1 & 0x40 ) {
-
-		return;
+	if(  mRegRasterY < 51 || mRegRasterY > 249 ) {
+		++mRegRowCounter;
+		return mCycle;
 	}
 
-	// BMM (Bitmap Mode)
-	if( mRegControl1 & 0x20 ) {
+	if(mVidBaseSrc) {
+		// ECM (Extended Color Mode)	
+		if( mRegControl1 & 0x40 ) {
 
-		// MCM (Multi Color Mode)
-		if( mRegControl2 & 0x10 ) {
-
-			return;
 		} else {
+			// BMM (Bitmap Mode)
+			if( mRegControl1 & 0x20 ) {
 
-			return;
-		}
+				// MCM (Multi Color Mode)
+				if( mRegControl2 & 0x10 ) {
 
-	} else {
-	// Text mode
+				} else {
 
-		// MCM (Multi Color Mode)
-		if( mRegControl2 & 0x10 ) {
+				}
 
-			return;
-		} else {
-			decode_StandardText();
-			return;
+			} else {
+			// Text mode
+
+				// MCM (Multi Color Mode)
+				if( mRegControl2 & 0x10 ) {
+
+				} else {
+					decode_StandardText();
+				}
+			}
 		}
 	}
+
+	++mRegRowCounter;
+	return mCycle;
 }
 
 void cVideo_Mos_8567::reset() {
+	mDrawY = -1;
 	mVidBaseSrc = mVidBaseChar	 = mVidBaseBitmap	= 0;
 	mVidSrc		= mVidChar		 = mVidBitmap		= 0;
 
@@ -356,26 +364,29 @@ void cVideo_Mos_8567::busWriteByte( size_t pAddress, byte pData ) {
 
 void cVideo_Mos_8567::decode_StandardText() {
 	dword	data;
-	size_t	X = mRegRowCounter * 8;
+	size_t	X = (mRegRowCounter * 8);
 	cSystem_Commodore_64	*system = mSystem<cSystem_Commodore_64>();
 
 	// Read char pointer from video
-	data = system->deviceReadByte( this, mVidSrc ) << 3;
-	mVidSrc++;
+	data = system->deviceReadByte( this, mVidSrc++ ) << 3;
 
 	// Get memory address in char rom
 	mVidChar = mVidBaseChar + data;
 
 	// Read char row
-	data = system->deviceReadByte( this, mVidChar + (mRegRasterY % 8) );
+	data = system->deviceReadByte( this, mVidChar + (mDrawY % 8) );
 	
-	word colorP = ((mRegMemoryPtrs & 0xF0)<< 4) + (mRegRasterY * mWidth) + X;
+	// ColorRam Pointer
+	word colorP = ((mRegMemoryPtrs & 0xF0) << 4) + (mDrawY % 8) + mRegRowCounter;
 
+	// Screen buffer
 	mBufferPtr = mBuffer + ((mRegRasterY * mPixelBytes) * mWidth) + (X * mPixelBytes);
+	
+	word col = system->deviceReadWord( this, colorP );
 
 	// Lets draw 8 bits
 	for( size_t bit = 0; bit < 8; bit++, ++mBufferPtr ) {
-		word col = system->deviceReadWord( this, colorP++ );
+		
 
 		if( data & 0x80 )
 			*mBufferPtr = (col >> 8) & 0x0f;
@@ -384,6 +395,4 @@ void cVideo_Mos_8567::decode_StandardText() {
 
 		data <<= 1;
 	}
-		
-	mRegRowCounter++;
 }

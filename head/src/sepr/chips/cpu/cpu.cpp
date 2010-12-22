@@ -64,7 +64,6 @@ void cCpu::opcodeAnalyse() {
 
 void cCpu::cycleNext()  {
 	++mCycle;
-	++mCyclesTotal;
 
 	if(mCycle >= mCycles)
 		mOpcodeCurrent = 0;

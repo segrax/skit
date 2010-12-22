@@ -44,7 +44,7 @@ bool cSkit::systemStart( std::string pSystemName ) {
 
 		if( mSystem->mCyclesRemainingGet() == 0 ) {
 			if(!step) {
-				mSystem->mCyclesRemainingAdd( 10 );
+				mSystem->mCyclesRemainingAdd( 19656 );
 				continue;
 			}
 

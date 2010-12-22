@@ -28,7 +28,7 @@ protected:
 	cSystem								*mSystem();
 	template< class tSystem > tSystem	*mSystem() { return dynamic_cast<tSystem*>( mSystem() ); }
 
-	virtual void						 cycle() = 0;										// Main device cycle
+	virtual size_t						 cycle() = 0;										// Main device cycle
 	
 public:
 										 cDevice( std::string pName, cSepr *pSepr, cDevice *pParent );	

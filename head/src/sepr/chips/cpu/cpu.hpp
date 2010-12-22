@@ -12,7 +12,7 @@ protected:
 	cChip_Registers		 mRegisters;
 
 	virtual void		 cycleNext();
-	virtual void		 cycle() = 0;
+	virtual size_t		 cycle() = 0;
 
 	virtual std::string	 debug_CPU_Info_String() = 0;
 

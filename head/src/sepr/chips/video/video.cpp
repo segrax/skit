@@ -44,8 +44,8 @@ bool cVideo::windowSet( cVideoWindow *pWindow ) {
 	return true;
 }	
 
-void cVideo::cycle() {
-
+size_t cVideo::cycle() {
+	return 0;
 }
 
 SDL_Surface	*cVideo::surfaceGet() {

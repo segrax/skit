@@ -28,6 +28,7 @@ protected:
 	word				 mVidBaseSrc, mVidBaseChar, mVidBaseBitmap;
 	word				 mVidSrc,	  mVidChar,		mVidBitmap;
 
+	int					 mDrawY;
 
 	void				 decode_StandardText();
 
@@ -38,7 +39,7 @@ public:
 	virtual byte		 busReadByte( size_t pAddress );
 	virtual void		 busWriteByte( size_t pAddress, byte pData );
 
-	void				 cycle();
+	size_t				 cycle();
 	void				 reset();
 
 

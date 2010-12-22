@@ -35,7 +35,7 @@ void cDebug::device( eDebug_Level pLevel, cSepr *pSepr, cDevice *pDevice, std::s
 void cDebug::waitUser( cDevice *pDevice ) {
 	cCpu			*cpu = 0;
 	std::string		 input;
-	
+
 	mContinue = false;
 
 	// Handle a CPU
@@ -46,6 +46,11 @@ void cDebug::waitUser( cDevice *pDevice ) {
 			input.clear();
 			std::getline(std::cin, input);
 			
+			// No Previous, so execute previous command
+			if( input == "" ) {
+				input = mCommand;
+			}
+
 			// Step the cpu instruction worth of cycles
 			if( input == "t" ) {
 				mContinue = true;
@@ -59,6 +64,7 @@ void cDebug::waitUser( cDevice *pDevice ) {
 			}
 		}
 
+		mCommand = input;
 		return;
 	}
 

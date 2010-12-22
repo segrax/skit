@@ -58,7 +58,7 @@ void cCpu_Mos_6502::reset() {
 	mOpcodeCurrent = mOpcode_Reset;
 }
 
-void cCpu_Mos_6502::cycle() {
+size_t cCpu_Mos_6502::cycle() {
 
 	// No Instruction, lets fetch one, or use a pre-fetched one
 	if( !mOpcodeCurrent ) {
@@ -75,13 +75,15 @@ void cCpu_Mos_6502::cycle() {
 		cycleNext();
 
 		if(!mTmpOpcode)
-			return;
+			return 1;
 
 		mTmpOpcode = 0;
 	}
 
 	opcodeExecute();
 	cycleNext();
+
+	return 1;
 }
 
 void cCpu_Mos_6502::registerFlagSet( size_t pData ) {
