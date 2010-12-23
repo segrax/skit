@@ -31,6 +31,11 @@ void cCpu_Mos_6502::a_Or_Accumulator() {
 
 }
 
+// 0A: Asl
+void cCpu_Mos_6502::a_Arithmetic_Shift_Left() {
+
+}
+
 // 0D: Or
 void cCpu_Mos_6502::a_Or_Accumulator_Absolute() {
 
@@ -76,6 +81,11 @@ void cCpu_Mos_6502::a_Roll_Accumulator_Left() {
 
 }
 
+// 2C: 
+void cCpu_Mos_6502::a_Bit_Absolute() {
+
+}
+
 // 30: 
 void cCpu_Mos_6502::a_Branch_If_Negative_Set() {
 
@@ -83,6 +93,10 @@ void cCpu_Mos_6502::a_Branch_If_Negative_Set() {
 
 // 38: 
 void cCpu_Mos_6502::a_Flag_Carry_Set() {
+
+}
+
+void cCpu_Mos_6502::a_Return_From_Interrupt() {
 
 }
 
@@ -103,6 +117,11 @@ void cCpu_Mos_6502::a_Push_Accumulator() {
 
 // 49
 void cCpu_Mos_6502::a_Exclusive_Or() {
+
+}
+
+// 4A: 
+void cCpu_Mos_6502::a_Logical_Shift_Right() {
 
 }
 
@@ -153,6 +172,11 @@ void cCpu_Mos_6502::a_Rotate_Right_Accumulator() {
 
 // 6C:
 void cCpu_Mos_6502::a_Jump_Indirect() {
+
+}
+
+// 70: 
+void cCpu_Mos_6502::a_Branch_If_Overflow() {
 
 }
 
@@ -326,6 +350,11 @@ void cCpu_Mos_6502::a_Load_Accumulator_Absolute_Y() {
 
 }
 
+// BA: 
+void cCpu_Mos_6502::a_Transfer_S_To_IndexX() {
+
+}
+
 // BD: Load A from Absolute_X
 void cCpu_Mos_6502::a_Load_A_Absolute_X() {
 
@@ -363,6 +392,11 @@ void cCpu_Mos_6502::a_Compare_Accumulator_Immediate() {
 
 // CA: 
 void cCpu_Mos_6502::a_Decrease_X() {
+
+}
+
+// CD: 
+void cCpu_Mos_6502::a_Compare_Accumulator_Absolute() {
 
 }
 
@@ -420,6 +454,12 @@ void cCpu_Mos_6502::a_Increase_X(){
 void cCpu_Mos_6502::a_Subtract_With_Carry_Immediate() {
 
 }
+
+// EC:
+void cCpu_Mos_6502::a_Compare_Index_X_Absolute() {
+
+}
+
 
 // EE:
 void cCpu_Mos_6502::a_Increase_Memory_Absolute() {

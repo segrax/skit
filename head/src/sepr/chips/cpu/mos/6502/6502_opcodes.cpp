@@ -7,7 +7,6 @@
 #include "6502.hpp"
 #include "systems/system.hpp"
 
-#define CYCLE(i)	if(mCycle == i)
 #define OPCODE(i, o, a, c) mOpcodes[i]._OPCODE(cCpu_Mos_6502, o, a, c) 
 
 void cCpu_Mos_6502::opcodesPrepare() {
@@ -24,6 +23,7 @@ void cCpu_Mos_6502::opcodesPrepare() {
 	OPCODE(0x06,	o_Arith_Shift_Left_ZeroPage,	a_Arith_Shift_Left_ZeroPage,	5);
 	OPCODE(0x08,	o_Push_Flags,					a_Push_Flags,					3);
 	OPCODE(0x09,	o_Or_Accumulator,				a_Or_Accumulator,				2);
+	OPCODE(0x0A,	o_Logical_Shift_Right,			a_Logical_Shift_Right,			2);
 	OPCODE(0x0D,	o_Or_Accumulator_Absolute,		a_Or_Accumulator_Absolute,		4);
 
 	OPCODE(0x10,	o_Branch_If_Negative_Clear,		a_Branch_If_Negative_Clear,		2);
@@ -35,14 +35,17 @@ void cCpu_Mos_6502::opcodesPrepare() {
 	OPCODE(0x28,	o_Pull_Flags,					a_Pull_Flags,					4);
 	OPCODE(0x29,	o_And_Accumulator_Immediate,	a_And_Immediate,				2);
 	OPCODE(0x2A,	o_Roll_Accumulator_Left,		a_Roll_Accumulator_Left,		2);
+	OPCODE(0x2C,	o_Bit_Absolute,					a_Bit_Absolute,					4);
 
 	OPCODE(0x30,	o_Branch_If_Negative_Set,		a_Branch_If_Negative_Set,		2);
 	OPCODE(0x38,	o_Flag_Carry_Set,				a_Flag_Carry_Set,				2);
 
+	OPCODE(0x40,	o_Return_From_Interrupt,		a_Return_From_Interrupt,		6);
 	OPCODE(0x45,	o_Exclusive_Or_ZeroPage,		a_Exclusive_Or_ZeroPage,		3);
 	OPCODE(0x46,	o_Logical_Shift_Right_ZeroPage,	a_Logical_Shift_Right_ZeroPage, 5);
 	OPCODE(0x48,	o_Push_Accumulator,				a_Push_Accumulator,				3);
 	OPCODE(0x49,	o_Exclusive_Or,					a_Exclusive_Or,					2);
+	OPCODE(0x4A,	o_Logical_Shift_Right,			a_Logical_Shift_Right,			2);
 	OPCODE(0x4C,	o_Jump_Absolute,				a_Jump_Absolute,				3);	
 
 	OPCODE(0x56,	o_Logical_Shift_Right_ZeroPage_X,a_Logical_Shift_Right_ZeroPage_X, 6);
@@ -56,9 +59,11 @@ void cCpu_Mos_6502::opcodesPrepare() {
 	OPCODE(0x6A,	o_Rotate_Right_Accumulator,		a_Rotate_Right_Accumulator,		2);
 	OPCODE(0x6C,	o_Jump_Indirect,				a_Jump_Indirect,				5);
 
+	OPCODE(0x70,	o_Branch_If_Overflow,			a_Branch_If_Overflow,			2);
 	OPCODE(0x76,	o_Rotate_Right_ZeroPage_X,		a_Rotate_Right_ZeroPage_X,		6);
 	OPCODE(0x78,	o_Flag_Interrupt_Disable_Set,	a_Flag_Interrupt_Disable_Set,	2);
 	OPCODE(0x79,	o_Add_With_Carry_Absolute_Y,	a_Add_With_Carry_Absolute_Y,	4);
+
 	OPCODE(0x84,	o_Store_Index_Y_ZeroPage,		a_Store_Index_Y_ZeroPage,		3);
 	OPCODE(0x85,	o_Store_Accumulator_ZeroPage,	a_Store_Accumulator_ZeroPage,	3);
 	OPCODE(0x86,	o_Store_Index_X_ZeroPage,		a_Store_Index_X_ZeroPage,		3);
@@ -94,6 +99,7 @@ void cCpu_Mos_6502::opcodesPrepare() {
 	OPCODE(0xB4,	o_Load_Index_Y_ZeroPage_X,		a_Load_Index_Y_ZeroPage_X,		4);
 	OPCODE(0xB5,	o_Load_Accumulator_ZeroPage_X,	a_Load_Accumulator_ZeroPage_X,	4);
 	OPCODE(0xB9,	o_Load_Accumulator_Absolute_Y,	a_Load_Accumulator_Absolute_Y,	4);
+	OPCODE(0xBA,	o_Transfer_S_To_IndexX,			a_Transfer_S_To_IndexX,			2);
 	OPCODE(0xBD,	o_Load_A_Absolute_X,			a_Load_A_Absolute_X,			4);
 
 	OPCODE(0xC0,	o_Compare_Index_Y_Immediate,	a_Compare_Index_Y_Immediate,	2);
@@ -103,6 +109,7 @@ void cCpu_Mos_6502::opcodesPrepare() {
 	OPCODE(0xC8,	o_Increase_Y,					a_Increase_Y,					2);
 	OPCODE(0xC9,	o_Compare_Accumulator_Immediate,a_Compare_Accumulator_Immediate,2);
 	OPCODE(0xCA,	o_Decrease_X,					a_Decrease_X,					2);
+	OPCODE(0xCD,	o_Compare_Accumulator_Absolute,	a_Compare_Accumulator_Absolute, 4);
 	OPCODE(0xCE,	o_Decrease_Memory_Absolute,		a_Decrease_Memory_Absolute,		6);
 
 	OPCODE(0xD0,	o_Branch_Not_Equal,				a_Branch_Not_Equal,				2);
@@ -116,6 +123,7 @@ void cCpu_Mos_6502::opcodesPrepare() {
 	OPCODE(0xE6,	o_Increment_Memory_ZeroPage,	a_Increment_Memory_ZeroPage,	5);
 	OPCODE(0xE8,	o_Increase_X,					a_Increase_X,					2);
 	OPCODE(0xE9,	o_Subtract_With_Carry_Immediate,a_Subtract_With_Carry_Immediate,2);
+	OPCODE(0xEC,	o_Compare_Index_X_Absolute,		a_Compare_Index_X_Absolute,		4);
 	OPCODE(0xEE,	o_Increase_Memory_Absolute,		a_Increase_Memory_Absolute,		6);
 
 	OPCODE(0xF0,	o_Branch_If_Zero_Set,			a_Branch_Equal,					2);
@@ -209,6 +217,16 @@ void cCpu_Mos_6502::o_Or_Accumulator() {
 
 	CYCLE(1)
 		regA |= mSystem()->busReadByte( regPC++ );
+
+}
+
+// 0A: Asl
+void cCpu_Mos_6502::o_Arithmetic_Shift_Left() {
+
+	CYCLE(1) {
+		flagCarry = ((regA() & 0x80) ? true : false);
+		regA <<= 1;
+	}
 
 }
 
@@ -313,10 +331,11 @@ void cCpu_Mos_6502::o_Bit_ZeroPage() {
 
 // 28: 
 void cCpu_Mos_6502::o_Pull_Flags() {
-	CYCLE(1);
-	CYCLE(2);
+	//CYCLE(1);
+	//CYCLE(2);
+
 	CYCLE(3)
-		regFL.valueSet( stackPop() );
+		regFL.valueSet( (stackPop() & (~flagBREAK)) | flagRESERVED );
 }
 
 // 29: 
@@ -344,6 +363,21 @@ void cCpu_Mos_6502::o_Roll_Accumulator_Left() {
 			regA |= 0x01;
 	}
 }
+
+// 2C: 
+void cCpu_Mos_6502::o_Bit_Absolute() {
+	CYCLE(1)
+		mTmpWord = mSystem()->busReadByte( regPC++ );
+
+	CYCLE(2)
+		mTmpWord |= mSystem()->busReadByte( regPC++ ) << 8;
+
+	CYCLE(3) {
+		mTmpByte = mSystem()->busReadByte( mTmpWord );
+		o__Bit();
+	}
+}
+
 
 // 30: 
 void cCpu_Mos_6502::o_Branch_If_Negative_Set() {
@@ -374,6 +408,21 @@ void cCpu_Mos_6502::o_Branch_If_Negative_Set() {
 void cCpu_Mos_6502::o_Flag_Carry_Set() {
 	CYCLE(1)
 		flagCarry = true;
+}
+
+void cCpu_Mos_6502::o_Return_From_Interrupt() {
+	//CYCLE(1);
+	//CYCLE(2);
+
+	CYCLE(3)
+		regFL.valueSet( stackPop() );
+
+	CYCLE(4)
+		regPC = stackPop() << 8;
+
+	CYCLE(5)
+		regPC |= stackPop();
+
 }
 
 // 45:
@@ -420,6 +469,15 @@ void cCpu_Mos_6502::o_Exclusive_Or() {
 		regA ^= mTmpByte;
 	}
 
+}
+
+// 4A: 
+void cCpu_Mos_6502::o_Logical_Shift_Right() {
+
+	CYCLE(1) {
+		flagCarry = ((regA() & 0x01) ? true : false);
+		regA >>= 1;
+	}
 }
 
 // 4C: Jump
@@ -569,6 +627,31 @@ void cCpu_Mos_6502::o_Jump_Indirect() {
 	CYCLE(4) 
 		regPC = mTmpByte | (mSystem()->busReadByte( mTmpWord ) << 8);
 
+}
+
+// 70: 
+void cCpu_Mos_6502::o_Branch_If_Overflow() {
+	CYCLE(1) {
+		mTmpByte = mSystem()->busReadByte( regPC++ );
+		if( flagOverflow == true )
+			++mCycles;
+	}
+
+	CYCLE(2) {
+		mTmpWord = regPC();
+
+		byte highbyte = mTmpWord >> 8;
+		mTmpWord += (char) mTmpByte;
+
+		// Page Crossed?
+		if( highbyte != (mTmpWord >> 8) )
+			++mCycles;
+		else
+			mCycle = 3;
+	}
+
+	CYCLE(3)
+		regPC = mTmpWord;
 }
 
 // 76: 
@@ -1031,6 +1114,13 @@ void cCpu_Mos_6502::o_Load_Accumulator_Absolute_Y() {
 		regA = mSystem()->busReadByte( mTmpWord );
 }
 
+// BA: 
+void cCpu_Mos_6502::o_Transfer_S_To_IndexX() {
+
+	CYCLE(1)
+		regX = regSP();
+}
+
 // BD: Load A from Absolute_X
 void cCpu_Mos_6502::o_Load_A_Absolute_X() {
 
@@ -1164,6 +1254,29 @@ void cCpu_Mos_6502::o_Decrease_X() {
 	CYCLE(1)
 		--regX;
 
+}
+
+// CD: 
+void cCpu_Mos_6502::o_Compare_Accumulator_Absolute() {
+	CYCLE(1)
+		mTmpWord = mSystem()->busReadByte( regPC++ );
+
+	CYCLE(2)
+		mTmpWord |= (mSystem()->busReadByte( regPC++ ) << 8);
+
+	CYCLE(3) {
+		mTmpWord = mSystem()->busReadByte( mTmpWord );
+
+		if( regA() >= mTmpWord )
+			flagCarry = true;
+		else
+			flagCarry = false;
+		
+		mTmpByte = regA();
+		mTmpByte -= mTmpWord;
+		
+		registerFlagSet( mTmpByte );
+	}
 }
 
 // CE:
@@ -1371,6 +1484,29 @@ void cCpu_Mos_6502::o_Subtract_With_Carry_Immediate() {
 		mTmpByte = mSystem()->busReadByte( regPC++ );
 
 		o__SubWithCarry();
+	}
+}
+
+// EC: 
+void cCpu_Mos_6502::o_Compare_Index_X_Absolute() {
+	CYCLE(1)
+		mTmpWord = mSystem()->busReadByte( regPC++ );
+
+	CYCLE(2)
+		mTmpWord |= (mSystem()->busReadByte( regPC++ ) << 8);
+
+	CYCLE(3) {
+		mTmpWord = mSystem()->busReadByte( mTmpWord );
+
+		if( regX() >= mTmpWord )
+			flagCarry = true;
+		else
+			flagCarry = false;
+		
+		mTmpByte = regX();
+		mTmpByte -= mTmpWord;
+		
+		registerFlagSet( mTmpByte );
 	}
 }
 

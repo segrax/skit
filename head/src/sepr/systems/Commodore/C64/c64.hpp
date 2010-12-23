@@ -3,6 +3,7 @@ class cChip_Ram;
 class cCpu_Mos_6510;
 class cVideo_Mos_8567;
 class cVideoWindow;
+class cCia_Mos_6526;
 
 class cSystem_Commodore_64 : public cSystem {
 private:
@@ -10,6 +11,7 @@ private:
 	cChip_Rom					*mBasic, *mKernal, *mChar;
 	cCpu_Mos_6510				*mCpu;
 	cVideo_Mos_8567				*mVideo;
+	cCia_Mos_6526				*mCia1, *mCia2;
 
 protected:
 	size_t						 cycle();
@@ -31,6 +33,9 @@ public:
 
 	cDevice						*deviceGet( size_t pAddress, bool pRead );
 	cDevice						*deviceIOGet( size_t pAddress, bool pRead );
+	
+	void						 interruptAdd( std::string pName, cDevice *pDevice );
+	void						 interruptRemove( std::string pName );
 
 	bool						 prepare();
 	SDL_Surface					*videoGet();

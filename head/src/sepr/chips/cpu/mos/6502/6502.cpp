@@ -14,8 +14,10 @@ cCpu_Mos_6502::cCpu_Mos_6502( std::string pName, cSepr *pSepr, cDevice *pParent 
 	opcodesPrepare();
 	registersPrepare();
 
-	// Create the reset opcode
+	// Create the reset and interrupt opcodes
 	mOpcode_Reset->_OPCODE( cCpu_Mos_6502, o_Reset, a_Nop, 8 );
+	mOpcode_Interrupt->_OPCODE( cCpu_Mos_6502, o_Interrupt, o_Interrupt, 8);
+
 }
 
 cCpu_Mos_6502::~cCpu_Mos_6502() {
@@ -60,9 +62,35 @@ void cCpu_Mos_6502::reset() {
 
 size_t cCpu_Mos_6502::cycle() {
 
+	// No current opcode, and pending interrupts
+	if( !mOpcodeCurrent && !mInterruptCurrent && mInterrupts.size() ) {
+		
+		cInterrupt_NMI *intNMI = cCpu::interruptNMIFind();
+	
+		if( intNMI )  {
+			mOpcodeCurrent = mOpcode_Interrupt;
+			mInterruptCurrent = intNMI;
+			mTmpWord = 0xFFFA;
+			mCycle = 1;
+		} else {
+			// Interrupts enabled?
+			if( flagInterrupt == false ) {
+
+				cInterrupt *intNorm = cCpu::interruptFind();
+				if( intNorm ) {
+					mOpcodeCurrent = mOpcode_Interrupt;
+					mInterruptCurrent = intNorm;
+					mTmpWord = 0xFFFE;
+					mCycle = 1;
+				}
+			}
+		}
+	}
+
 	// No Instruction, lets fetch one, or use a pre-fetched one
 	if( !mOpcodeCurrent ) {
-		//if(regPC() == 0xb6ae )
+			
+		//if(regPC() == 0xea81 )
 		//	mDebug = true;
 
 		byte op = mTmpOpcode;
@@ -107,6 +135,34 @@ void cCpu_Mos_6502::stackPush( byte pData )	{
 byte cCpu_Mos_6502::stackPop() {
 	++regSP;
 	return mSystem()->busReadByte( 0x0100 + regSP() );
+}
+
+void cCpu_Mos_6502::o_Interrupt() {
+	CYCLE(1)
+		mCycles = 7;
+
+	CYCLE(2)
+		stackPush( regPC() );
+	
+	CYCLE(3)
+		stackPush( regPC() >> 8);
+
+	CYCLE(4)
+		stackPush( (byte) regFL.value() );
+	
+	CYCLE(5) 
+		regPC = mSystem()->busReadByte( mTmpWord++ );
+
+	CYCLE(6) {
+		regPC |= (mSystem()->busReadByte( mTmpWord ) << 8);
+
+		// Disable Interrupts
+		flagInterrupt = true;
+
+		interruptRemove(mInterruptCurrent);
+		mInterruptCurrent = 0;
+	}
+
 }
 
 void cCpu_Mos_6502::registersPrepare() {

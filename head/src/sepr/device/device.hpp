@@ -36,6 +36,15 @@ public:
 	
 
 	virtual bool						 deviceConnect( cDevice *pDevice, size_t pAddress, size_t pSize );	// Connect a device
+	
+	template <class tDev>	tDev		*deviceFind( std::string pName, bool pRead ) {
+	
+		if( mConnections.find( pName ) == mConnections.end() )
+			return 0;
+
+		return dynamic_cast<tDev*>( mConnections[ pName ]->mDeviceBGet());
+	}
+
 	virtual cDevice						*deviceGet( std::string pName, bool pRead );									// Get a device pointer by name
 	virtual cDevice						*deviceGet( size_t pAddress, bool pRead );
 

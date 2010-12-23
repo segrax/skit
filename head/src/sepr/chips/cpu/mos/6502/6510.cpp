@@ -18,6 +18,13 @@ void cCpu_Mos_6510::reset() {
 	cCpu_Mos_6502::reset();
 }
 
+byte cCpu_Mos_6510::busReadByte( size_t pAddress ) {
+	if(pAddress == 0 || pAddress == 1)
+		return mProcessorPort[pAddress];
+
+	return 0;
+}
+
 void cCpu_Mos_6510::busWriteByte( size_t pAddress, byte pData ) {
 	if(pAddress == 0 || pAddress == 1)
 		mProcessorPort[pAddress] = pData;

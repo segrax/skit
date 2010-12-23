@@ -8,6 +8,8 @@
 
 cCpu::cCpu( std::string pName, cSepr *pSepr, cDevice *pParent ) : cDevice( pName, pSepr, pParent ) {
 
+	mInterruptCurrent = 0;
+
 	mOpcodes = 0;
 	mOpcodeCount = 0;
 	mOpcodeCurrent = 0;
@@ -18,6 +20,10 @@ cCpu::cCpu( std::string pName, cSepr *pSepr, cDevice *pParent ) : cDevice( pName
 
 	mOpcode_Unknown = new cChip_Opcode();
 	mOpcode_Unknown->_OPCODE( cCpu, o_Unknown_Opcode, o_Unknown_Opcode, 8 );
+
+	mOpcode_Interrupt = new cChip_Opcode();
+	mOpcode_Interrupt->_OPCODE( cCpu, o_Interrupt, o_Interrupt, 8 );
+
 }
 
 cCpu::~cCpu() {
@@ -83,4 +89,37 @@ void cCpu::o_Unknown_Opcode() {
 
 void cCpu::o_Reset() {
 
+}
+
+void cCpu::o_Interrupt() {
+
+}
+
+void cCpu::interruptAdd( cInterrupt *pInterrupt ) {
+	
+	mInterrupts.insert( std::make_pair( pInterrupt->mNameGet(), pInterrupt ) );
+}
+
+void cCpu::interruptRemove( cInterrupt *pInterrupt ) {
+	std::multimap< std::string, cInterrupt* >::iterator	intIT;
+
+	for( intIT = mInterrupts.begin(); intIT != mInterrupts.end(); ++intIT ) {
+		if( intIT->second == pInterrupt ) {
+			delete intIT->second;
+			mInterrupts.erase( intIT );
+			return;
+		}
+	}
+}
+
+void cCpu::interruptRemove( std::string pName ) {
+	std::multimap< std::string, cInterrupt* >::iterator	intIT;
+
+	for( intIT = mInterrupts.begin(); intIT != mInterrupts.end(); ++intIT ) {
+		if( intIT->first == pName ) {
+			delete intIT->second;
+			mInterrupts.erase( intIT );
+			return;
+		}
+	}
 }

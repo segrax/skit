@@ -7,6 +7,7 @@
 #include "chips/cpu/cpu.hpp"
 #include "chips/cpu/mos/6502/6502.hpp"
 #include "chips/cpu/mos/6502/6510.hpp"
+#include "chips/interfaceAdapter/mos/6526.hpp"
 #include "systems/system.hpp"
 #include "chips/video/video.hpp"
 #include "chips/video/mos/8567.hpp"
@@ -25,6 +26,9 @@ cSystem_Commodore_64::cSystem_Commodore_64( cSepr *pSepr ) : cSystem("Commodore6
 	mVideo = new cVideo_Mos_8567("VIDEO", pSepr, this );
 
 	mRamColor = new cChip_Ram("COLOR", pSepr, this, 0x400);
+
+	mCia1 = new cCia_Mos_6526("CIA1", pSepr, this );
+	mCia2 = new cCia_Mos_6526("CIA2", pSepr, this );
 
 	mWindow = new cVideoWindow( 403, 284, 1, false );
 
@@ -56,6 +60,8 @@ bool cSystem_Commodore_64::prepare() {
 	deviceConnect( mRamColor,	0xD800, 0x400 );
 
 	deviceConnect( mVideo,		0xD000, 0x0400 );
+	deviceConnect( mCia1,		0xDC00, 0x100 );
+	deviceConnect( mCia2,		0xDD00, 0x100 );
 
 	mCpu->reset();
 	//mCpu->threadStart();
@@ -63,6 +69,8 @@ bool cSystem_Commodore_64::prepare() {
 	mVideo->reset();
 	//mVideo->threadStart();
 
+	mCia1->reset();
+	mCia2->reset();
 	// Force debug mode if compiled as debug build
 #ifdef _DEBUG
 	mCpu->mDebugSet(true);
@@ -95,12 +103,12 @@ cDevice *cSystem_Commodore_64::deviceIOGet( size_t pAddress, bool pRead ) {
 		return mRamColor;
 
 	// CIA 1
-	//if( pAddress >= 0xDC00 && pAddress <= 0xDCFF )
-	//	return mCia1;
+	if( pAddress >= 0xDC00 && pAddress <= 0xDCFF )
+		return mCia1;
 
 	// CIA 2
-	//if( pAddress >= 0xDD00 && pAddress <= 0xDDFF )
-	//	return mCia2;
+	if( pAddress >= 0xDD00 && pAddress <= 0xDDFF )
+		return mCia2;
 
 	// IO Area 1
 	if( pAddress >= 0xDE00 && pAddress <= 0xDEFF )
@@ -161,11 +169,12 @@ size_t cSystem_Commodore_64::cycle() {
 	mVideo->mCyclesRemainingAdd(1);
 	mCpu->mCyclesRemainingAdd(1);*/
 
-	size_t cycles = mVideo->cycle();
+	mVideo->cycle();
 	mCpu->cycle();
+	mCia1->cycle();
+	mCia2->cycle();
 
-
-	return cycles;
+	return 1;
 }
 
 word cSystem_Commodore_64::deviceReadWord( cVideo_Mos_8567 *pVic, size_t pAddress ) {
@@ -215,4 +224,25 @@ void cSystem_Commodore_64::busWriteWordLE( size_t pAddress, word pData ) {
 SDL_Surface	*cSystem_Commodore_64::videoGet() {
 
 	return mVideo->surfaceGet();
+}
+
+void cSystem_Commodore_64::interruptAdd( std::string pName, cDevice *pDevice ) {
+	cInterrupt *interrupt = 0;
+
+	if( mCpu->interruptFind(pName ) )
+		return;
+
+	// Create NMIs for certain devices
+	if( pDevice == mCia2 ) {
+		interrupt = new cInterrupt_NMI( pName, pDevice );
+	
+	} else
+		interrupt = new cInterrupt( pName, pDevice);
+
+	mCpu->interruptAdd( interrupt );
+}
+
+void cSystem_Commodore_64::interruptRemove( std::string pName ) {
+
+	mCpu->interruptRemove(pName);
 }

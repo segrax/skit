@@ -38,6 +38,12 @@
     <Filter Include="Source Files\chips\video\mos">
       <UniqueIdentifier>{29adb21d-66e2-458c-ae80-cc9e6e39ccbb}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\chips\interfaceAdapter">
+      <UniqueIdentifier>{58964ee3-1fa8-48a0-8ccc-d5f3879862ca}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\chips\interfaceAdapter\mos">
+      <UniqueIdentifier>{36ad6a53-2b2a-4ffd-a375-93968d8bcc4f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\src\sepr\device\device.cpp">
@@ -81,6 +87,12 @@
     </ClCompile>
     <ClCompile Include="..\..\..\src\sepr\chips\video\video.cpp">
       <Filter>Source Files\chips\video</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\sepr\chips\cpu\interrupt.cpp">
+      <Filter>Source Files\chips\cpu</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\sepr\chips\interfaceAdapter\mos\6526.cpp">
+      <Filter>Source Files\chips\interfaceAdapter\mos</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -128,6 +140,12 @@
     </ClInclude>
     <ClInclude Include="..\..\..\src\sepr\chips\video\video.hpp">
       <Filter>Source Files\chips\video</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\sepr\chips\cpu\interrupt.hpp">
+      <Filter>Source Files\chips\cpu</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\sepr\chips\interfaceAdapter\mos\6526.hpp">
+      <Filter>Source Files\chips\interfaceAdapter\mos</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

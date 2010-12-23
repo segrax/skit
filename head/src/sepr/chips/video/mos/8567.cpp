@@ -5,6 +5,9 @@
 #include "8567.hpp"
 #include "systems/system.hpp"
 #include "systems/Commodore/C64/c64.hpp"
+#include "chips/register.hpp"
+#include "chips/opcode.hpp"
+#include "chips/cpu/cpu.hpp"
 
 cVideo_Mos_8567::cVideo_Mos_8567( std::string pName, cSepr *pSepr, cDevice *pParent ) : cVideo(pName, pSepr, pParent, 504, 313, 1 ) {
 	mScaleSet(2);
@@ -13,6 +16,23 @@ cVideo_Mos_8567::cVideo_Mos_8567( std::string pName, cSepr *pSepr, cDevice *pPar
 
 cVideo_Mos_8567::~cVideo_Mos_8567() {
 	
+}
+void cVideo_Mos_8567::interruptRasterFire() {
+	// Set rasterbit in IRQFlag as waiting
+	mRegInterrupt |= 0x01;
+		
+	// Raster IRQ Enabled?
+	if(!(mRegInterruptEnabled & 0x01))
+		return;
+		
+	// IRQ Waiting bit
+	mRegInterrupt |= 0x80;
+
+	// Fire an interrupt
+	cCpu *cpu = mSystem()->deviceFind<cCpu>("CPU", true);
+
+	cpu->interruptAdd( new cInterrupt("VIC", this) );
+
 }
 
 size_t cVideo_Mos_8567::cycle() {
@@ -54,7 +74,7 @@ size_t cVideo_Mos_8567::cycle() {
 	// Time to fire an interrupt?
 	if( mRegRasterY == mRegRasterInterruptY && mRegRowCounter == 0) {
 
-		//interruptRasterFire();
+		interruptRasterFire();
 	}
 
 	// Left & Right Border
@@ -67,14 +87,14 @@ size_t cVideo_Mos_8567::cycle() {
 		++mRegRowCounter;
 		
 		// Reached end of raster?
-		if( mRegRowCounter == 64 && mRegRasterY > 50)
+		if( mRegRowCounter == 64 && mRegRasterY > 49)
 			++mDrawY;
 
 		return mCycle;
 	}
 
 	// Top and Bottom Border
-	if(  mRegRasterY < 51 || mRegRasterY > 249 ) {
+	if(  mRegRasterY < 50 || mRegRasterY > 249 ) {
 
 		// 8 Pixels per row
 		for(int i = 0; i < 8; ++i)
@@ -335,11 +355,16 @@ void cVideo_Mos_8567::busWriteByte( size_t pAddress, byte pData ) {
 			mRegInterruptEnabled = (pData & 0x0F);
 			// Check for an active interrupt against the mask
 			if( mRegInterrupt & mRegInterruptEnabled) {
+
 				mRegInterrupt |= 0x80;				// IRQ Waiting Bit
-				//board()->interruptFire( false, this );
+				cCpu *cpu = mSystem()->deviceFind<cCpu>("CPU", true);
+				cpu->interruptAdd( new cInterrupt("VIC", this) );
+
 			} else {
 				mRegInterrupt &= 0x7F;				// Only keep lower 4 bits (IRQ Waiting Bit off)
-				//board()->interruptClear(this);
+
+				cCpu *cpu = mSystem()->deviceFind<cCpu>("CPU", true);
+				cpu->interruptRemove( "VIC" );
 			}
 			break;
 			
@@ -386,7 +411,7 @@ void cVideo_Mos_8567::decode_StandardText() {
 	cSystem_Commodore_64	*system = mSystem<cSystem_Commodore_64>();
 
 	// Read char pointer from video
-	byte data = system->deviceReadByte( this, mVidSrc++ ) << 3;
+	word data = system->deviceReadByte( this, mVidSrc++ ) << 3;
 
 	// Get memory address in char rom
 	mVidChar = mVidBaseChar + data;
@@ -400,11 +425,13 @@ void cVideo_Mos_8567::decode_StandardText() {
 	// The color
 	word color = system->deviceReadWord( this, colorP );
 
+	color = (color >> 8) & 0x0f;
+
 	// Lets draw 8 bits
 	for( size_t bit = 0; bit < 8; ++bit, ++mBufferPtr ) {
 		
 		if( data & 0x80 )
-			*mBufferPtr = (color >> 8) & 0x0f;
+			*mBufferPtr = color;
 		else
 			*mBufferPtr = mRegBackgroundColor[0];
 

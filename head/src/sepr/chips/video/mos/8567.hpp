@@ -32,6 +32,8 @@ protected:
 
 	void				 decode_StandardText();
 
+	void				 interruptRasterFire();
+
 public:
 						 cVideo_Mos_8567( std::string pName, cSepr *pSepr, cDevice *pParent );
 						~cVideo_Mos_8567();
