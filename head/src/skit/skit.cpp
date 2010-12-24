@@ -38,9 +38,11 @@ bool cSkit::systemStart( std::string pSystemName ) {
 
 		SDL_PollEvent( &mEvent );
 
+		if(mEvent.type == SDL_KEYDOWN || mEvent.type == SDL_KEYUP )
+			mSystem->eventAdd( &mEvent );
+
 		mSystem->mWindowGet()->clear(0);
 		mSystem->mWindowGet()->blit( mSystem->videoGet(), 0, 0 );
-
 
 		if( mSystem->mCyclesRemainingGet() == 0 ) {
 			if(!step) {

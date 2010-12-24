@@ -1,6 +1,7 @@
 #include <map>
 #include <string>
 #include <sstream>
+#include <vector>
 
 #ifndef _WIN32
 	#include <unistd.h>

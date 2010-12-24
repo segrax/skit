@@ -103,7 +103,7 @@
     <ClCompile Include="..\..\..\src\sepr\input\keyboard\keyboard.cpp">
       <Filter>Source Files\input\keyboard</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\src\sepr\systems\Commodore\C64\keyboard.cpp">
+    <ClCompile Include="..\..\..\src\sepr\systems\Commodore\C64\c64_keyboard.cpp">
       <Filter>Source Files\systems\Commodore\C64</Filter>
     </ClCompile>
   </ItemGroup>
@@ -162,7 +162,7 @@
     <ClInclude Include="..\..\..\src\sepr\input\keyboard\keyboard.hpp">
       <Filter>Source Files\input\keyboard</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\src\sepr\systems\Commodore\C64\keyboard.hpp">
+    <ClInclude Include="..\..\..\src\sepr\systems\Commodore\C64\c64_keyboard.hpp">
       <Filter>Source Files\systems\Commodore\C64</Filter>
     </ClInclude>
   </ItemGroup>

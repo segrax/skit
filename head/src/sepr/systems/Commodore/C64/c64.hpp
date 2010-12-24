@@ -4,6 +4,7 @@ class cCpu_Mos_6510;
 class cVideo_Mos_8567;
 class cVideoWindow;
 class cCia_Mos_6526;
+class cCommodore_64_Keyboard;
 
 class cSystem_Commodore_64 : public cSystem {
 private:
@@ -12,6 +13,8 @@ private:
 	cCpu_Mos_6510				*mCpu;
 	cVideo_Mos_8567				*mVideo;
 	cCia_Mos_6526				*mCia1, *mCia2;
+
+	cCommodore_64_Keyboard		*mKeyboard;
 
 protected:
 	size_t						 cycle();

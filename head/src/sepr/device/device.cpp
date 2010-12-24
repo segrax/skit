@@ -72,7 +72,7 @@ bool cDevice::deviceConnect( cDevice *pDevice, size_t pAddress, size_t pSize ) {
 	return true;
 }
 
-cDevice	*cDevice::deviceGet( std::string pName, bool pRead ) {
+cDevice	*cDevice::deviceGetByName( std::string pName, bool pRead ) {
 	
 	if( mConnections.find( pName ) == mConnections.end() )
 		return 0;

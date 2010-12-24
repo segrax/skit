@@ -45,7 +45,7 @@ public:
 		return dynamic_cast<tDev*>( mConnections[ pName ]->mDeviceBGet());
 	}
 
-	virtual cDevice						*deviceGet( std::string pName, bool pRead );									// Get a device pointer by name
+	virtual cDevice						*deviceGetByName( std::string pName, bool pRead );									// Get a device pointer by name
 	virtual cDevice						*deviceGet( size_t pAddress, bool pRead );
 
 	void								 thread();											// Device Thread Loop

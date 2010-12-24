@@ -8,10 +8,14 @@
 #include "chips/cpu/mos/6502/6502.hpp"
 #include "chips/cpu/mos/6502/6510.hpp"
 #include "chips/interfaceAdapter/mos/6526.hpp"
+#include "input/keyboard/keyboard.hpp"
+
 #include "systems/system.hpp"
 #include "chips/video/video.hpp"
 #include "chips/video/mos/8567.hpp"
 #include "skit/video/window.hpp"
+
+#include "c64_keyboard.hpp"
 #include "c64.hpp"
 
 cSystem_Commodore_64::cSystem_Commodore_64( cSepr *pSepr ) : cSystem("Commodore64", pSepr) {
@@ -29,6 +33,8 @@ cSystem_Commodore_64::cSystem_Commodore_64( cSepr *pSepr ) : cSystem("Commodore6
 
 	mCia1 = new cCia_Mos_6526("CIA1", pSepr, this );
 	mCia2 = new cCia_Mos_6526("CIA2", pSepr, this );
+
+	mKeyboard = new cCommodore_64_Keyboard("KEYBOARD", pSepr, this );
 
 	mWindow = new cVideoWindow( 403, 284, 1, false );
 
@@ -161,6 +167,21 @@ cDevice	*cSystem_Commodore_64::deviceGet( size_t pAddress, bool pRead ) {
 }
 
 size_t cSystem_Commodore_64::cycle() {
+	std::vector<SDL_Event>::iterator eventIT;
+
+	pthread_mutex_lock( &mEventQueue );
+	for( eventIT = mEvents.begin(); eventIT != mEvents.end(); ++eventIT ) {
+		
+		if( eventIT->type == SDL_KEYDOWN )
+			mKeyboard->sdlEvent( (SDL_KeyboardEvent*) &(*eventIT) );
+
+		else if( eventIT->type == SDL_KEYUP )
+			mKeyboard->sdlEvent( (SDL_KeyboardEvent*) &(*eventIT) );
+
+		mKeyboard->cycle();
+	}
+	mEvents.clear();
+	pthread_mutex_unlock( &mEventQueue );
 
 	/*while( mCpu->mCyclesRemainingGet() != 0 || mVideo->mCyclesRemainingGet() != 0 ) {
 		Sleep(mSleepTime);
@@ -168,6 +189,7 @@ size_t cSystem_Commodore_64::cycle() {
 
 	mVideo->mCyclesRemainingAdd(1);
 	mCpu->mCyclesRemainingAdd(1);*/
+
 
 	mVideo->cycle();
 	mCpu->cycle();
@@ -213,6 +235,9 @@ void cSystem_Commodore_64::busWriteByte( size_t pAddress, byte pData ) {
 	cDevice *device = deviceGet( pAddress, false );
 
 	device->busWriteByte( pAddress, pData );
+	
+	if(device->mNameGet() == "CIA1" && pAddress == 0xDC00)
+		mKeyboard->cycle();
 }
 
 void cSystem_Commodore_64::busWriteWordLE( size_t pAddress, word pData ) {

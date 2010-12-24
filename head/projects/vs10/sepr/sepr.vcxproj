@@ -27,7 +27,7 @@
     <ClInclude Include="..\..\..\src\sepr\input\keyboard\keyboard.hpp" />
     <ClInclude Include="..\..\..\src\sepr\sepr.hpp" />
     <ClInclude Include="..\..\..\src\sepr\systems\Commodore\C64\c64.hpp" />
-    <ClInclude Include="..\..\..\src\sepr\systems\Commodore\C64\keyboard.hpp" />
+    <ClInclude Include="..\..\..\src\sepr\systems\Commodore\C64\c64_keyboard.hpp" />
     <ClInclude Include="..\..\..\src\sepr\systems\system.hpp" />
     <ClInclude Include="..\..\..\src\sepr\systems\systems.hpp" />
   </ItemGroup>
@@ -48,7 +48,7 @@
     <ClCompile Include="..\..\..\src\sepr\input\keyboard\keyboard.cpp" />
     <ClCompile Include="..\..\..\src\sepr\sepr.cpp" />
     <ClCompile Include="..\..\..\src\sepr\systems\Commodore\C64\c64.cpp" />
-    <ClCompile Include="..\..\..\src\sepr\systems\Commodore\C64\keyboard.cpp" />
+    <ClCompile Include="..\..\..\src\sepr\systems\Commodore\C64\c64_keyboard.cpp" />
     <ClCompile Include="..\..\..\src\sepr\systems\system.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">

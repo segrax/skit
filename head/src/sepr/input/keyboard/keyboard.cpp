@@ -6,6 +6,14 @@
 
 cKeyboard::cKeyboard( std::string pName, cSepr *pSepr, cDevice *pParent ) : cDevice( pName, pSepr, pParent ) {
 	
+	for( int i = 0; i < 0x100; ++i )
+		mKeyPressed[i] = false;
+
+}
+
+size_t cKeyboard::cycle() {
+
+	return 0;
 }
 
 void cKeyboard::pressKey( size_t pKey ) {
@@ -28,11 +36,11 @@ void cKeyboard::sdlEvent( SDL_KeyboardEvent *pEvent ) {
 	switch( pEvent->state ) {
 	
 		case SDL_PRESSED:
-			mKeyPressed[ pEvent->keysym.scancode ] = true;
+			pressKey( pEvent->keysym.sym);
 			break;
 
 		case SDL_RELEASED:
-			mKeyPressed[ pEvent->keysym.scancode ] = false;
+			releaseKey( pEvent->keysym.sym);
 			break;
 	}
 	

@@ -6,6 +6,9 @@ private:
 	cDebug					*mDebug;
 
 protected:
+	std::vector<SDL_Event>	 mEvents;
+	pthread_mutex_t			 mEventQueue;
+
 	cVideoWindow			*mWindow;
 
 	virtual size_t			 cycle();
@@ -19,6 +22,7 @@ public:
 	virtual void			 busWriteByte( size_t pAddress, byte pData ) = 0;
 	virtual void			 busWriteWordLE( size_t pAddress, word pData ) = 0;
 
+	virtual void			 eventAdd( SDL_Event *pEvent );
 	virtual void			 interruptAdd( std::string pName, cDevice *pDevice ) = 0;
 	virtual void			 interruptRemove( std::string pName ) = 0;
 

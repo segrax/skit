@@ -5,10 +5,14 @@
 
 cSystem::cSystem( std::string pName, cSepr *pSepr ) : cDevice( pName, pSepr, 0 ) {
 	mDebug = new cDebug( pSepr );
+
+	pthread_mutex_init( &mEventQueue , 0 );
 }
 
 cSystem::~cSystem() {
 	delete mDebug;
+
+	pthread_mutex_destroy(&mEventQueue);
 }
 
 std::string cSystem::systemDataPath( std::string pFile ) {
@@ -26,4 +30,10 @@ std::string cSystem::systemDataPath( std::string pFile ) {
 size_t cSystem::cycle() {
 
 	return 0;
+}
+
+void cSystem::eventAdd( SDL_Event *pEvent ) {
+	pthread_mutex_lock( &mEventQueue );
+	mEvents.push_back(*pEvent);
+	pthread_mutex_unlock( &mEventQueue );
 }
