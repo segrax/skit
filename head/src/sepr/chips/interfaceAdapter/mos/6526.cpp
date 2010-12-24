@@ -3,7 +3,6 @@
 #include "device/device.hpp"
 #include "6526.hpp"
 #include "systems/system.hpp"
-#include "systems/Commodore/C64/c64.hpp"
 
 cCia_Mos_6526::cCia_Mos_6526( std::string pName, cSepr *pSepr, cDevice *pParent  ) : cDevice( pName, pSepr, pParent ) {
 

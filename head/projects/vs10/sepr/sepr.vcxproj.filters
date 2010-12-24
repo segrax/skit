@@ -44,6 +44,12 @@
     <Filter Include="Source Files\chips\interfaceAdapter\mos">
       <UniqueIdentifier>{36ad6a53-2b2a-4ffd-a375-93968d8bcc4f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\input">
+      <UniqueIdentifier>{98352320-94d5-4f99-bff3-3af6835ed2e2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\input\keyboard">
+      <UniqueIdentifier>{1a6fb696-5874-400d-9cf4-11266d0e10fd}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\src\sepr\device\device.cpp">
@@ -93,6 +99,12 @@
     </ClCompile>
     <ClCompile Include="..\..\..\src\sepr\chips\interfaceAdapter\mos\6526.cpp">
       <Filter>Source Files\chips\interfaceAdapter\mos</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\sepr\input\keyboard\keyboard.cpp">
+      <Filter>Source Files\input\keyboard</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\sepr\systems\Commodore\C64\keyboard.cpp">
+      <Filter>Source Files\systems\Commodore\C64</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -146,6 +158,12 @@
     </ClInclude>
     <ClInclude Include="..\..\..\src\sepr\chips\interfaceAdapter\mos\6526.hpp">
       <Filter>Source Files\chips\interfaceAdapter\mos</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\sepr\input\keyboard\keyboard.hpp">
+      <Filter>Source Files\input\keyboard</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\sepr\systems\Commodore\C64\keyboard.hpp">
+      <Filter>Source Files\systems\Commodore\C64</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
