@@ -90,7 +90,7 @@ size_t cCpu_Mos_6502::cycle() {
 	// No Instruction, lets fetch one, or use a pre-fetched one
 	if( !mOpcodeCurrent ) {
 			
-		//if(regPC() == 0xeaae )
+		//if(regPC() == 0xea9a )
 		//	mDebug = true;
 
 		byte op = mTmpOpcode;

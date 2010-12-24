@@ -23,7 +23,7 @@ void cCpu_Mos_6502::opcodesPrepare() {
 	OPCODE(0x06,	o_Arith_Shift_Left_ZeroPage,	a_Arith_Shift_Left_ZeroPage,	5);
 	OPCODE(0x08,	o_Push_Flags,					a_Push_Flags,					3);
 	OPCODE(0x09,	o_Or_Accumulator,				a_Or_Accumulator,				2);
-	OPCODE(0x0A,	o_Logical_Shift_Right,			a_Logical_Shift_Right,			2);
+	OPCODE(0x0A,	o_Arithmetic_Shift_Left,		a_Arithmetic_Shift_Left,		2);
 	OPCODE(0x0D,	o_Or_Accumulator_Absolute,		a_Or_Accumulator_Absolute,		4);
 
 	OPCODE(0x10,	o_Branch_If_Negative_Clear,		a_Branch_If_Negative_Clear,		2);

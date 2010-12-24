@@ -5,9 +5,6 @@
 #include "keyboard.hpp"
 
 cKeyboard::cKeyboard( std::string pName, cSepr *pSepr, cDevice *pParent ) : cDevice( pName, pSepr, pParent ) {
-	
-	for( int i = 0; i < 0x100; ++i )
-		mKeyPressed[i] = false;
 
 }
 
@@ -18,17 +15,17 @@ size_t cKeyboard::cycle() {
 
 void cKeyboard::pressKey( size_t pKey ) {
 
-	mKeyPressed[ pKey ] = true; 
+	mKeyPressed[ pKey ].mPressed = true; 
 }
 
 void cKeyboard::releaseKey( size_t pKey ) {
-
-	mKeyPressed[ pKey ] = false;
+	mKeyPressed[ pKey ].mCycles = 10;
+	mKeyPressed[ pKey ].mPressed = false;
 }
 
 bool cKeyboard::isPressed( size_t pKey ) { 
 
-	return mKeyPressed[ pKey ]; 
+	return mKeyPressed[ pKey ].mPressed; 
 }
 
 void cKeyboard::sdlEvent( SDL_KeyboardEvent *pEvent ) {

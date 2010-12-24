@@ -2,47 +2,164 @@
 #include "device/deviceConnection.hpp"
 #include "device/device.hpp"
 #include "systems/system.hpp"
+#include "chips/interfaceAdapter/mos/6526.hpp"
 #include "input/keyboard/keyboard.hpp"
 #include "c64_keyboard.hpp"
-#include "chips/interfaceAdapter/mos/6526.hpp"
 
-cCommodore_64_Keyboard::cCommodore_64_Keyboard( std::string pName, cSepr *pSepr, cDevice *pParent ) : cKeyboard( pName, pSepr, pParent ) {
+
+cCommodore_64_Keyboard::cCommodore_64_Keyboard( std::string pName, cSepr *pSepr, cDevice *pParent ) : cKeyboard( pName, pSepr, pParent ), cCia_Mos_6526( pName, pSepr, pParent ) {
+
+	for( int i = 0; i < 8; ++i ) {
+		mKeysRow[i] = 0xFF;
+		mKeysCol[i] = 0xFF;
+	}
+}
+
+byte cCommodore_64_Keyboard::busReadByte( size_t pAddress ) {
+
+	switch( pAddress & 0x01 ) {
+		case 0x00:{
+			byte ret = mRegPeripheralDataA | ~mRegDataDirectionA, tst = (mRegPeripheralDataB | ~mRegDataDirectionB);// & Joystick1;
+			if (!(tst & 0x01)) ret &= mKeysCol[0];	// AND all active columns
+			if (!(tst & 0x02)) ret &= mKeysCol[1];
+			if (!(tst & 0x04)) ret &= mKeysCol[2];
+			if (!(tst & 0x08)) ret &= mKeysCol[3];
+			if (!(tst & 0x10)) ret &= mKeysCol[4];
+			if (!(tst & 0x20)) ret &= mKeysCol[5];
+			if (!(tst & 0x40)) ret &= mKeysCol[6];
+			if (!(tst & 0x80)) ret &= mKeysCol[7];
+			return ret;// & Joystick2;
+				  }
+
+		case 0x01: {
+			byte ret = ~mRegDataDirectionB, tst = (mRegPeripheralDataA | ~mRegDataDirectionA);// & Joystick2;
+			if (!(tst & 0x01)) ret &= mKeysRow[0];	// AND all active rows
+			if (!(tst & 0x02)) ret &= mKeysRow[1];
+			if (!(tst & 0x04)) ret &= mKeysRow[2];
+			if (!(tst & 0x08)) ret &= mKeysRow[3];
+			if (!(tst & 0x10)) ret &= mKeysRow[4];
+			if (!(tst & 0x20)) ret &= mKeysRow[5];
+			if (!(tst & 0x40)) ret &= mKeysRow[6];
+			if (!(tst & 0x80)) ret &= mKeysRow[7];
+			return (ret | (mRegPeripheralDataB & mRegDataDirectionB));// & Joystick1;
+				   }
+	}
+
+	return cCia_Mos_6526::busReadByte( pAddress );
+}
+
+void cCommodore_64_Keyboard::busWriteByte( size_t pAddress, byte pData ) {
+
+	cCia_Mos_6526::busWriteByte( pAddress, pData );
+}
+
+void cCommodore_64_Keyboard::pressKey( size_t pKey ) {
+
+	mKeyPressed[ pKey ].mPressed = true; 
+
+	size_t c64key = SDLKeyToC64( toupper(pKey) );
+
+	int c64_byte = c64key >> 3;
+	int c64_bit = c64key & 7;
+	int shifted = c64key & 128;
+	c64_byte &= 7;
+	if (shifted) {
+		mKeysRow[6] &= 0xef;
+		mKeysCol[4] &= 0xbf;
+	}
+	mKeysRow[c64_byte] &= ~(1 << c64_bit);
+	mKeysCol[c64_bit] &= ~(1 << c64_byte);
 
 }
 
-size_t cCommodore_64_Keyboard::cycle() {
-	cCia_Mos_6526 *dev = (cCia_Mos_6526*) mSepr->mSystemGet()->deviceGetByName("CIA1", false);
+void cCommodore_64_Keyboard::releaseKey( size_t pKey ) {
+	mKeyPressed[ pKey ].mCycles = 10;
+	mKeyPressed[ pKey ].mPressed = false;
 
-	byte col = (~dev->portAWrite()) & 0x3F;
-	byte data = 0xFF;
+		size_t c64key = SDLKeyToC64( toupper(pKey) );
 
-	if(col == 0x3F)
-		return 1;
-
-	for( int i = 0; i < 0x100; ++i ) {
-
-		if( mKeyPressed[ i ] ) {
-			byte bits = keyRow(i, col);
-			if(bits)
-				data &= ~(1 << bits);
-		}
-
+	int c64_byte = c64key >> 3;
+	int c64_bit = c64key & 7;
+	int shifted = c64key & 128;
+	c64_byte &= 7;
+	if (shifted) {
+		mKeysRow[6] |= 0x10;
+		mKeysCol[4] |= 0x40;
 	}
-
-	dev->setByte( 0x01, data );
-
-	return 1;
+	mKeysRow[c64_byte] |= (1 << c64_bit);
+	mKeysCol[c64_bit] |= (1 << c64_byte);
 }
 
-size_t cCommodore_64_Keyboard::keyRow( size_t pKey, size_t pCol ) {
+#define MATRIX(a,b) (((a) << 3) | (b))
 
-	if(!pCol)
-		return 1;
+size_t cCommodore_64_Keyboard::SDLKeyToC64( size_t pKey) {
+	int result = -1;
 
-	if( pKey == SDLK_a ) {
-		if( pCol == 0x2 )
-			return 0x02;
+	switch (pKey) {
+
+	case VK_F1: return MATRIX(0,4);
+	case VK_F2: return MATRIX(0,4) | 0x80;
+	case VK_F3: return MATRIX(0,5);
+	case VK_F4: return MATRIX(0,5) | 0x80;
+	case VK_F5: return MATRIX(0,6);
+	case VK_F6: return MATRIX(0,6) | 0x80;
+	case VK_F7: return MATRIX(0,3);
+	case VK_F8: return MATRIX(0,3) | 0x80;
+
+	case '0': return MATRIX(4,3);
+	case '1': return MATRIX(7,0);
+	case '2': return MATRIX(7,3);
+	case '3': return MATRIX(1,0);
+	case '4': return MATRIX(1,3);
+	case '5': return MATRIX(2,0);
+	case '6': return MATRIX(2,3);
+	case '7': return MATRIX(3,0);
+	case '8': return MATRIX(3,3);
+	case '9': return MATRIX(4,0);
+
+	/*case VK_bracketleft: return MATRIX(5,6);
+	case VK_bracketright: return MATRIX(6,1);
+	case VK_slash: return MATRIX(6,7);
+	case VK_semicolon: return MATRIX(5,5);
+	case VK_grave: return MATRIX(7,1);
+	case VK_minus: return MATRIX(5,0);
+	case VK_equal: return MATRIX(5,3);
+	case VK_comma: return MATRIX(5,7);
+	case VK_period: return MATRIX(5,4);
+	case VK_quote: return MATRIX(6,2);
+	case VK_backslash: return MATRIX(6,6);*/
+
+	case 'A': result = MATRIX(1,2); break;
+	case 'B': result = MATRIX(3,4); break;
+	case 'C': result = MATRIX(2,4); break;
+	case 'D': result = MATRIX(2,2); break;
+	case 'E': result = MATRIX(1,6); break;
+	case 'F': result = MATRIX(2,5); break;
+	case 'G': result = MATRIX(3,2); break;
+	case 'H': result = MATRIX(3,5); break;
+	case 'I': result = MATRIX(4,1); break;
+	case 'J': result = MATRIX(4,2); break;
+	case 'K': result = MATRIX(4,5); break;
+	case 'L': result = MATRIX(5,2); break;
+	case 'M': result = MATRIX(4,4); break;
+	case 'N': result = MATRIX(4,7); break;
+	case 'O': result = MATRIX(4,6); break;
+	case 'P': result = MATRIX(5,1); break;
+	case 'Q': result = MATRIX(7,6); break;
+	case 'R': result = MATRIX(2,1); break;
+	case 'S': result = MATRIX(1,5); break;
+	case 'T': result = MATRIX(2,6); break;
+	case 'U': result = MATRIX(3,6); break;
+	case 'V': result = MATRIX(3,7); break;
+	case 'W': result = MATRIX(1,1); break;
+	case 'X': result = MATRIX(2,7); break;
+	case 'Y': result = MATRIX(3,1); break;
+	case 'Z': result = MATRIX(1,4); break;
+
 	}
 
-	return 0;
+	if (result != -1 && GetKeyState(VK_CAPITAL))
+		result |= 0x80;
+
+	return result;
 }

@@ -1,7 +1,15 @@
 
+struct sKey {
+	size_t	 mCycles;
+	bool	 mPressed;
+
+			 sKey() { mCycles = 0; mPressed = false; }
+
+};
+
 class cKeyboard : public cDevice {
 protected:
-	bool				 mKeyPressed[ 0x100 ];
+	sKey				 mKeyPressed[ 0x100 ];
 
 public:
 

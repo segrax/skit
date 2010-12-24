@@ -1,8 +1,7 @@
 
 class cCia_Mos_6526 : public cDevice {
-private:
+protected:
 	bool				 mHalted;
-	byte				 mRegPeripheralDataA_Write, mRegPeripheralDataB_Write;
 	byte 				 mRegPeripheralDataA, mRegPeripheralDataB;
 	byte 				 mRegDataDirectionA, mRegDataDirectionB;
 
@@ -25,16 +24,10 @@ public:
 	
 	virtual byte		 busReadByte( size_t pAddress );
 	virtual void		 busWriteByte( size_t pAddress, byte pData );
-	virtual void		 setByte( size_t pAddress, byte pData );
 
 	void				 interruptFire( size_t pInterrupt );
 	void				 TimeOfDayCount();
 	
 	size_t				 cycle();
 	void				 reset();
-
-
-	byte				 portAWrite() { return mRegPeripheralDataA_Write; }
-	byte				 portBWrite() { return mRegPeripheralDataB_Write; }
-
 };

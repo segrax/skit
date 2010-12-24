@@ -31,10 +31,11 @@ cSystem_Commodore_64::cSystem_Commodore_64( cSepr *pSepr ) : cSystem("Commodore6
 
 	mRamColor = new cChip_Ram("COLOR", pSepr, this, 0x400);
 
-	mCia1 = new cCia_Mos_6526("CIA1", pSepr, this );
+	//mCia1 = new cCia_Mos_6526("CIA1", pSepr, this );
 	mCia2 = new cCia_Mos_6526("CIA2", pSepr, this );
 
 	mKeyboard = new cCommodore_64_Keyboard("KEYBOARD", pSepr, this );
+	mCia1 = mKeyboard;
 
 	mWindow = new cVideoWindow( 403, 284, 1, false );
 
@@ -177,8 +178,6 @@ size_t cSystem_Commodore_64::cycle() {
 
 		else if( eventIT->type == SDL_KEYUP )
 			mKeyboard->sdlEvent( (SDL_KeyboardEvent*) &(*eventIT) );
-
-		mKeyboard->cycle();
 	}
 	mEvents.clear();
 	pthread_mutex_unlock( &mEventQueue );
@@ -235,9 +234,6 @@ void cSystem_Commodore_64::busWriteByte( size_t pAddress, byte pData ) {
 	cDevice *device = deviceGet( pAddress, false );
 
 	device->busWriteByte( pAddress, pData );
-	
-	if(device->mNameGet() == "CIA1" && pAddress == 0xDC00)
-		mKeyboard->cycle();
 }
 
 void cSystem_Commodore_64::busWriteWordLE( size_t pAddress, word pData ) {

@@ -71,31 +71,15 @@ byte cCia_Mos_6526::busReadByte( dword		pAddress ) {
 	return 0;
 }
 
-void cCia_Mos_6526::setByte( size_t pAddress, byte pData ) {
-	pAddress &= 0x0F;
-
-	switch(pAddress) {
-		case	0x00:					// 
-			mRegPeripheralDataA = pData;
-
-			break;
-		case	0x01:					//
-			mRegPeripheralDataB = pData;
-			break;
-
-	}
-}
-
 void cCia_Mos_6526::busWriteByte( dword pAddress, byte  pData ) {
 	pAddress &= 0x0F;
 
 	switch(pAddress) {
 		case	0x00:					// 
-			mRegPeripheralDataA_Write = pData;
-
+			mRegPeripheralDataA = pData;
 			break;
 		case	0x01:					//
-			mRegPeripheralDataB_Write = pData;
+			mRegPeripheralDataB = pData;
 			break;
 		case	0x02:
 			mRegDataDirectionA = pData;
