@@ -127,6 +127,7 @@ void cCpu_Mos_6502::opcodesPrepare() {
 	OPCODE(0xEE,	o_Increase_Memory_Absolute,		a_Increase_Memory_Absolute,		6);
 
 	OPCODE(0xF0,	o_Branch_If_Zero_Set,			a_Branch_Equal,					2);
+	OPCODE(0xF9,	o_Subtract_With_Carry_Absolute_Y,	a_Subtract_With_Carry_Absolute_Y, 4);
 }
 
 void cCpu_Mos_6502::o_Unknown_Opcode() {
@@ -309,10 +310,10 @@ void cCpu_Mos_6502::o_Jump_Subroutine() {
 	//	;
 
 	CYCLE(3)
-		stackPush( regPC() );
+		stackPush( regPC() >> 8 );
 
 	CYCLE(4)
-		stackPush( (regPC()) >> 8 );
+		stackPush( regPC() );
 
 	CYCLE(5)
 		regPC = mTmpByte | (mSystem()->busReadByte( regPC() ) << 8);
@@ -418,10 +419,10 @@ void cCpu_Mos_6502::o_Return_From_Interrupt() {
 		regFL.valueSet( stackPop() );
 
 	CYCLE(4)
-		regPC = stackPop() << 8;
+		regPC = stackPop();
 
 	CYCLE(5)
-		regPC |= stackPop();
+		regPC |= stackPop() << 8;
 
 }
 
@@ -531,9 +532,9 @@ void cCpu_Mos_6502::o_Return_From_Subroutine() {
 	CYCLE(2)
 		;
 	CYCLE(3)
-		mTmpWord = (stackPop() << 8);
+		mTmpWord = stackPop();
 	CYCLE(4)
-		mTmpWord |= stackPop();
+		mTmpWord |= stackPop() << 8;
 
 	CYCLE(5)
 		regPC = mTmpWord + 1;
@@ -1553,4 +1554,31 @@ void cCpu_Mos_6502::o_Branch_If_Zero_Set() {
 
 	CYCLE(3)
 		regPC = mTmpWord;
+}
+
+// F9:
+void cCpu_Mos_6502::o_Subtract_With_Carry_Absolute_Y() {
+	CYCLE(1)
+		mTmpWord = mSystem()->busReadByte( regPC++ );
+
+	CYCLE(2)
+		mTmpWord |= (mSystem()->busReadByte( regPC++ ) << 8);
+
+	CYCLE(3) {
+		byte highbyte = mTmpWord >> 8;
+		mTmpWord += regY();
+
+		// Page Crossed?
+		if( highbyte != (mTmpWord >> 8) )
+			++mCycles;
+		else
+			mCycle = 4;
+	}
+
+	CYCLE(4) {
+		mTmpByte = mSystem()->busReadByte( mTmpWord );
+
+		o__SubWithCarry();
+	}
+
 }

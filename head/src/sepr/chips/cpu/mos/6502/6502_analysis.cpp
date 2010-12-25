@@ -470,3 +470,8 @@ void cCpu_Mos_6502::a_Increase_Memory_Absolute() {
 void cCpu_Mos_6502::a_Branch_Equal() {
 
 }
+
+// F9:
+void cCpu_Mos_6502::a_Subtract_With_Carry_Absolute_Y() {
+
+}

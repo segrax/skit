@@ -96,7 +96,7 @@ size_t cCommodore_64_Keyboard::SDLKeyToC64( size_t pKey) {
 	int result = -1;
 
 	switch (pKey) {
-
+	case VK_RETURN: return MATRIX(0,1);
 	case VK_F1: return MATRIX(0,4);
 	case VK_F2: return MATRIX(0,4) | 0x80;
 	case VK_F3: return MATRIX(0,5);

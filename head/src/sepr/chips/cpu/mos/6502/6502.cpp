@@ -90,8 +90,8 @@ size_t cCpu_Mos_6502::cycle() {
 	// No Instruction, lets fetch one, or use a pre-fetched one
 	if( !mOpcodeCurrent ) {
 			
-		//if(regPC() == 0xea9a )
-		//	mDebug = true;
+		if(regPC() == 0xA7f9 )
+			mDebug = true;
 
 		byte op = mTmpOpcode;
 
@@ -142,10 +142,10 @@ void cCpu_Mos_6502::o_Interrupt() {
 		mCycles = 7;
 
 	CYCLE(2)
-		stackPush( regPC() );
+		stackPush( regPC() >> 8 );
 	
 	CYCLE(3)
-		stackPush( regPC() >> 8);
+		stackPush( regPC() );
 
 	CYCLE(4)
 		stackPush( (byte) regFL.value() );

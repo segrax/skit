@@ -159,7 +159,8 @@ protected:
 	void					 o_Subtract_With_Carry_Immediate();		// E9:
 	void					 o_Compare_Index_X_Absolute();			// EC: 
 	void					 o_Increase_Memory_Absolute();			// EE: 
-	void					 o_Branch_If_Zero_Set();						// F0: Branch If Equal
+	void					 o_Branch_If_Zero_Set();				// F0: Branch If Equal
+	void					 o_Subtract_With_Carry_Absolute_Y();	// F9: 
 
 	// Analyse Opcodes
 	void					 a_Nop();
@@ -256,4 +257,5 @@ protected:
 	void					 a_Compare_Index_X_Absolute();			// EC: 
 	void					 a_Increase_Memory_Absolute();			// EE: 
 	void					 a_Branch_Equal();						// F0: Branch If Equal
+	void					 a_Subtract_With_Carry_Absolute_Y();	// F9: 
 };
