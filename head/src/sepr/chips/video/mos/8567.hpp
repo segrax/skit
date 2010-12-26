@@ -35,7 +35,7 @@ protected:
 	void				 interruptRasterFire();
 
 public:
-						 cVideo_Mos_8567( std::string pName, cSepr *pSepr, cDevice *pParent );
+						 cVideo_Mos_8567( std::string pName, cSepr *pSepr, cSystem *pSystem, cDevice *pParent );
 						~cVideo_Mos_8567();
 
 	virtual byte		 busReadByte( size_t pAddress );

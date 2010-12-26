@@ -9,7 +9,7 @@ void *startDevice( void *pDevice ) {
 	return 0;
 }
 
-cDevice::cDevice( std::string pName, cSepr *pSepr, cDevice *pParent ) {
+cDevice::cDevice( std::string pName, cSepr *pSepr, cSystem *pSystem, cDevice *pParent ) {
 
 	mAnalyse = false;
 	mDebug = false;
@@ -21,14 +21,14 @@ cDevice::cDevice( std::string pName, cSepr *pSepr, cDevice *pParent ) {
 	mCyclesTotal = 0;
 	mCyclesRemaining = 0;
 	mName = pName;
-
+	
 	//
 	mSleepTime =1;
 	mQuitThread = false;
 
 	//
 	mSepr = pSepr;
-
+	mSystem = pSystem;
 	// Create the thread
 	mCycleThread = 0;
 
@@ -132,10 +132,6 @@ void cDevice::threadStart() {
 
 	// Start the thread
 	pthread_create(mCycleThread   , &threadAttr, &startDevice,   (void *) this );
-}
-
-cSystem *cDevice::mSystem() {
-	return mSepr->mSystemGet();
 }
 
 byte cDevice::deviceReadByte( cDevice *pFromDevice, size_t pAddress ) {

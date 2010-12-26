@@ -137,9 +137,9 @@ void cCpu_Mos_6502::o_Unknown_Opcode() {
 	msg << debug_CPU_Info_String();
 	msg << "\n" << "Unknown Opcode! ";
 
-	mSystem()->mDebugGet()->device( eDebug_Stop, mSepr, this, msg.str());
+	mSystem->mDebugGet()->device( eDebug_Stop, mSepr, this, msg.str());
 
-	mSystem()->mQuitThreadSet();
+	mSystem->mQuitThreadSet();
 }
 
 void cCpu_Mos_6502::o_Reset() {
@@ -163,13 +163,13 @@ void cCpu_Mos_6502::o_Reset() {
 	//	stackPush( mRegFlags | 0x10 );
 
 	CYCLE(6)
-		regPC = mSystem()->busReadByte( 0xFFFC );
+		regPC = mSystem->busReadByte( 0xFFFC );
 
 	CYCLE(7)
-		regPC |= (mSystem()->busReadByte( 0xFFFD ) << 8);
+		regPC |= (mSystem->busReadByte( 0xFFFD ) << 8);
 
 	CYCLE(8)
-		mTmpOpcode = mSystem()->busReadByte( regPC++ );
+		mTmpOpcode = mSystem->busReadByte( regPC++ );
 }
 
 void cCpu_Mos_6502::o_Nop() {
@@ -179,19 +179,19 @@ void cCpu_Mos_6502::o_Nop() {
 // 05:
 void cCpu_Mos_6502::o_Or_Accumulator_ZeroPage() {
 	CYCLE(1)
-		mTmpWord = mSystem()->busReadByte( regPC++ );
+		mTmpWord = mSystem->busReadByte( regPC++ );
 	
 	CYCLE(2)
-		regA |= mSystem()->busReadByte( mTmpWord );
+		regA |= mSystem->busReadByte( mTmpWord );
 }
 
 // 06: 
 void cCpu_Mos_6502::o_Arith_Shift_Left_ZeroPage() {
 	CYCLE(1)
-		mTmpWord = mSystem()->busReadByte( regPC++ );
+		mTmpWord = mSystem->busReadByte( regPC++ );
 
 	CYCLE(2)
-		mTmpByte = mSystem()->busReadByte( mTmpWord );
+		mTmpByte = mSystem->busReadByte( mTmpWord );
 
 	CYCLE(3) {
 		if( mTmpByte & 0x80 )
@@ -204,7 +204,7 @@ void cCpu_Mos_6502::o_Arith_Shift_Left_ZeroPage() {
 	}
 
 	CYCLE(4)
-		mSystem()->busWriteByte( mTmpWord, mTmpByte );
+		mSystem->busWriteByte( mTmpWord, mTmpByte );
 }
 
 // 08: 
@@ -218,7 +218,7 @@ void cCpu_Mos_6502::o_Push_Flags() {
 void cCpu_Mos_6502::o_Or_Accumulator() {
 
 	CYCLE(1)
-		regA |= mSystem()->busReadByte( regPC++ );
+		regA |= mSystem->busReadByte( regPC++ );
 
 }
 
@@ -235,20 +235,20 @@ void cCpu_Mos_6502::o_Arithmetic_Shift_Left() {
 // 0D: Or
 void cCpu_Mos_6502::o_Or_Accumulator_Absolute() {
 	CYCLE(1)
-		mTmpWord = mSystem()->busReadByte( regPC++ );
+		mTmpWord = mSystem->busReadByte( regPC++ );
 
 	CYCLE(2)
-		mTmpWord |= (mSystem()->busReadByte( regPC++ ) << 8);
+		mTmpWord |= (mSystem->busReadByte( regPC++ ) << 8);
 	
 	CYCLE(3)
-		regA |= mSystem()->busReadByte( mTmpWord );
+		regA |= mSystem->busReadByte( mTmpWord );
 }
 
 // 10: 
 void cCpu_Mos_6502::o_Branch_If_Negative_Clear() {
 
 	CYCLE(1) {
-		mTmpByte = mSystem()->busReadByte( regPC++ );
+		mTmpByte = mSystem->busReadByte( regPC++ );
 		if( flagNegative == false )
 			++mCycles;
 	}
@@ -273,13 +273,13 @@ void cCpu_Mos_6502::o_Branch_If_Negative_Clear() {
 // 16: 
 void cCpu_Mos_6502::o_Arith_Shift_Left_ZeroPage_X() {
 	CYCLE(1)
-		mTmpWord = mSystem()->busReadByte( regPC++ );
+		mTmpWord = mSystem->busReadByte( regPC++ );
 
 	CYCLE(2)
 		mTmpWord += regX();
 
 	CYCLE(3)
-		mTmpByte = mSystem()->busReadByte( mTmpWord );
+		mTmpByte = mSystem->busReadByte( mTmpWord );
 
 	CYCLE(4) {
 		if( mTmpByte & 0x80 )
@@ -292,7 +292,7 @@ void cCpu_Mos_6502::o_Arith_Shift_Left_ZeroPage_X() {
 	}
 
 	CYCLE(5)
-		mSystem()->busWriteByte( mTmpWord, mTmpByte );
+		mSystem->busWriteByte( mTmpWord, mTmpByte );
 }
 
 // 18: 
@@ -305,7 +305,7 @@ void cCpu_Mos_6502::o_Flag_Carry_Clear() {
 void cCpu_Mos_6502::o_Jump_Subroutine() {
 	
 	CYCLE(1)
-		mTmpByte = mSystem()->busReadByte( regPC++ );
+		mTmpByte = mSystem->busReadByte( regPC++ );
 
 	//CYCLE(2)
 	//	;
@@ -317,16 +317,16 @@ void cCpu_Mos_6502::o_Jump_Subroutine() {
 		stackPush( regPC() );
 
 	CYCLE(5)
-		regPC = mTmpByte | (mSystem()->busReadByte( regPC() ) << 8);
+		regPC = mTmpByte | (mSystem->busReadByte( regPC() ) << 8);
 }
 
 // 24: 
 void cCpu_Mos_6502::o_Bit_ZeroPage() {
 	CYCLE(1)
-		mTmpWord = mSystem()->busReadByte( regPC++ );
+		mTmpWord = mSystem->busReadByte( regPC++ );
 
 	CYCLE(2) {
-		mTmpByte = mSystem()->busReadByte( mTmpWord );
+		mTmpByte = mSystem->busReadByte( mTmpWord );
 		o__Bit();
 	}
 }
@@ -334,10 +334,10 @@ void cCpu_Mos_6502::o_Bit_ZeroPage() {
 // 26:
 void cCpu_Mos_6502::o_Rotate_Left_ZeroPage() {
 	CYCLE(1)
-		mTmpWord = mSystem()->busReadByte( regPC++ );
+		mTmpWord = mSystem->busReadByte( regPC++ );
 
 	CYCLE(2)
-		mTmpByte = mSystem()->busReadByte( mTmpWord );
+		mTmpByte = mSystem->busReadByte( mTmpWord );
 
 	CYCLE(3) {
 		bool carry = false;
@@ -354,7 +354,7 @@ void cCpu_Mos_6502::o_Rotate_Left_ZeroPage() {
 	}
 
 	CYCLE(4)
-		mSystem()->busWriteByte( mTmpWord, mTmpByte );
+		mSystem->busWriteByte( mTmpWord, mTmpByte );
 }
 
 // 28: 
@@ -370,7 +370,7 @@ void cCpu_Mos_6502::o_Pull_Flags() {
 void cCpu_Mos_6502::o_And_Accumulator_Immediate() {
 
 	CYCLE(1)
-		regA &= mSystem()->busReadByte( regPC++ );
+		regA &= mSystem->busReadByte( regPC++ );
 
 }			
 
@@ -395,13 +395,13 @@ void cCpu_Mos_6502::o_Rotate_Accumulator_Left() {
 // 2C: 
 void cCpu_Mos_6502::o_Bit_Absolute() {
 	CYCLE(1)
-		mTmpWord = mSystem()->busReadByte( regPC++ );
+		mTmpWord = mSystem->busReadByte( regPC++ );
 
 	CYCLE(2)
-		mTmpWord |= mSystem()->busReadByte( regPC++ ) << 8;
+		mTmpWord |= mSystem->busReadByte( regPC++ ) << 8;
 
 	CYCLE(3) {
-		mTmpByte = mSystem()->busReadByte( mTmpWord );
+		mTmpByte = mSystem->busReadByte( mTmpWord );
 		o__Bit();
 	}
 }
@@ -410,7 +410,7 @@ void cCpu_Mos_6502::o_Bit_Absolute() {
 // 30: 
 void cCpu_Mos_6502::o_Branch_If_Negative_Set() {
 	CYCLE(1) {
-		mTmpByte = mSystem()->busReadByte( regPC++ );
+		mTmpByte = mSystem->busReadByte( regPC++ );
 		if( flagNegative == true )
 			++mCycles;
 	}
@@ -456,10 +456,10 @@ void cCpu_Mos_6502::o_Return_From_Interrupt() {
 // 45:
 void cCpu_Mos_6502::o_Exclusive_Or_ZeroPage() {
 	CYCLE(1)
-		mTmpByte = mSystem()->busReadByte( regPC++ );
+		mTmpByte = mSystem->busReadByte( regPC++ );
 
 	CYCLE(2) {
-		mTmpByte = mSystem()->busReadByte( mTmpByte );
+		mTmpByte = mSystem->busReadByte( mTmpByte );
 		regA ^= mTmpByte;
 	}
 }
@@ -467,10 +467,10 @@ void cCpu_Mos_6502::o_Exclusive_Or_ZeroPage() {
 // 46: 
 void cCpu_Mos_6502::o_Logical_Shift_Right_ZeroPage() {
 	CYCLE(1)
-		mTmpWord = mSystem()->busReadByte( regPC++ );
+		mTmpWord = mSystem->busReadByte( regPC++ );
 
 	CYCLE(2)
-		mTmpByte = mSystem()->busReadByte( mTmpWord );
+		mTmpByte = mSystem->busReadByte( mTmpWord );
 
 	CYCLE(3) {
 		flagCarry = ((mTmpByte & 0x01) ? true : false);
@@ -479,7 +479,7 @@ void cCpu_Mos_6502::o_Logical_Shift_Right_ZeroPage() {
 	}
 
 	CYCLE(4)
-		mSystem()->busWriteByte( mTmpWord, mTmpByte );
+		mSystem->busWriteByte( mTmpWord, mTmpByte );
 }
 
 // 48: 
@@ -492,7 +492,7 @@ void cCpu_Mos_6502::o_Push_Accumulator() {
 // 49: 
 void cCpu_Mos_6502::o_Exclusive_Or() {
 	CYCLE(1) {
-		mTmpByte = mSystem()->busReadByte( regPC++ );
+		mTmpByte = mSystem->busReadByte( regPC++ );
 
 		regA ^= mTmpByte;
 	}
@@ -511,10 +511,10 @@ void cCpu_Mos_6502::o_Logical_Shift_Right() {
 // 4C: Jump
 void cCpu_Mos_6502::o_Jump_Absolute() {
 	CYCLE(1)
-		mTmpWord = mSystem()->busReadByte( regPC++ );
+		mTmpWord = mSystem->busReadByte( regPC++ );
 
 	CYCLE(2) {
-		mTmpWord |= (mSystem()->busReadByte( regPC++ ) << 8);
+		mTmpWord |= (mSystem->busReadByte( regPC++ ) << 8);
 		regPC = mTmpWord;
 	}
 }
@@ -522,13 +522,13 @@ void cCpu_Mos_6502::o_Jump_Absolute() {
 // 56:
 void cCpu_Mos_6502::o_Logical_Shift_Right_ZeroPage_X() {
 	CYCLE(1)
-		mTmpWord = mSystem()->busReadByte( regPC++ );
+		mTmpWord = mSystem->busReadByte( regPC++ );
 
 	CYCLE(2)
 		mTmpWord += regX();
 
 	CYCLE(3)
-		mTmpByte = mSystem()->busReadByte( mTmpWord );
+		mTmpByte = mSystem->busReadByte( mTmpWord );
 
 	CYCLE(4) {
 		if( mTmpByte & 0x01 )
@@ -541,7 +541,7 @@ void cCpu_Mos_6502::o_Logical_Shift_Right_ZeroPage_X() {
 	}
 
 	CYCLE(5)
-		mSystem()->busWriteByte( mTmpWord, mTmpByte );
+		mSystem->busWriteByte( mTmpWord, mTmpByte );
 }
 
 // 58: 
@@ -570,10 +570,10 @@ void cCpu_Mos_6502::o_Return_From_Subroutine() {
 // 65:
 void cCpu_Mos_6502::o_Add_With_Carry_ZeroPage() {
 	CYCLE(1) 
-		mTmpByte = mSystem()->busReadByte( regPC++ );
+		mTmpByte = mSystem->busReadByte( regPC++ );
 
 	CYCLE(2) {
-		mTmpByte = mSystem()->busReadByte( mTmpByte );
+		mTmpByte = mSystem->busReadByte( mTmpByte );
 
 		o__AddWithCarry();
 	}
@@ -583,10 +583,10 @@ void cCpu_Mos_6502::o_Add_With_Carry_ZeroPage() {
 // 66: 
 void cCpu_Mos_6502::o_Rotate_Right_ZeroPage() {
 	CYCLE(1)
-		mTmpWord = mSystem()->busReadByte( regPC++ );
+		mTmpWord = mSystem->busReadByte( regPC++ );
 
 	CYCLE(2)
-		mTmpByte = mSystem()->busReadByte( mTmpWord );
+		mTmpByte = mSystem->busReadByte( mTmpWord );
 
 	CYCLE(3) {
 		bool carry = false;
@@ -603,7 +603,7 @@ void cCpu_Mos_6502::o_Rotate_Right_ZeroPage() {
 	}
 
 	CYCLE(4)
-		mSystem()->busWriteByte( mTmpWord, mTmpByte );
+		mSystem->busWriteByte( mTmpWord, mTmpByte );
 }
 // 68: 
 void cCpu_Mos_6502::o_Pull_Accumulator() {
@@ -617,7 +617,7 @@ void cCpu_Mos_6502::o_Pull_Accumulator() {
 void cCpu_Mos_6502::o_Add_With_Carry_Immediate() {
 
 	CYCLE(1) {
-		mTmpByte = mSystem()->busReadByte( regPC++ );
+		mTmpByte = mSystem->busReadByte( regPC++ );
 
 		o__AddWithCarry();
 	}
@@ -644,23 +644,23 @@ void cCpu_Mos_6502::o_Rotate_Right_Accumulator() {
 // 6C:
 void cCpu_Mos_6502::o_Jump_Indirect() {
 	CYCLE(1)
-		mTmpWord = mSystem()->busReadByte( regPC++ );
+		mTmpWord = mSystem->busReadByte( regPC++ );
 
 	CYCLE(2)
-		mTmpWord |= (mSystem()->busReadByte( regPC++ ) << 8);
+		mTmpWord |= (mSystem->busReadByte( regPC++ ) << 8);
 	
 	CYCLE(3)
-		mTmpByte = mSystem()->busReadByte( mTmpWord++ );
+		mTmpByte = mSystem->busReadByte( mTmpWord++ );
 
 	CYCLE(4) 
-		regPC = mTmpByte | (mSystem()->busReadByte( mTmpWord ) << 8);
+		regPC = mTmpByte | (mSystem->busReadByte( mTmpWord ) << 8);
 
 }
 
 // 70: 
 void cCpu_Mos_6502::o_Branch_If_Overflow() {
 	CYCLE(1) {
-		mTmpByte = mSystem()->busReadByte( regPC++ );
+		mTmpByte = mSystem->busReadByte( regPC++ );
 		if( flagOverflow == true )
 			++mCycles;
 	}
@@ -685,13 +685,13 @@ void cCpu_Mos_6502::o_Branch_If_Overflow() {
 // 76: 
 void cCpu_Mos_6502::o_Rotate_Right_ZeroPage_X() {
 	CYCLE(1)
-		mTmpWord = mSystem()->busReadByte( regPC++ );
+		mTmpWord = mSystem->busReadByte( regPC++ );
 
 	CYCLE(2)
 		mTmpWord += regX();
 
 	CYCLE(3)
-		mTmpByte = mSystem()->busReadByte( mTmpWord );
+		mTmpByte = mSystem->busReadByte( mTmpWord );
 
 	CYCLE(4) {
 		bool carry = false;
@@ -708,7 +708,7 @@ void cCpu_Mos_6502::o_Rotate_Right_ZeroPage_X() {
 	}
 
 	CYCLE(5)
-		mSystem()->busWriteByte( mTmpWord, mTmpByte );
+		mSystem->busWriteByte( mTmpWord, mTmpByte );
 }
 
 // 78: Disable Interrupt Flag
@@ -721,10 +721,10 @@ void cCpu_Mos_6502::o_Flag_Interrupt_Disable_Set() {
 // 79: 
 void cCpu_Mos_6502::o_Add_With_Carry_Absolute_Y() {
 	CYCLE(1)
-		mTmpWord = mSystem()->busReadByte( regPC++ );
+		mTmpWord = mSystem->busReadByte( regPC++ );
 
 	CYCLE(2)
-		mTmpWord |= (mSystem()->busReadByte( regPC++ ) << 8);
+		mTmpWord |= (mSystem->busReadByte( regPC++ ) << 8);
 
 	CYCLE(3) {
 		byte highbyte = mTmpWord >> 8;
@@ -739,7 +739,7 @@ void cCpu_Mos_6502::o_Add_With_Carry_Absolute_Y() {
 	}
 
 	CYCLE(4) {
-		mTmpByte = mSystem()->busReadByte( mTmpWord );
+		mTmpByte = mSystem->busReadByte( mTmpWord );
 		o__AddWithCarry();
 	}
 }
@@ -747,19 +747,19 @@ void cCpu_Mos_6502::o_Add_With_Carry_Absolute_Y() {
 // 84: 
 void cCpu_Mos_6502::o_Store_Index_Y_ZeroPage() {
 	CYCLE(1)
-		mTmpByte = mSystem()->busReadByte( regPC++ );
+		mTmpByte = mSystem->busReadByte( regPC++ );
 
 	CYCLE(2)
-		mSystem()->busWriteByte( mTmpByte, regY() );
+		mSystem->busWriteByte( mTmpByte, regY() );
 }
 
 // 85: 
 void cCpu_Mos_6502::o_Store_Accumulator_ZeroPage() {
 	CYCLE(1)
-		mTmpByte = mSystem()->busReadByte( regPC++ );
+		mTmpByte = mSystem->busReadByte( regPC++ );
 
 	CYCLE(2)
-		mSystem()->busWriteByte( mTmpByte, regA() );
+		mSystem->busWriteByte( mTmpByte, regA() );
 
 }
 
@@ -767,10 +767,10 @@ void cCpu_Mos_6502::o_Store_Accumulator_ZeroPage() {
 void cCpu_Mos_6502::o_Store_Index_X_ZeroPage() {
 
 	CYCLE(1)
-		mTmpByte = mSystem()->busReadByte( regPC++ );
+		mTmpByte = mSystem->busReadByte( regPC++ );
 
 	CYCLE(2)
-		mSystem()->busWriteByte( mTmpByte, regX() );
+		mSystem->busWriteByte( mTmpByte, regX() );
 }
 
 // 88: 
@@ -791,46 +791,46 @@ void cCpu_Mos_6502::o_Transfer_Index_X_To_A() {
 void cCpu_Mos_6502::o_Store_Index_Y_Absolute() {
 	
 	CYCLE(1)
-		mTmpWord = mSystem()->busReadByte( regPC++ );
+		mTmpWord = mSystem->busReadByte( regPC++ );
 
 	CYCLE(2)
-		mTmpWord |= (mSystem()->busReadByte( regPC++ ) << 8);
+		mTmpWord |= (mSystem->busReadByte( regPC++ ) << 8);
 
 	CYCLE(3)
-		mSystem()->busWriteByte( mTmpWord, regY() );
+		mSystem->busWriteByte( mTmpWord, regY() );
 }
 
 // 8D:
 void cCpu_Mos_6502::o_Store_Accumulator_Absolute() {
 
 	CYCLE(1)
-		mTmpWord = mSystem()->busReadByte( regPC++ );
+		mTmpWord = mSystem->busReadByte( regPC++ );
 
 	CYCLE(2)
-		mTmpWord |= (mSystem()->busReadByte( regPC++ ) << 8);
+		mTmpWord |= (mSystem->busReadByte( regPC++ ) << 8);
 
 	CYCLE(3)
-		mSystem()->busWriteByte( mTmpWord, regA() );
+		mSystem->busWriteByte( mTmpWord, regA() );
 }
 
 // 8E: Store X Absolute
 void cCpu_Mos_6502::o_Store_Index_X_Absolute() {
 
 	CYCLE(1)
-		mTmpWord = mSystem()->busReadByte( regPC++ );
+		mTmpWord = mSystem->busReadByte( regPC++ );
 
 	CYCLE(2)
-		mTmpWord |= (mSystem()->busReadByte( regPC++ ) << 8);
+		mTmpWord |= (mSystem->busReadByte( regPC++ ) << 8);
 
 	CYCLE(3)
-		mSystem()->busWriteByte( mTmpWord, regX() );
+		mSystem->busWriteByte( mTmpWord, regX() );
 
 }
 
 // 90: 
 void cCpu_Mos_6502::o_Branch_If_Carry_Clear() {
 	CYCLE(1) {
-		mTmpByte = mSystem()->busReadByte( regPC++ );
+		mTmpByte = mSystem->busReadByte( regPC++ );
 		if( flagCarry == false )
 			++mCycles;
 	}
@@ -855,43 +855,43 @@ void cCpu_Mos_6502::o_Branch_If_Carry_Clear() {
 // 91:
 void cCpu_Mos_6502::o_Store_Accumulator_Indirect_Y() {
 	CYCLE(1)
-		mTmpByte = mSystem()->busReadByte( regPC++ );
+		mTmpByte = mSystem->busReadByte( regPC++ );
 
 	CYCLE(2)
-		mTmpWord = mSystem()->busReadByte( mTmpByte++ );
+		mTmpWord = mSystem->busReadByte( mTmpByte++ );
 
 	CYCLE(3)
-		mTmpWord |= (mSystem()->busReadByte( mTmpByte ) << 8);
+		mTmpWord |= (mSystem->busReadByte( mTmpByte ) << 8);
 
 	CYCLE(4)
 		mTmpWord += regY();
 
 	CYCLE(5)
-		mSystem()->busWriteByte( mTmpWord, regA() );
+		mSystem->busWriteByte( mTmpWord, regA() );
 }
 
 // 94: 
 void cCpu_Mos_6502::o_Store_Index_Y_ZeroPage_X() {
 	CYCLE(1)
-		mTmpByte = mSystem()->busReadByte( regPC++ );
+		mTmpByte = mSystem->busReadByte( regPC++ );
 
 	CYCLE(2)
 		mTmpByte += regX();
 
 	CYCLE(3)
-		mSystem()->busWriteByte( mTmpByte, regY() );
+		mSystem->busWriteByte( mTmpByte, regY() );
 }
 
 // 95: 
 void cCpu_Mos_6502::o_Store_Accumulator_ZeroPage_X() {
 	CYCLE(1)
-		mTmpByte = mSystem()->busReadByte( regPC++ );
+		mTmpByte = mSystem->busReadByte( regPC++ );
 
 	CYCLE(2)
 		mTmpByte += regX();
 
 	CYCLE(3)
-		mSystem()->busWriteByte( mTmpByte, regA() );
+		mSystem->busWriteByte( mTmpByte, regA() );
 }
 
 // 98:
@@ -905,16 +905,16 @@ void cCpu_Mos_6502::o_Transfer_Index_Y_To_A() {
 void cCpu_Mos_6502::o_Store_Accumulator_Absolute_Y() {
 	
 	CYCLE(1)
-		mTmpWord = mSystem()->busReadByte( regPC++ );
+		mTmpWord = mSystem->busReadByte( regPC++ );
 
 	CYCLE(2)
-		mTmpWord |= (mSystem()->busReadByte( regPC++ ) << 8);
+		mTmpWord |= (mSystem->busReadByte( regPC++ ) << 8);
 
 	CYCLE(3)
 		mTmpWord += regY();
 
 	CYCLE(4)
-		mSystem()->busWriteByte( mTmpWord, regA() );
+		mSystem->busWriteByte( mTmpWord, regA() );
 }
 
 // 9A: Transfer X to StackPtr
@@ -927,23 +927,23 @@ void cCpu_Mos_6502::o_Transfer_X_to_StackPtr() {
 // 9D: 
 void cCpu_Mos_6502::o_Store_Accumulator_Absolute_X() {
 	CYCLE(1)
-		mTmpWord = mSystem()->busReadByte( regPC++ );
+		mTmpWord = mSystem->busReadByte( regPC++ );
 
 	CYCLE(2)
-		mTmpWord |= (mSystem()->busReadByte( regPC++ ) << 8);
+		mTmpWord |= (mSystem->busReadByte( regPC++ ) << 8);
 
 	CYCLE(3)
 		mTmpWord += regX();
 
 	CYCLE(4)
-		mSystem()->busWriteByte( mTmpWord, regA() );
+		mSystem->busWriteByte( mTmpWord, regA() );
 }
 
 // A0: 
 void cCpu_Mos_6502::o_Load_Index_Y_Immediate() {
 	
 	CYCLE(1)
-		regY = mSystem()->busReadByte( regPC++ );
+		regY = mSystem->busReadByte( regPC++ );
 
 }
 
@@ -951,34 +951,34 @@ void cCpu_Mos_6502::o_Load_Index_Y_Immediate() {
 void cCpu_Mos_6502::o_Load_Index_X_Immediate() {
 
 	CYCLE(1)
-		regX = mSystem()->busReadByte( regPC++ );
+		regX = mSystem->busReadByte( regPC++ );
 }
 
 // A4: 
 void cCpu_Mos_6502::o_Load_Index_Y_ZeroPage() {
 	CYCLE(1)
-		mTmpByte = mSystem()->busReadByte( regPC++ );
+		mTmpByte = mSystem->busReadByte( regPC++ );
 
 	CYCLE(2)
-		regY = mSystem()->busReadByte( mTmpByte );
+		regY = mSystem->busReadByte( mTmpByte );
 }
 
 // A5: 
 void cCpu_Mos_6502::o_Load_Accumulator_ZeroPage() {
 	CYCLE(1)
-		mTmpByte = mSystem()->busReadByte( regPC++ );
+		mTmpByte = mSystem->busReadByte( regPC++ );
 
 	CYCLE(2)
-		regA = mSystem()->busReadByte( mTmpByte );
+		regA = mSystem->busReadByte( mTmpByte );
 }
 
 // A6: 
 void cCpu_Mos_6502::o_Load_Index_X_ZeroPage() {
 	CYCLE(1)
-		mTmpByte = mSystem()->busReadByte( regPC++ );
+		mTmpByte = mSystem->busReadByte( regPC++ );
 
 	CYCLE(2)
-		regX = mSystem()->busReadByte( mTmpByte );
+		regX = mSystem->busReadByte( mTmpByte );
 }
 
 // A8:
@@ -992,7 +992,7 @@ void cCpu_Mos_6502::o_Transfer_Accumulator_To_Y() {
 void cCpu_Mos_6502::o_Load_Accumulator_Immediate() {
 
 	CYCLE(1)
-		regA = mSystem()->busReadByte( regPC++ );
+		regA = mSystem->busReadByte( regPC++ );
 }
 
 // AA:
@@ -1006,13 +1006,13 @@ void cCpu_Mos_6502::o_Transfer_Accumulator_To_X() {
 void cCpu_Mos_6502::o_Load_Index_Y_Absolute() {
 
 	CYCLE(1)
-		mTmpWord = mSystem()->busReadByte( regPC++ );
+		mTmpWord = mSystem->busReadByte( regPC++ );
 
 	CYCLE(2)
-		mTmpWord |= (mSystem()->busReadByte( regPC++ ) << 8);
+		mTmpWord |= (mSystem->busReadByte( regPC++ ) << 8);
 
 	CYCLE(3)
-		regY = mSystem()->busReadByte( mTmpWord );
+		regY = mSystem->busReadByte( mTmpWord );
 	
 }
 
@@ -1020,32 +1020,32 @@ void cCpu_Mos_6502::o_Load_Index_Y_Absolute() {
 void cCpu_Mos_6502::o_Load_Accumulator_Absolute() {
 
 	CYCLE(1)
-		mTmpWord = mSystem()->busReadByte( regPC++ );
+		mTmpWord = mSystem->busReadByte( regPC++ );
 
 	CYCLE(2)
-		mTmpWord |= (mSystem()->busReadByte( regPC++ ) << 8);
+		mTmpWord |= (mSystem->busReadByte( regPC++ ) << 8);
 
 	CYCLE(3)
-		regA = mSystem()->busReadByte( mTmpWord );
+		regA = mSystem->busReadByte( mTmpWord );
 	
 }
 
 // AE:
 void cCpu_Mos_6502::o_Load_Index_X_Absolute() {
 	CYCLE(1)
-		mTmpWord = mSystem()->busReadByte( regPC++ );
+		mTmpWord = mSystem->busReadByte( regPC++ );
 
 	CYCLE(2)
-		mTmpWord |= (mSystem()->busReadByte( regPC++ ) << 8);
+		mTmpWord |= (mSystem->busReadByte( regPC++ ) << 8);
 
 	CYCLE(3)
-		regX = mSystem()->busReadByte( mTmpWord );
+		regX = mSystem->busReadByte( mTmpWord );
 }
 
 // B0: 
 void cCpu_Mos_6502::o_Branch_If_CarrySet() {
 	CYCLE(1) {
-		mTmpByte = mSystem()->busReadByte( regPC++ );
+		mTmpByte = mSystem->busReadByte( regPC++ );
 		if( flagCarry == true )
 			++mCycles;
 	}
@@ -1070,13 +1070,13 @@ void cCpu_Mos_6502::o_Branch_If_CarrySet() {
 // B1: 
 void cCpu_Mos_6502::o_Load_Accumulator_Indirect_Y() {
 	CYCLE(1)
-		mTmpByte = mSystem()->busReadByte( regPC++ );
+		mTmpByte = mSystem->busReadByte( regPC++ );
 
 	CYCLE(2)
-		mTmpWord = mSystem()->busReadByte( mTmpByte++ );
+		mTmpWord = mSystem->busReadByte( mTmpByte++ );
 
 	CYCLE(3)
-		mTmpWord |= (mSystem()->busReadByte( mTmpByte ) << 8);
+		mTmpWord |= (mSystem->busReadByte( mTmpByte ) << 8);
 
 	CYCLE(4) {
 
@@ -1091,40 +1091,40 @@ void cCpu_Mos_6502::o_Load_Accumulator_Indirect_Y() {
 	}
 
 	CYCLE(5)
-		regA = mSystem()->busReadByte( mTmpWord );
+		regA = mSystem->busReadByte( mTmpWord );
 }
 
 // B4: 
 void cCpu_Mos_6502::o_Load_Index_Y_ZeroPage_X() {
 	CYCLE(1)
-		mTmpByte = mSystem()->busReadByte( regPC++ );
+		mTmpByte = mSystem->busReadByte( regPC++ );
 
 	CYCLE(2)
 		mTmpByte += regX();
 
 	CYCLE(3)
-		regY = mSystem()->busReadByte( mTmpByte );
+		regY = mSystem->busReadByte( mTmpByte );
 }
 
 // B5: 
 void cCpu_Mos_6502::o_Load_Accumulator_ZeroPage_X() {
 	CYCLE(1)
-		mTmpByte = mSystem()->busReadByte( regPC++ );
+		mTmpByte = mSystem->busReadByte( regPC++ );
 
 	CYCLE(2)
 		mTmpByte += regX();
 
 	CYCLE(3)
-		regA = mSystem()->busReadByte( mTmpByte );
+		regA = mSystem->busReadByte( mTmpByte );
 }
 
 // B9: 
 void cCpu_Mos_6502::o_Load_Accumulator_Absolute_Y() {
 	CYCLE(1)
-		mTmpWord = mSystem()->busReadByte( regPC++ );
+		mTmpWord = mSystem->busReadByte( regPC++ );
 
 	CYCLE(2)
-		mTmpWord |= (mSystem()->busReadByte( regPC++ ) << 8);
+		mTmpWord |= (mSystem->busReadByte( regPC++ ) << 8);
 
 	CYCLE(3) {
 		byte highbyte = mTmpWord >> 8;
@@ -1139,7 +1139,7 @@ void cCpu_Mos_6502::o_Load_Accumulator_Absolute_Y() {
 	}
 
 	CYCLE(4)
-		regA = mSystem()->busReadByte( mTmpWord );
+		regA = mSystem->busReadByte( mTmpWord );
 }
 
 // BA: 
@@ -1153,10 +1153,10 @@ void cCpu_Mos_6502::o_Transfer_S_To_IndexX() {
 void cCpu_Mos_6502::o_Load_A_Absolute_X() {
 
 	CYCLE(1)
-		mTmpWord = mSystem()->busReadByte( regPC++ );
+		mTmpWord = mSystem->busReadByte( regPC++ );
 
 	CYCLE(2)
-		mTmpWord |= (mSystem()->busReadByte( regPC++ ) << 8);
+		mTmpWord |= (mSystem->busReadByte( regPC++ ) << 8);
 
 	CYCLE(3) {
 		byte highbyte = mTmpWord >> 8;
@@ -1171,10 +1171,10 @@ void cCpu_Mos_6502::o_Load_A_Absolute_X() {
 	}
 
 	CYCLE(4) {
-		regA = mSystem()->busReadByte( mTmpWord );
+		regA = mSystem->busReadByte( mTmpWord );
 
 		if(mCycles==4)
-			mTmpOpcode = mSystem()->busReadByte( regPC++ );
+			mTmpOpcode = mSystem->busReadByte( regPC++ );
 	}
 
 }
@@ -1182,7 +1182,7 @@ void cCpu_Mos_6502::o_Load_A_Absolute_X() {
 // C0:
 void cCpu_Mos_6502::o_Compare_Index_Y_Immediate() {
 	CYCLE(1) {
-		mTmpWord = mSystem()->busReadByte( regPC++ );
+		mTmpWord = mSystem->busReadByte( regPC++ );
 
 		if( regY() >= mTmpWord )
 			flagCarry = true;
@@ -1198,10 +1198,10 @@ void cCpu_Mos_6502::o_Compare_Index_Y_Immediate() {
 // C4:
 void cCpu_Mos_6502::o_Compare_Index_Y_ZeroPage() {
 	CYCLE(1)
-		mTmpByte = mSystem()->busReadByte( regPC++ );
+		mTmpByte = mSystem->busReadByte( regPC++ );
 
 	CYCLE(2) {
-		mTmpWord = mSystem()->busReadByte( mTmpByte );
+		mTmpWord = mSystem->busReadByte( mTmpByte );
 
 		if( regY() >= mTmpWord )
 			flagCarry = true;
@@ -1217,10 +1217,10 @@ void cCpu_Mos_6502::o_Compare_Index_Y_ZeroPage() {
 // C5:
 void cCpu_Mos_6502::o_Compare_Accumulator_ZeroPage() {
 	CYCLE(1)
-		mTmpByte = mSystem()->busReadByte( regPC++ );
+		mTmpByte = mSystem->busReadByte( regPC++ );
 
 	CYCLE(2) {
-		mTmpWord = mSystem()->busReadByte( mTmpByte );
+		mTmpWord = mSystem->busReadByte( mTmpByte );
 
 		if( regA() >= mTmpWord )
 			flagCarry = true;
@@ -1236,10 +1236,10 @@ void cCpu_Mos_6502::o_Compare_Accumulator_ZeroPage() {
 // C6:
 void cCpu_Mos_6502::o_Decrease_Memory_ZeroPage() {
 	CYCLE(1)
-		mTmpWord = mSystem()->busReadByte( regPC++ );
+		mTmpWord = mSystem->busReadByte( regPC++ );
 
 	CYCLE(2)
-		mTmpByte = mSystem()->busReadByte( mTmpWord );
+		mTmpByte = mSystem->busReadByte( mTmpWord );
 
 	CYCLE(3) {
 		--mTmpByte;
@@ -1247,7 +1247,7 @@ void cCpu_Mos_6502::o_Decrease_Memory_ZeroPage() {
 	}
 
 	CYCLE(4)
-		mSystem()->busWriteByte( mTmpWord, mTmpByte );
+		mSystem->busWriteByte( mTmpWord, mTmpByte );
 }
 
 // C8: 
@@ -1261,7 +1261,7 @@ void cCpu_Mos_6502::o_Increase_Y() {
 void cCpu_Mos_6502::o_Compare_Accumulator_Immediate() {
 	
 	CYCLE(1) {
-		mTmpWord = mSystem()->busReadByte( regPC++ );
+		mTmpWord = mSystem->busReadByte( regPC++ );
 
 		if( regA() >= mTmpWord )
 			flagCarry = true;
@@ -1287,13 +1287,13 @@ void cCpu_Mos_6502::o_Decrease_X() {
 // CD: 
 void cCpu_Mos_6502::o_Compare_Accumulator_Absolute() {
 	CYCLE(1)
-		mTmpWord = mSystem()->busReadByte( regPC++ );
+		mTmpWord = mSystem->busReadByte( regPC++ );
 
 	CYCLE(2)
-		mTmpWord |= (mSystem()->busReadByte( regPC++ ) << 8);
+		mTmpWord |= (mSystem->busReadByte( regPC++ ) << 8);
 
 	CYCLE(3) {
-		mTmpWord = mSystem()->busReadByte( mTmpWord );
+		mTmpWord = mSystem->busReadByte( mTmpWord );
 
 		if( regA() >= mTmpWord )
 			flagCarry = true;
@@ -1310,13 +1310,13 @@ void cCpu_Mos_6502::o_Compare_Accumulator_Absolute() {
 // CE:
 void cCpu_Mos_6502::o_Decrease_Memory_Absolute() {
 	CYCLE(1)
-		mTmpWord = mSystem()->busReadByte( regPC++ );
+		mTmpWord = mSystem->busReadByte( regPC++ );
 
 	CYCLE(2)
-		mTmpWord |= (mSystem()->busReadByte( regPC++ ) << 8);
+		mTmpWord |= (mSystem->busReadByte( regPC++ ) << 8);
 
 	CYCLE(3)
-		mTmpByte = mSystem()->busReadByte( mTmpWord );
+		mTmpByte = mSystem->busReadByte( mTmpWord );
 
 	CYCLE(4) {
 		--mTmpByte;
@@ -1324,14 +1324,14 @@ void cCpu_Mos_6502::o_Decrease_Memory_Absolute() {
 	}
 
 	CYCLE(5)
-		mSystem()->busWriteByte( mTmpWord, mTmpByte );
+		mSystem->busWriteByte( mTmpWord, mTmpByte );
 }
 
 // D0: Branch not Equal
 void cCpu_Mos_6502::o_Branch_Not_Equal() {
 
 	CYCLE(1) {
-		mTmpByte = mSystem()->busReadByte( regPC++ );
+		mTmpByte = mSystem->busReadByte( regPC++ );
 		if( flagZero == false )
 			++mCycles;
 	}
@@ -1356,13 +1356,13 @@ void cCpu_Mos_6502::o_Branch_Not_Equal() {
 // D1: 
 void cCpu_Mos_6502::o_Compare_Indirect_Y() {
 	CYCLE(1)
-		mTmpByte = mSystem()->busReadByte( regPC++ );
+		mTmpByte = mSystem->busReadByte( regPC++ );
 
 	CYCLE(2)
-		mTmpWord = mSystem()->busReadByte( mTmpByte++ );
+		mTmpWord = mSystem->busReadByte( mTmpByte++ );
 
 	CYCLE(3)
-		mTmpWord |= (mSystem()->busReadByte( mTmpByte ) << 8);
+		mTmpWord |= (mSystem->busReadByte( mTmpByte ) << 8);
 
 	CYCLE(4) {
 		byte highbyte = mTmpWord >> 8;
@@ -1376,7 +1376,7 @@ void cCpu_Mos_6502::o_Compare_Indirect_Y() {
 	}
 
 	CYCLE(5) {
-		mTmpWord = mSystem()->busReadByte( mTmpWord );
+		mTmpWord = mSystem->busReadByte( mTmpWord );
 
 		if( regA() >= mTmpWord )
 			flagCarry = true;
@@ -1400,10 +1400,10 @@ void cCpu_Mos_6502::o_Flag_Decimal_Clear() {
 // 
 void cCpu_Mos_6502::o_Compare_Absolute_X() {
 	CYCLE(1)
-		mTmpWord = mSystem()->busReadByte( regPC++ );
+		mTmpWord = mSystem->busReadByte( regPC++ );
 
 	CYCLE(2)
-		mTmpWord |= (mSystem()->busReadByte( regPC++ ) << 8);
+		mTmpWord |= (mSystem->busReadByte( regPC++ ) << 8);
 
 	CYCLE(3) {
 		byte highbyte = mTmpWord >> 8;
@@ -1417,7 +1417,7 @@ void cCpu_Mos_6502::o_Compare_Absolute_X() {
 	}
 
 	CYCLE(4) {
-		mTmpWord = mSystem()->busReadByte( mTmpWord );
+		mTmpWord = mSystem->busReadByte( mTmpWord );
 
 		if( regA() >= mTmpWord )
 			flagCarry = true;
@@ -1430,7 +1430,7 @@ void cCpu_Mos_6502::o_Compare_Absolute_X() {
 		registerFlagSet( mTmpByte );
 
 		if(mCycles==4)
-			mTmpOpcode = mSystem()->busReadByte( regPC++ );
+			mTmpOpcode = mSystem->busReadByte( regPC++ );
 	}
 
 }
@@ -1438,7 +1438,7 @@ void cCpu_Mos_6502::o_Compare_Absolute_X() {
 // E0:
 void cCpu_Mos_6502::o_Compare_Index_X_Immediate() {
 	CYCLE(1) {
-		mTmpWord = mSystem()->busReadByte( regPC++ );
+		mTmpWord = mSystem->busReadByte( regPC++ );
 
 		if( regX() >= mTmpWord )
 			flagCarry = true;
@@ -1454,11 +1454,11 @@ void cCpu_Mos_6502::o_Compare_Index_X_Immediate() {
 // E4:
 void cCpu_Mos_6502::o_Compare_Index_X_ZeroPage() {
 	CYCLE(1) {
-		mTmpWord = mSystem()->busReadByte( regPC++ );
+		mTmpWord = mSystem->busReadByte( regPC++ );
 	}
 
 	CYCLE(2) {
-		mTmpWord = mSystem()->busReadByte( mTmpWord );
+		mTmpWord = mSystem->busReadByte( mTmpWord );
 
 		if( regX() >= mTmpWord )
 			flagCarry = true;
@@ -1474,10 +1474,10 @@ void cCpu_Mos_6502::o_Compare_Index_X_ZeroPage() {
 // E5:
 void cCpu_Mos_6502::o_Subtract_With_Carry_ZeroPage() {
 	CYCLE(1)
-		mTmpWord = mSystem()->busReadByte( regPC++ );
+		mTmpWord = mSystem->busReadByte( regPC++ );
 
 	CYCLE(2) {
-		mTmpByte = mSystem()->busReadByte( mTmpWord );
+		mTmpByte = mSystem->busReadByte( mTmpWord );
 
 		o__SubWithCarry();
 	}
@@ -1486,10 +1486,10 @@ void cCpu_Mos_6502::o_Subtract_With_Carry_ZeroPage() {
 // E6: 
 void cCpu_Mos_6502::o_Increment_Memory_ZeroPage() {
 	CYCLE(1)
-		mTmpWord = mSystem()->busReadByte( regPC++ );
+		mTmpWord = mSystem->busReadByte( regPC++ );
 
 	CYCLE(2)
-		mTmpByte = mSystem()->busReadByte( mTmpWord );
+		mTmpByte = mSystem->busReadByte( mTmpWord );
 
 	CYCLE(3) {
 		++mTmpByte;
@@ -1497,7 +1497,7 @@ void cCpu_Mos_6502::o_Increment_Memory_ZeroPage() {
 	}
 
 	CYCLE(4)
-		mSystem()->busWriteByte( mTmpWord, mTmpByte );
+		mSystem->busWriteByte( mTmpWord, mTmpByte );
 }
 
 // E8: 
@@ -1509,7 +1509,7 @@ void cCpu_Mos_6502::o_Increase_X(){
 // E9:
 void cCpu_Mos_6502::o_Subtract_With_Carry_Immediate() {
 	CYCLE(1) {
-		mTmpByte = mSystem()->busReadByte( regPC++ );
+		mTmpByte = mSystem->busReadByte( regPC++ );
 
 		o__SubWithCarry();
 	}
@@ -1518,13 +1518,13 @@ void cCpu_Mos_6502::o_Subtract_With_Carry_Immediate() {
 // EC: 
 void cCpu_Mos_6502::o_Compare_Index_X_Absolute() {
 	CYCLE(1)
-		mTmpWord = mSystem()->busReadByte( regPC++ );
+		mTmpWord = mSystem->busReadByte( regPC++ );
 
 	CYCLE(2)
-		mTmpWord |= (mSystem()->busReadByte( regPC++ ) << 8);
+		mTmpWord |= (mSystem->busReadByte( regPC++ ) << 8);
 
 	CYCLE(3) {
-		mTmpWord = mSystem()->busReadByte( mTmpWord );
+		mTmpWord = mSystem->busReadByte( mTmpWord );
 
 		if( regX() >= mTmpWord )
 			flagCarry = true;
@@ -1541,13 +1541,13 @@ void cCpu_Mos_6502::o_Compare_Index_X_Absolute() {
 // EE:
 void cCpu_Mos_6502::o_Increase_Memory_Absolute() {
 	CYCLE(1)
-		mTmpWord = mSystem()->busReadByte( regPC++ );
+		mTmpWord = mSystem->busReadByte( regPC++ );
 
 	CYCLE(2)
-		mTmpWord |= (mSystem()->busReadByte( regPC++ ) << 8);
+		mTmpWord |= (mSystem->busReadByte( regPC++ ) << 8);
 
 	CYCLE(3)
-		mTmpByte = mSystem()->busReadByte( mTmpWord );
+		mTmpByte = mSystem->busReadByte( mTmpWord );
 
 	CYCLE(4) {
 		++mTmpByte;
@@ -1555,13 +1555,13 @@ void cCpu_Mos_6502::o_Increase_Memory_Absolute() {
 	}
 
 	CYCLE(5)
-		mSystem()->busWriteByte( mTmpWord, mTmpByte );
+		mSystem->busWriteByte( mTmpWord, mTmpByte );
 }
 
 // F0: 
 void cCpu_Mos_6502::o_Branch_If_Zero_Set() {
 	CYCLE(1) {
-		mTmpByte = mSystem()->busReadByte( regPC++ );
+		mTmpByte = mSystem->busReadByte( regPC++ );
 		if( flagZero == true )
 			++mCycles;
 	}
@@ -1586,10 +1586,10 @@ void cCpu_Mos_6502::o_Branch_If_Zero_Set() {
 // F9:
 void cCpu_Mos_6502::o_Subtract_With_Carry_Absolute_Y() {
 	CYCLE(1)
-		mTmpWord = mSystem()->busReadByte( regPC++ );
+		mTmpWord = mSystem->busReadByte( regPC++ );
 
 	CYCLE(2)
-		mTmpWord |= (mSystem()->busReadByte( regPC++ ) << 8);
+		mTmpWord |= (mSystem->busReadByte( regPC++ ) << 8);
 
 	CYCLE(3) {
 		byte highbyte = mTmpWord >> 8;
@@ -1603,7 +1603,7 @@ void cCpu_Mos_6502::o_Subtract_With_Carry_Absolute_Y() {
 	}
 
 	CYCLE(4) {
-		mTmpByte = mSystem()->busReadByte( mTmpWord );
+		mTmpByte = mSystem->busReadByte( mTmpWord );
 
 		o__SubWithCarry();
 	}

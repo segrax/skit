@@ -4,7 +4,7 @@
 #include "6526.hpp"
 #include "systems/system.hpp"
 
-cCia_Mos_6526::cCia_Mos_6526( std::string pName, cSepr *pSepr, cDevice *pParent  ) : cDevice( pName, pSepr, pParent ) {
+cCia_Mos_6526::cCia_Mos_6526( std::string pName, cSepr *pSepr, cSystem *pSystem, cDevice *pParent  ) : cDevice( pName, pSepr, pSystem, pParent ) {
 
 }
 		
@@ -57,7 +57,7 @@ byte cCia_Mos_6526::busReadByte( dword		pAddress ) {
 						byte ret = mRegInterruptControl;
 						mRegInterruptControl = 0;
 						
-						//mSystem()->interruptAdd( mNameGet(), this );
+						//mSystem->interruptAdd( mNameGet(), this );
 
 						return ret;
 						}
@@ -149,7 +149,7 @@ void cCia_Mos_6526::busWriteByte( dword pAddress, byte  pData ) {
 				if( mRegInterruptControl & (mRegInterruptControlMask & 0x1F) ) {
 					mRegInterruptControl |= 0x80;
 					
-					mSystem()->interruptAdd( mNameGet(), this );
+					mSystem->interruptAdd( mNameGet(), this );
 				}
 
 			} else
@@ -289,7 +289,7 @@ void cCia_Mos_6526::interruptFire( size_t pInterrupt ) {
 	mRegInterruptControl |= pInterrupt;
 
 	if( mRegInterruptControl & mRegInterruptControlMask ) {
-		mSystem()->interruptAdd( mNameGet(), this );
+		mSystem->interruptAdd( mNameGet(), this );
 	}
 
 }

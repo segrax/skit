@@ -7,7 +7,7 @@
 #include "6502.hpp"
 #include "6510.hpp"
 
-cCpu_Mos_6510::cCpu_Mos_6510( std::string pName, cSepr *pSepr, cDevice *pParent ) : cCpu_Mos_6502( pName, pSepr, pParent ) {
+cCpu_Mos_6510::cCpu_Mos_6510( std::string pName, cSepr *pSepr, cSystem *pSystem, cDevice *pParent ) : cCpu_Mos_6502( pName, pSepr, pSystem, pParent ) {
 
 }
 

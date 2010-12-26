@@ -36,7 +36,7 @@ protected:
 
 
 public:
-						 cCpu( std::string pName, cSepr *pSepr, cDevice *pParent );
+						 cCpu( std::string pName, cSepr *pSepr, cSystem *pSystem, cDevice *pParent );
 						~cCpu();
 	
 	virtual void		 interruptAdd( cInterrupt *pInterrupt );

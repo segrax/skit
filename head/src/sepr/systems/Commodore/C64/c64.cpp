@@ -8,7 +8,7 @@
 #include "chips/cpu/mos/6502/6502.hpp"
 #include "chips/cpu/mos/6502/6510.hpp"
 #include "chips/interfaceAdapter/mos/6526.hpp"
-#include "input/keyboard/keyboard.hpp"
+#include "io/keyboard/keyboard.hpp"
 
 #include "systems/system.hpp"
 #include "chips/video/video.hpp"
@@ -18,24 +18,30 @@
 #include "c64_keyboard.hpp"
 #include "c64.hpp"
 
+#include "io/disk_drives/drive.hpp"
+#include "io/disk_drives/Commodore/1541/1541-II.hpp"
+
 cSystem_Commodore_64::cSystem_Commodore_64( cSepr *pSepr ) : cSystem("Commodore64", pSepr) {
 	
-	mBasic	= new cChip_Rom("BASIC", pSepr, this );
-	mKernal = new cChip_Rom("KERNAL", pSepr, this );
-	mChar	= new cChip_Rom("CHAR", pSepr, this );
+	mBasic	= new cChip_Rom("BASIC", pSepr, this, this );
+	mKernal = new cChip_Rom("KERNAL", pSepr, this, this );
+	mChar	= new cChip_Rom("CHAR", pSepr, this, this );
 
-	mRam = new cChip_Ram("RAM", pSepr, this, 0x10000);
+	mRam = new cChip_Ram("RAM", pSepr, this, this, 0x10000);
 
-	mCpu = new cCpu_Mos_6510("CPU", pSepr, this );
-	mVideo = new cVideo_Mos_8567("VIDEO", pSepr, this );
+	mCpu = new cCpu_Mos_6510("CPU", pSepr, this, this );
+	mVideo = new cVideo_Mos_8567("VIDEO", pSepr, this, this );
 
-	mRamColor = new cChip_Ram("COLOR", pSepr, this, 0x400);
+	mRamColor = new cChip_Ram("COLOR", pSepr, this, this, 0x400);
 
 	//mCia1 = new cCia_Mos_6526("CIA1", pSepr, this );
-	mCia2 = new cCia_Mos_6526("CIA2", pSepr, this );
+	mCia2 = new cCia_Mos_6526("CIA2", pSepr, this, this );
 
-	mKeyboard = new cCommodore_64_Keyboard("KEYBOARD", pSepr, this );
+	mKeyboard = new cCommodore_64_Keyboard("KEYBOARD", pSepr, this, this );
 	mCia1 = mKeyboard;
+
+
+	mDisk = new cDrive_Commodore_1541_II("1541-II", pSepr);
 
 	mWindow = new cVideoWindow( 403, 284, 1, false );
 
@@ -78,6 +84,9 @@ bool cSystem_Commodore_64::prepare() {
 
 	mCia1->reset();
 	mCia2->reset();
+
+	mDisk->prepare();
+	mDisk->reset();
 	// Force debug mode if compiled as debug build
 #ifdef _DEBUG
 	mCpu->mDebugSet(true);
@@ -194,6 +203,7 @@ size_t cSystem_Commodore_64::cycle() {
 	mCpu->cycle();
 	mCia1->cycle();
 	mCia2->cycle();
+	mDisk->cycle();
 
 	return 1;
 }

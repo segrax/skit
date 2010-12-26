@@ -3,11 +3,11 @@
 #include "device/device.hpp"
 #include "systems/system.hpp"
 #include "chips/interfaceAdapter/mos/6526.hpp"
-#include "input/keyboard/keyboard.hpp"
+#include "io/keyboard/keyboard.hpp"
 #include "c64_keyboard.hpp"
 
 
-cCommodore_64_Keyboard::cCommodore_64_Keyboard( std::string pName, cSepr *pSepr, cDevice *pParent ) : cKeyboard( pName, pSepr, pParent ), cCia_Mos_6526( pName, pSepr, pParent ) {
+cCommodore_64_Keyboard::cCommodore_64_Keyboard( std::string pName, cSepr *pSepr, cSystem *pSystem, cDevice *pParent ) : cKeyboard( pName, pSepr, pSystem, pParent ), cCia_Mos_6526( pName, pSepr, pSystem, pParent ) {
 
 	for( int i = 0; i < 8; ++i ) {
 		mKeysRow[i] = 0xFF;

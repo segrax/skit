@@ -20,7 +20,7 @@ protected:
 	virtual size_t			 cycle();
 
 public:
-							 cVideo( std::string pName, cSepr *pSepr, cDevice *pParent, size_t pWidth, size_t pHeight, size_t pBytesPerPixel );
+							 cVideo( std::string pName, cSepr *pSepr, cSystem *pSystem, cDevice *pParent, size_t pWidth, size_t pHeight, size_t pBytesPerPixel );
 							~cVideo();
 	
 	virtual void			 paletteLoad() = 0;

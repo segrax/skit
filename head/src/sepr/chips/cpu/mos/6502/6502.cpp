@@ -7,7 +7,7 @@
 #include "chips/cpu/cpu.hpp"
 #include "6502.hpp"
 
-cCpu_Mos_6502::cCpu_Mos_6502( std::string pName, cSepr *pSepr, cDevice *pParent ) : cCpu( pName, pSepr, pParent ) {
+cCpu_Mos_6502::cCpu_Mos_6502( std::string pName, cSepr *pSepr, cSystem *pSystem, cDevice *pParent ) : cCpu( pName, pSepr, pSystem, pParent ) {
 	
 	mTmpOpcode = 0;
 
@@ -96,7 +96,7 @@ size_t cCpu_Mos_6502::cycle() {
 		byte op = mTmpOpcode;
 
 		if( !op )
-			op = mSystem()->busReadByte( regPC++ );
+			op = mSystem->busReadByte( regPC++ );
 
 		opcodeSet( op );
 
@@ -128,13 +128,13 @@ void cCpu_Mos_6502::registerFlagSet( size_t pData ) {
 
 void cCpu_Mos_6502::stackPush( byte pData )	{	
 
-	mSystem()->busWriteByte( 0x0100 + regSP(), pData); 
+	mSystem->busWriteByte( 0x0100 + regSP(), pData); 
 	--regSP;
 }	
 
 byte cCpu_Mos_6502::stackPop() {
 	++regSP;
-	return mSystem()->busReadByte( 0x0100 + regSP() );
+	return mSystem->busReadByte( 0x0100 + regSP() );
 }
 
 void cCpu_Mos_6502::o_Interrupt() {
@@ -151,10 +151,10 @@ void cCpu_Mos_6502::o_Interrupt() {
 		stackPush( (byte) regFL.value() );
 	
 	CYCLE(5) 
-		regPC = mSystem()->busReadByte( mTmpWord++ );
+		regPC = mSystem->busReadByte( mTmpWord++ );
 
 	CYCLE(6) {
-		regPC |= (mSystem()->busReadByte( mTmpWord ) << 8);
+		regPC |= (mSystem->busReadByte( mTmpWord ) << 8);
 
 		// Disable Interrupts
 		flagInterrupt = true;

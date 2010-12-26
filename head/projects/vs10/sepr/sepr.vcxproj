@@ -24,7 +24,9 @@
     <ClInclude Include="..\..\..\src\sepr\chips\video\video.hpp" />
     <ClInclude Include="..\..\..\src\sepr\device\device.hpp" />
     <ClInclude Include="..\..\..\src\sepr\device\deviceConnection.hpp" />
-    <ClInclude Include="..\..\..\src\sepr\input\keyboard\keyboard.hpp" />
+    <ClInclude Include="..\..\..\src\sepr\io\disk_drives\Commodore\1541\1541-II.hpp" />
+    <ClInclude Include="..\..\..\src\sepr\io\disk_drives\drive.hpp" />
+    <ClInclude Include="..\..\..\src\sepr\io\keyboard\keyboard.hpp" />
     <ClInclude Include="..\..\..\src\sepr\sepr.hpp" />
     <ClInclude Include="..\..\..\src\sepr\systems\Commodore\C64\c64.hpp" />
     <ClInclude Include="..\..\..\src\sepr\systems\Commodore\C64\c64_keyboard.hpp" />
@@ -45,7 +47,8 @@
     <ClCompile Include="..\..\..\src\sepr\chips\video\mos\8567.cpp" />
     <ClCompile Include="..\..\..\src\sepr\chips\video\video.cpp" />
     <ClCompile Include="..\..\..\src\sepr\device\device.cpp" />
-    <ClCompile Include="..\..\..\src\sepr\input\keyboard\keyboard.cpp" />
+    <ClCompile Include="..\..\..\src\sepr\io\disk_drives\Commodore\1541\1541-II.cpp" />
+    <ClCompile Include="..\..\..\src\sepr\io\keyboard\keyboard.cpp" />
     <ClCompile Include="..\..\..\src\sepr\sepr.cpp" />
     <ClCompile Include="..\..\..\src\sepr\systems\Commodore\C64\c64.cpp" />
     <ClCompile Include="..\..\..\src\sepr\systems\Commodore\C64\c64_keyboard.cpp" />

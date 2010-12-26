@@ -5,8 +5,8 @@
 #include "skit/video/window.hpp"
 #include "systems/system.hpp"
 
-cVideo::cVideo( std::string pName, cSepr *pSepr, cDevice *pParent, 
-				size_t pWidth, size_t pHeight, size_t pBytesPerPixel ) : cDevice( pName, pSepr, pParent ) {
+cVideo::cVideo( std::string pName, cSepr *pSepr, cSystem *pSystem, cDevice *pParent, 
+				size_t pWidth, size_t pHeight, size_t pBytesPerPixel ) : cDevice( pName, pSepr, pSystem, pParent ) {
 
 	mFullScreen = false;
 

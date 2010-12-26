@@ -4,7 +4,7 @@
 #include "systems/system.hpp"
 #include "keyboard.hpp"
 
-cKeyboard::cKeyboard( std::string pName, cSepr *pSepr, cDevice *pParent ) : cDevice( pName, pSepr, pParent ) {
+cKeyboard::cKeyboard( std::string pName, cSepr *pSepr, cSystem *pSystem, cDevice *pParent ) : cDevice( pName, pSepr, pSystem, pParent ) {
 
 }
 

@@ -9,7 +9,7 @@
 #include "chips/opcode.hpp"
 #include "chips/cpu/cpu.hpp"
 
-cVideo_Mos_8567::cVideo_Mos_8567( std::string pName, cSepr *pSepr, cDevice *pParent ) : cVideo(pName, pSepr, pParent, 504, 313, 1 ) {
+cVideo_Mos_8567::cVideo_Mos_8567( std::string pName, cSepr *pSepr, cSystem *pSystem, cDevice *pParent ) : cVideo(pName, pSepr, pSystem, pParent, 504, 313, 1 ) {
 	mScaleSet(2);
 	paletteLoad();
 }
@@ -29,7 +29,7 @@ void cVideo_Mos_8567::interruptRasterFire() {
 	mRegInterrupt |= 0x80;
 
 	// Fire an interrupt
-	cCpu *cpu = mSystem()->deviceFind<cCpu>("CPU", true);
+	cCpu *cpu = mSystem->deviceFind<cCpu>("CPU", true);
 
 	cpu->interruptAdd( new cInterrupt("VIC", this) );
 
@@ -357,13 +357,13 @@ void cVideo_Mos_8567::busWriteByte( size_t pAddress, byte pData ) {
 			if( mRegInterrupt & mRegInterruptEnabled) {
 
 				mRegInterrupt |= 0x80;				// IRQ Waiting Bit
-				cCpu *cpu = mSystem()->deviceFind<cCpu>("CPU", true);
+				cCpu *cpu = mSystem->deviceFind<cCpu>("CPU", true);
 				cpu->interruptAdd( new cInterrupt("VIC", this) );
 
 			} else {
 				mRegInterrupt &= 0x7F;				// Only keep lower 4 bits (IRQ Waiting Bit off)
 
-				cCpu *cpu = mSystem()->deviceFind<cCpu>("CPU", true);
+				cCpu *cpu = mSystem->deviceFind<cCpu>("CPU", true);
 				cpu->interruptRemove( "VIC" );
 			}
 			break;
@@ -408,7 +408,7 @@ void cVideo_Mos_8567::busWriteByte( size_t pAddress, byte pData ) {
 }
 
 void cVideo_Mos_8567::decode_StandardText() {
-	cSystem_Commodore_64	*system = mSystem<cSystem_Commodore_64>();
+	cSystem_Commodore_64	*system = mSystemGet<cSystem_Commodore_64>();
 
 	// Read char pointer from video
 	word data = system->deviceReadByte( this, mVidSrc++ ) << 3;

@@ -20,7 +20,7 @@ protected:
 protected:
 
 public:
-						 cCia_Mos_6526( std::string pName, cSepr *pSepr, cDevice *pParent   ); 
+						 cCia_Mos_6526( std::string pName, cSepr *pSepr, cSystem *pSystem, cDevice *pParent   ); 
 	
 	virtual byte		 busReadByte( size_t pAddress );
 	virtual void		 busWriteByte( size_t pAddress, byte pData );

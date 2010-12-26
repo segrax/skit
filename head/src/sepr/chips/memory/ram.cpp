@@ -3,7 +3,7 @@
 #include "rom.hpp"
 #include "ram.hpp"
 
-cChip_Ram::cChip_Ram( std::string pName, cSepr *pSepr, cDevice *pParent, size_t pSize ) : cChip_Rom( pName, pSepr, pParent ) {
+cChip_Ram::cChip_Ram( std::string pName, cSepr *pSepr, cSystem *pSystem, cDevice *pParent, size_t pSize ) : cChip_Rom( pName, pSepr, pSystem, pParent ) {
 	
 	mMemory = new byte[ pSize ];
 	mMemorySize = pSize;

@@ -3,7 +3,7 @@
 #include "device/device.hpp"
 #include "system.hpp"
 
-cSystem::cSystem( std::string pName, cSepr *pSepr ) : cDevice( pName, pSepr, 0 ) {
+cSystem::cSystem( std::string pName, cSepr *pSepr ) : cDevice( pName, pSepr, 0, 0 ) {
 	mDebug = new cDebug( pSepr );
 
 	pthread_mutex_init( &mEventQueue , 0 );

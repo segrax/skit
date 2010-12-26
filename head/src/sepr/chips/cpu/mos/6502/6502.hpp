@@ -43,7 +43,7 @@ protected:
 	byte					 stackPop();
 
 public:
-							 cCpu_Mos_6502( std::string pName, cSepr *pSepr, cDevice *pParent );
+							 cCpu_Mos_6502( std::string pName, cSepr *pSepr, cSystem *pSystem, cDevice *pParent );
 							~cCpu_Mos_6502();
 
 	virtual		void		 registerFlagSet( size_t pData );

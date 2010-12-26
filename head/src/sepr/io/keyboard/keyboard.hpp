@@ -13,7 +13,7 @@ protected:
 
 public:
 
-						 cKeyboard( std::string pName, cSepr *pSepr, cDevice *pParent );
+						 cKeyboard( std::string pName, cSepr *pSepr, cSystem *pSystem, cDevice *pParent );
 	
 	virtual size_t		 cycle();
 

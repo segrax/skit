@@ -6,7 +6,7 @@
 #include "chips/cpu/cpu.hpp"
 #include "systems/system.hpp"
 
-cCpu::cCpu( std::string pName, cSepr *pSepr, cDevice *pParent ) : cDevice( pName, pSepr, pParent ) {
+cCpu::cCpu( std::string pName, cSepr *pSepr, cSystem *pSystem, cDevice *pParent ) : cDevice( pName, pSepr, pSystem, pParent ) {
 
 	mInterruptCurrent = 0;
 
@@ -59,7 +59,7 @@ void cCpu::opcodeExecute() {
 
 void cCpu::opcodeAnalyse() {
 	if( mDebug )
-		mSystem()->mDebugGet()->device( eDebug_Message, mSepr, this, debug_CPU_Info_String() );
+		mSystem->mDebugGet()->device( eDebug_Message, mSepr, this, debug_CPU_Info_String() );
 
 	if( !mAnalyse )
 		return;
@@ -84,7 +84,7 @@ void cCpu::o_Unknown_Opcode() {
 	msg << std::hex << mOpcodeNumber;
 	msg << std::endl;
 
-	mSystem()->mDebugGet()->device( eDebug_Message, mSepr, this, msg.str());
+	mSystem->mDebugGet()->device( eDebug_Message, mSepr, this, msg.str());
 }
 
 void cCpu::o_Reset() {

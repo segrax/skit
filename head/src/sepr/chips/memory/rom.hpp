@@ -7,7 +7,7 @@ protected:
 	virtual size_t		 cycle();
 
 public:
-						 cChip_Rom( std::string pName, cSepr *pSepr, cDevice *pParent );
+						 cChip_Rom( std::string pName, cSepr *pSepr, cSystem *pSystem, cDevice *pParent );
 						~cChip_Rom();
 	
 	virtual byte		 busReadByte( size_t pAddress );

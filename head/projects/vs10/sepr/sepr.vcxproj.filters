@@ -44,11 +44,20 @@
     <Filter Include="Source Files\chips\interfaceAdapter\mos">
       <UniqueIdentifier>{36ad6a53-2b2a-4ffd-a375-93968d8bcc4f}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\input">
+    <Filter Include="Source Files\io">
       <UniqueIdentifier>{98352320-94d5-4f99-bff3-3af6835ed2e2}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\input\keyboard">
+    <Filter Include="Source Files\io\keyboard">
       <UniqueIdentifier>{1a6fb696-5874-400d-9cf4-11266d0e10fd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\io\disk_drives">
+      <UniqueIdentifier>{71546095-5c91-45ab-80f7-383cd55059fd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\io\disk_drives\Commodore">
+      <UniqueIdentifier>{fc18e802-7836-4f43-aad1-e7cb99849c43}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\io\disk_drives\Commodore\1541">
+      <UniqueIdentifier>{270c9e1d-1fc8-44f4-a52f-c5a6b9d9150d}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -100,11 +109,14 @@
     <ClCompile Include="..\..\..\src\sepr\chips\interfaceAdapter\mos\6526.cpp">
       <Filter>Source Files\chips\interfaceAdapter\mos</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\src\sepr\input\keyboard\keyboard.cpp">
-      <Filter>Source Files\input\keyboard</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\src\sepr\systems\Commodore\C64\c64_keyboard.cpp">
       <Filter>Source Files\systems\Commodore\C64</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\sepr\io\keyboard\keyboard.cpp">
+      <Filter>Source Files\io\keyboard</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\sepr\io\disk_drives\Commodore\1541\1541-II.cpp">
+      <Filter>Source Files\io\disk_drives\Commodore\1541</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -159,11 +171,17 @@
     <ClInclude Include="..\..\..\src\sepr\chips\interfaceAdapter\mos\6526.hpp">
       <Filter>Source Files\chips\interfaceAdapter\mos</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\src\sepr\input\keyboard\keyboard.hpp">
-      <Filter>Source Files\input\keyboard</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\src\sepr\systems\Commodore\C64\c64_keyboard.hpp">
       <Filter>Source Files\systems\Commodore\C64</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\sepr\io\keyboard\keyboard.hpp">
+      <Filter>Source Files\io\keyboard</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\sepr\io\disk_drives\Commodore\1541\1541-II.hpp">
+      <Filter>Source Files\io\disk_drives\Commodore\1541</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\sepr\io\disk_drives\drive.hpp">
+      <Filter>Source Files\io\disk_drives</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

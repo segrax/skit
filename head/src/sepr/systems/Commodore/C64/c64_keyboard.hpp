@@ -4,7 +4,7 @@ class cCommodore_64_Keyboard : public cCia_Mos_6526, public cKeyboard {
 	size_t				 SDLKeyToC64( SDL_keysym pKey );
 
 public:
-						 cCommodore_64_Keyboard( std::string pName, cSepr *pSepr, cDevice *pParent );
+						 cCommodore_64_Keyboard( std::string pName, cSepr *pSepr, cSystem *pSystem, cDevice *pParent );
 	
 	virtual byte		 busReadByte( size_t pAddress );
 	virtual void		 busWriteByte( size_t pAddress, byte pData );

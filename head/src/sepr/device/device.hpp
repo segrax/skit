@@ -24,14 +24,14 @@ protected:
 	size_t								 mSleepTime;										// Sleep Time between thread() loops, milliseconds
 
 	cSepr								*mSepr;
+	cSystem								*mSystem;
 
-	cSystem								*mSystem();
-	template< class tSystem > tSystem	*mSystem() { return dynamic_cast<tSystem*>( mSystem() ); }
+	template< class tSystem > tSystem	*mSystemGet() { return dynamic_cast<tSystem*>( mSystem ); }
 
 	virtual size_t						 cycle() = 0;										// Main device cycle
 	
 public:
-										 cDevice( std::string pName, cSepr *pSepr, cDevice *pParent );	
+										 cDevice( std::string pName, cSepr *pSepr, cSystem *pSystem, cDevice *pParent );	
 										~cDevice(void);										
 	
 
