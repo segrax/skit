@@ -53,11 +53,12 @@ void cCommodore_64_Keyboard::busWriteByte( size_t pAddress, byte pData ) {
 	cCia_Mos_6526::busWriteByte( pAddress, pData );
 }
 
-void cCommodore_64_Keyboard::pressKey( size_t pKey ) {
+void cCommodore_64_Keyboard::pressKey( SDL_keysym pKey ) {
+	cKeyboard::pressKey( pKey );
 
-	mKeyPressed[ pKey ].mPressed = true; 
-
-	size_t c64key = SDLKeyToC64( toupper(pKey) );
+	size_t c64key = SDLKeyToC64( pKey );
+	if(c64key == -1)
+		return;
 
 	int c64_byte = c64key >> 3;
 	int c64_bit = c64key & 7;
@@ -72,11 +73,10 @@ void cCommodore_64_Keyboard::pressKey( size_t pKey ) {
 
 }
 
-void cCommodore_64_Keyboard::releaseKey( size_t pKey ) {
-	mKeyPressed[ pKey ].mCycles = 10;
-	mKeyPressed[ pKey ].mPressed = false;
+void cCommodore_64_Keyboard::releaseKey( SDL_keysym pKey ) {
+	cKeyboard::releaseKey( pKey );
 
-		size_t c64key = SDLKeyToC64( toupper(pKey) );
+	size_t c64key = SDLKeyToC64( pKey );
 
 	int c64_byte = c64key >> 3;
 	int c64_bit = c64key & 7;
@@ -91,11 +91,21 @@ void cCommodore_64_Keyboard::releaseKey( size_t pKey ) {
 }
 
 #define MATRIX(a,b) (((a) << 3) | (b))
+#include<iostream>
 
-size_t cCommodore_64_Keyboard::SDLKeyToC64( size_t pKey) {
+size_t cCommodore_64_Keyboard::SDLKeyToC64( SDL_keysym pKey ) {
 	int result = -1;
+	
+	if( pKey.mod == KMOD_LSHIFT || pKey.mod == KMOD_RSHIFT ) {
+		switch( toupper(pKey.scancode ) ) {
+		case 3:
+			return MATRIX(7,3) | 0x80;
+		}
 
-	switch (pKey) {
+		return -1;
+	}
+
+	switch ( toupper(pKey.sym) ) {
 	case VK_RETURN: return MATRIX(0,1);
 	case VK_F1: return MATRIX(0,4);
 	case VK_F2: return MATRIX(0,4) | 0x80;
@@ -116,7 +126,8 @@ size_t cCommodore_64_Keyboard::SDLKeyToC64( size_t pKey) {
 	case '7': return MATRIX(3,0);
 	case '8': return MATRIX(3,3);
 	case '9': return MATRIX(4,0);
-
+	
+	case SDLK_COMMA: return MATRIX(5,7);
 	/*case VK_bracketleft: return MATRIX(5,6);
 	case VK_bracketright: return MATRIX(6,1);
 	case VK_slash: return MATRIX(6,7);
@@ -124,10 +135,11 @@ size_t cCommodore_64_Keyboard::SDLKeyToC64( size_t pKey) {
 	case VK_grave: return MATRIX(7,1);
 	case VK_minus: return MATRIX(5,0);
 	case VK_equal: return MATRIX(5,3);
-	case VK_comma: return MATRIX(5,7);
+	
 	case VK_period: return MATRIX(5,4);
-	case VK_quote: return MATRIX(6,2);
-	case VK_backslash: return MATRIX(6,6);*/
+	case VK_backslash: return MATRIX(6,6);
+	*/
+	
 
 	case 'A': result = MATRIX(1,2); break;
 	case 'B': result = MATRIX(3,4); break;

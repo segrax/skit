@@ -66,6 +66,11 @@ void cCpu_Mos_6502::a_Bit_ZeroPage() {
 	
 }
 
+// 26:
+void cCpu_Mos_6502::a_Rotate_Left_ZeroPage() {
+
+}
+
 // 28: 
 void cCpu_Mos_6502::a_Pull_Flags() {
 
@@ -77,7 +82,7 @@ void cCpu_Mos_6502::a_And_Immediate() {
 }
 
 // 2A: 
-void cCpu_Mos_6502::a_Roll_Accumulator_Left() {
+void cCpu_Mos_6502::a_Rotate_Accumulator_Left() {
 
 }
 

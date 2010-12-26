@@ -32,9 +32,10 @@ void cCpu_Mos_6502::opcodesPrepare() {
 
 	OPCODE(0x20,	o_Jump_Subroutine,				a_Jump_Subroutine,				6);
 	OPCODE(0x24,	o_Bit_ZeroPage,					a_Bit_ZeroPage,					3);
+	OPCODE(0x26,	o_Rotate_Left_ZeroPage,			a_Rotate_Left_ZeroPage,			5);		
 	OPCODE(0x28,	o_Pull_Flags,					a_Pull_Flags,					4);
 	OPCODE(0x29,	o_And_Accumulator_Immediate,	a_And_Immediate,				2);
-	OPCODE(0x2A,	o_Roll_Accumulator_Left,		a_Roll_Accumulator_Left,		2);
+	OPCODE(0x2A,	o_Rotate_Accumulator_Left,		a_Rotate_Accumulator_Left,		2);
 	OPCODE(0x2C,	o_Bit_Absolute,					a_Bit_Absolute,					4);
 
 	OPCODE(0x30,	o_Branch_If_Negative_Set,		a_Branch_If_Negative_Set,		2);
@@ -330,6 +331,32 @@ void cCpu_Mos_6502::o_Bit_ZeroPage() {
 	}
 }
 
+// 26:
+void cCpu_Mos_6502::o_Rotate_Left_ZeroPage() {
+	CYCLE(1)
+		mTmpWord = mSystem()->busReadByte( regPC++ );
+
+	CYCLE(2)
+		mTmpByte = mSystem()->busReadByte( mTmpWord );
+
+	CYCLE(3) {
+		bool carry = false;
+
+		if(mTmpByte & 0x80)
+			carry = true;
+
+		mTmpByte <<= 1;
+		if(flagCarry == true)
+			mTmpByte |= 0x01;
+
+		flagCarry = carry;
+		registerFlagSet( mTmpByte );
+	}
+
+	CYCLE(4)
+		mSystem()->busWriteByte( mTmpWord, mTmpByte );
+}
+
 // 28: 
 void cCpu_Mos_6502::o_Pull_Flags() {
 	//CYCLE(1);
@@ -348,7 +375,7 @@ void cCpu_Mos_6502::o_And_Accumulator_Immediate() {
 }			
 
 // 2A: 
-void cCpu_Mos_6502::o_Roll_Accumulator_Left() {
+void cCpu_Mos_6502::o_Rotate_Accumulator_Left() {
 
 	CYCLE(1) {
 		bool cf = flagCarry.get();

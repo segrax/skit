@@ -1,9 +1,9 @@
 
 struct sKey {
-	size_t	 mCycles;
-	bool	 mPressed;
+	SDL_keysym	 mKey;
+	bool		 mPressed;
 
-			 sKey() { mCycles = 0; mPressed = false; }
+				 sKey() { mPressed = false; }
 
 };
 
@@ -17,8 +17,8 @@ public:
 	
 	virtual size_t		 cycle();
 
-	virtual void		 releaseKey( size_t pKey );
-	virtual void		 pressKey( size_t pKey );
+	virtual void		 releaseKey( SDL_keysym pKey );
+	virtual void		 pressKey( SDL_keysym pKey );
 	virtual bool		 isPressed( size_t pKey );
 
 	void				 sdlEvent( SDL_KeyboardEvent *pEvent );

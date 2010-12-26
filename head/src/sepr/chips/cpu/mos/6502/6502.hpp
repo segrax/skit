@@ -78,9 +78,10 @@ protected:
 	void					 o_Flag_Carry_Clear();					// 18: 
 	void					 o_Jump_Subroutine();					// 20: Jump Subroutine
 	void					 o_Bit_ZeroPage();						// 24: 
+	void					 o_Rotate_Left_ZeroPage();				// 26: 
 	void					 o_Pull_Flags();						// 28: 
 	void					 o_And_Accumulator_Immediate();			// 29: 
-	void					 o_Roll_Accumulator_Left();				// 2A: 
+	void					 o_Rotate_Accumulator_Left();			// 2A: 
 	void					 o_Bit_Absolute();						// 2C: 
 	void					 o_Branch_If_Negative_Set();			// 30:
 	void					 o_Flag_Carry_Set();					// 38: 
@@ -175,9 +176,10 @@ protected:
 	void					 a_Flag_Carry_Clear();					// 18: 
 	void					 a_Jump_Subroutine();					// 20: Jump Subroutine
 	void					 a_Bit_ZeroPage();						// 24:
+	void					 a_Rotate_Left_ZeroPage();				// 26: 
 	void					 a_Pull_Flags();						// 28: 
 	void					 a_And_Immediate();						// 29: 
-	void					 a_Roll_Accumulator_Left();				// 2A:
+	void					 a_Rotate_Accumulator_Left();			// 2A:
 	void					 a_Bit_Absolute();						// 2C: 
 	void					 a_Branch_If_Negative_Set();			// 30:
 	void					 a_Flag_Carry_Set();					// 38: 

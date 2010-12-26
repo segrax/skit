@@ -13,14 +13,15 @@ size_t cKeyboard::cycle() {
 	return 0;
 }
 
-void cKeyboard::pressKey( size_t pKey ) {
+void cKeyboard::pressKey( SDL_keysym pKey ) {
 
-	mKeyPressed[ pKey ].mPressed = true; 
+	mKeyPressed[ pKey.sym ].mPressed = true; 
+	mKeyPressed[ pKey.sym ].mKey = pKey;
 }
 
-void cKeyboard::releaseKey( size_t pKey ) {
-	mKeyPressed[ pKey ].mCycles = 10;
-	mKeyPressed[ pKey ].mPressed = false;
+void cKeyboard::releaseKey( SDL_keysym pKey ) {
+
+	mKeyPressed[ pKey.sym ].mPressed = false;
 }
 
 bool cKeyboard::isPressed( size_t pKey ) { 
@@ -33,11 +34,11 @@ void cKeyboard::sdlEvent( SDL_KeyboardEvent *pEvent ) {
 	switch( pEvent->state ) {
 	
 		case SDL_PRESSED:
-			pressKey( pEvent->keysym.sym);
+			pressKey( pEvent->keysym );
 			break;
 
 		case SDL_RELEASED:
-			releaseKey( pEvent->keysym.sym);
+			releaseKey( pEvent->keysym );
 			break;
 	}
 	
