@@ -9,9 +9,11 @@
 #include "chips/cpu/mos/6502/6502.hpp"
 #include "systems/system.hpp"
 #include "io/disk_drives/drive.hpp"
+#include "chips/interfaceAdapter/mos/6526.hpp"
 #include "1541-II.hpp"
 
-cDrive_Commodore_1541_II::cDrive_Commodore_1541_II( std::string pName, cSepr *pSepr ) : cDrive( pName, pSepr ) {
+
+cDrive_Commodore_1541_II::cDrive_Commodore_1541_II( std::string pName, cSepr *pSepr ) : cDrive( pName, pSepr )  {
 	
 	mRom = new cChip_Rom("ROM", pSepr, this, this );
 	mRam  = new cChip_Ram("RAM", pSepr, this, this, 0x800);

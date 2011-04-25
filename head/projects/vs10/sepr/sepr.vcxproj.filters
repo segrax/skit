@@ -118,6 +118,9 @@
     <ClCompile Include="..\..\..\src\sepr\io\disk_drives\Commodore\1541\1541-II.cpp">
       <Filter>Source Files\io\disk_drives\Commodore\1541</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\src\sepr\chips\interfaceAdapter\mos\6522.cpp">
+      <Filter>Source Files\chips\interfaceAdapter\mos</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\src\sepr\device\device.hpp">
@@ -182,6 +185,9 @@
     </ClInclude>
     <ClInclude Include="..\..\..\src\sepr\io\disk_drives\drive.hpp">
       <Filter>Source Files\io\disk_drives</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\sepr\chips\interfaceAdapter\mos\6522.hpp">
+      <Filter>Source Files\chips\interfaceAdapter\mos</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

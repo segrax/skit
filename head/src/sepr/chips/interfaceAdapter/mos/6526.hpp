@@ -1,6 +1,7 @@
 
 class cCia_Mos_6526 : public cDevice {
 protected:
+
 	bool				 mHalted;
 	byte 				 mRegPeripheralDataA, mRegPeripheralDataB;
 	byte 				 mRegDataDirectionA, mRegDataDirectionB;
@@ -30,4 +31,5 @@ public:
 	
 	size_t				 cycle();
 	void				 reset();
+
 };

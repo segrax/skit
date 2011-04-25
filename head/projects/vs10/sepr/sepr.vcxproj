@@ -15,6 +15,7 @@
     <ClInclude Include="..\..\..\src\sepr\chips\cpu\interrupt.hpp" />
     <ClInclude Include="..\..\..\src\sepr\chips\cpu\mos\6502\6502.hpp" />
     <ClInclude Include="..\..\..\src\sepr\chips\cpu\mos\6502\6510.hpp" />
+    <ClInclude Include="..\..\..\src\sepr\chips\interfaceAdapter\mos\6522.hpp" />
     <ClInclude Include="..\..\..\src\sepr\chips\interfaceAdapter\mos\6526.hpp" />
     <ClInclude Include="..\..\..\src\sepr\chips\memory\ram.hpp" />
     <ClInclude Include="..\..\..\src\sepr\chips\memory\rom.hpp" />
@@ -40,6 +41,7 @@
     <ClCompile Include="..\..\..\src\sepr\chips\cpu\mos\6502\6502_analysis.cpp" />
     <ClCompile Include="..\..\..\src\sepr\chips\cpu\mos\6502\6502_opcodes.cpp" />
     <ClCompile Include="..\..\..\src\sepr\chips\cpu\mos\6502\6510.cpp" />
+    <ClCompile Include="..\..\..\src\sepr\chips\interfaceAdapter\mos\6522.cpp" />
     <ClCompile Include="..\..\..\src\sepr\chips\interfaceAdapter\mos\6526.cpp" />
     <ClCompile Include="..\..\..\src\sepr\chips\memory\ram.cpp" />
     <ClCompile Include="..\..\..\src\sepr\chips\memory\rom.cpp" />
