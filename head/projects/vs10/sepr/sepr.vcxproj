@@ -28,6 +28,7 @@
     <ClInclude Include="..\..\..\src\sepr\io\disk_drives\Commodore\1541\1541-II.hpp" />
     <ClInclude Include="..\..\..\src\sepr\io\disk_drives\drive.hpp" />
     <ClInclude Include="..\..\..\src\sepr\io\keyboard\keyboard.hpp" />
+    <ClInclude Include="..\..\..\src\sepr\io\port\port.hpp" />
     <ClInclude Include="..\..\..\src\sepr\sepr.hpp" />
     <ClInclude Include="..\..\..\src\sepr\systems\Commodore\C64\c64.hpp" />
     <ClInclude Include="..\..\..\src\sepr\systems\Commodore\C64\c64_keyboard.hpp" />
@@ -87,6 +88,9 @@
     <TargetName>$(ProjectName)</TargetName>
     <IncludePath>$(IncludePath)</IncludePath>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <IncludePath>$(IncludePath)</IncludePath>
+  </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <PrecompiledHeader>
@@ -110,6 +114,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>WIN32;NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>../../../src/sepr;../../../src/</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>

@@ -150,6 +150,7 @@ protected:
 	void					 o_Decrease_Memory_Absolute();			// CE: 
 	void					 o_Branch_Not_Equal();					// D0: Branch not Equal
 	void					 o_Compare_Indirect_Y();				// D1: 
+	void					 o_Compare_Zeropage_X();				// D5: 
 	void					 o_Flag_Decimal_Clear();				// D8: Clear Direction
 	void					 o_Compare_Absolute_X();				// DD: Compare
 	void					 o_Compare_Index_X_Immediate();			// E0: 
@@ -161,6 +162,7 @@ protected:
 	void					 o_Compare_Index_X_Absolute();			// EC: 
 	void					 o_Increase_Memory_Absolute();			// EE: 
 	void					 o_Branch_If_Zero_Set();				// F0: Branch If Equal
+	void					 o_Increase_Memory_ZeroPage_X();		// F6: 
 	void					 o_Subtract_With_Carry_Absolute_Y();	// F9: 
 
 	// Analyse Opcodes
@@ -248,6 +250,7 @@ protected:
 	void					 a_Decrease_Memory_Absolute();			// CE: 
 	void					 a_Branch_Not_Equal();					// D0: Branch not Equal
 	void					 a_Compare_Indirect_Y();				// D1: 
+	void					 a_Compare_Zeropage_X();				// D5:
 	void					 a_Flag_Decimal_Clear();				// D8: Clear Direction
 	void					 a_Compare_Absolute_X();				// DD: Compare
 	void					 a_Compare_Index_X_Immediate();			// E0: 
@@ -259,5 +262,6 @@ protected:
 	void					 a_Compare_Index_X_Absolute();			// EC: 
 	void					 a_Increase_Memory_Absolute();			// EE: 
 	void					 a_Branch_Equal();						// F0: Branch If Equal
+	void					 a_Increase_Memory_ZeroPage_X();		// F6: 
 	void					 a_Subtract_With_Carry_Absolute_Y();	// F9: 
 };

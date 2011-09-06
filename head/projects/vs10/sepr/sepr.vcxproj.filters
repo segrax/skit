@@ -59,6 +59,9 @@
     <Filter Include="Source Files\io\disk_drives\Commodore\1541">
       <UniqueIdentifier>{270c9e1d-1fc8-44f4-a52f-c5a6b9d9150d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\io\port">
+      <UniqueIdentifier>{bbf3f7bd-353d-4455-bd58-e459dbc82236}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\src\sepr\device\device.cpp">
@@ -188,6 +191,9 @@
     </ClInclude>
     <ClInclude Include="..\..\..\src\sepr\chips\interfaceAdapter\mos\6522.hpp">
       <Filter>Source Files\chips\interfaceAdapter\mos</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\sepr\io\port\port.hpp">
+      <Filter>Source Files\io\port</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

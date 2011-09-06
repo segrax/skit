@@ -1,10 +1,14 @@
 #include "sepr.hpp"
 #include "device/deviceConnection.hpp"
 #include "device/device.hpp"
+#include "io/port/port.hpp"
 #include "6526.hpp"
 #include "systems/system.hpp"
 
+
 cCia_Mos_6526::cCia_Mos_6526( std::string pName, cSepr *pSepr, cSystem *pSystem, cDevice *pParent  ) : cDevice( pName, pSepr, pSystem, pParent ) {
+
+	mPortA = mPortB = 0;
 
 }
 		
@@ -13,9 +17,15 @@ byte cCia_Mos_6526::busReadByte( dword		pAddress ) {
 
 	switch(pAddress) {
 		case	0x00:					// 
+			if( mPortA )
+				return mPortA->valueGet();
+
 			return mRegPeripheralDataA;
 
 		case	0x01:					//
+			if( mPortB )
+				return mPortB->valueGet();
+
 			return mRegPeripheralDataB;
 
 		case	0x02:

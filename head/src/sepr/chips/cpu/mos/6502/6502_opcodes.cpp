@@ -115,6 +115,7 @@ void cCpu_Mos_6502::opcodesPrepare() {
 
 	OPCODE(0xD0,	o_Branch_Not_Equal,				a_Branch_Not_Equal,				2);
 	OPCODE(0xD1,	o_Compare_Indirect_Y,			a_Compare_Indirect_Y,			5);
+	OPCODE(0xD5,	o_Compare_Zeropage_X,			a_Compare_Zeropage_X,			5);
 	OPCODE(0xD8,	o_Flag_Decimal_Clear,			a_Flag_Decimal_Clear,			2);
 	OPCODE(0xDD,	o_Compare_Absolute_X,			a_Compare_Absolute_X,			4);
 
@@ -128,6 +129,7 @@ void cCpu_Mos_6502::opcodesPrepare() {
 	OPCODE(0xEE,	o_Increase_Memory_Absolute,		a_Increase_Memory_Absolute,		6);
 
 	OPCODE(0xF0,	o_Branch_If_Zero_Set,			a_Branch_Equal,					2);
+	OPCODE(0xF6,	o_Increase_Memory_ZeroPage_X,	a_Increase_Memory_ZeroPage_X,	6);
 	OPCODE(0xF9,	o_Subtract_With_Carry_Absolute_Y,	a_Subtract_With_Carry_Absolute_Y, 4);
 }
 
@@ -135,7 +137,7 @@ void cCpu_Mos_6502::o_Unknown_Opcode() {
 	std::stringstream msg;
 
 	msg << debug_CPU_Info_String();
-	msg << "\n" << "Unknown Opcode! ";
+	msg << "\n" << "Unknown Opcode!";
 
 	mSystem->mDebugGet()->device( eDebug_Stop, mSepr, this, msg.str());
 
@@ -314,7 +316,7 @@ void cCpu_Mos_6502::o_Jump_Subroutine() {
 		stackPush( regPC() >> 8 );
 
 	CYCLE(4)
-		stackPush( regPC() );
+		stackPush( regPC() & 0xFF );
 
 	CYCLE(5)
 		regPC = mTmpByte | (mSystem->busReadByte( regPC() ) << 8);
@@ -1390,6 +1392,30 @@ void cCpu_Mos_6502::o_Compare_Indirect_Y() {
 	}
 }
 
+// D5: Compare Zeropage X
+void cCpu_Mos_6502::o_Compare_Zeropage_X() {
+	CYCLE(1)
+		mTmpByte = mSystem->busReadByte( regPC++ );
+
+	CYCLE(2)
+		mTmpByte += regX();
+
+	CYCLE(3)
+		mTmpWord = mSystem->busReadByte( mTmpByte );
+
+	CYCLE(4) {
+		if( regA() >= mTmpWord )
+			flagCarry = true;
+		else
+			flagCarry = false;
+		
+		mTmpByte = regA();
+		mTmpByte -= mTmpWord;
+
+		registerFlagSet( mTmpByte );
+	}
+}
+
 // D8: Clear Decimal Flag
 void cCpu_Mos_6502::o_Flag_Decimal_Clear() {
 
@@ -1543,8 +1569,8 @@ void cCpu_Mos_6502::o_Increase_Memory_Absolute() {
 	CYCLE(1)
 		mTmpWord = mSystem->busReadByte( regPC++ );
 
-	CYCLE(2)
-		mTmpWord |= (mSystem->busReadByte( regPC++ ) << 8);
+	CYCLE(2) 
+		mTmpWord = mSystem->busReadByte( mTmpWord );
 
 	CYCLE(3)
 		mTmpByte = mSystem->busReadByte( mTmpWord );
@@ -1558,6 +1584,29 @@ void cCpu_Mos_6502::o_Increase_Memory_Absolute() {
 		mSystem->busWriteByte( mTmpWord, mTmpByte );
 }
 
+// F6:
+void cCpu_Mos_6502::o_Increase_Memory_ZeroPage_X() {
+	CYCLE(1)
+		mTmpWord = mSystem->busReadByte( regPC++ );
+
+	CYCLE(2)
+		mTmpWord += regX();
+
+	CYCLE(3)
+		mTmpByte = mSystem->busReadByte( mTmpWord );
+
+	CYCLE(4) {
+		++mTmpByte;
+		registerFlagSet( mTmpByte );
+	}
+
+	//CYCLE(5) {
+		
+	//}
+
+	CYCLE(6)
+		mSystem->busWriteByte( mTmpWord, mTmpByte );
+}
 // F0: 
 void cCpu_Mos_6502::o_Branch_If_Zero_Set() {
 	CYCLE(1) {

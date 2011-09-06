@@ -420,6 +420,11 @@ void cCpu_Mos_6502::a_Compare_Indirect_Y() {
 
 }
 
+// D5:
+void cCpu_Mos_6502::a_Compare_Zeropage_X() {
+
+}
+
 // D8: Clear Decimal Flag
 void cCpu_Mos_6502::a_Flag_Decimal_Clear() {
 	
@@ -473,6 +478,11 @@ void cCpu_Mos_6502::a_Increase_Memory_Absolute() {
 
 // F0: 
 void cCpu_Mos_6502::a_Branch_Equal() {
+
+}
+
+// F6: 
+void cCpu_Mos_6502::a_Increase_Memory_ZeroPage_X() {
 
 }
 

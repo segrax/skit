@@ -7,6 +7,7 @@
 #include "chips/cpu/cpu.hpp"
 #include "chips/cpu/mos/6502/6502.hpp"
 #include "chips/cpu/mos/6502/6510.hpp"
+#include "io/port/port.hpp"
 #include "chips/interfaceAdapter/mos/6526.hpp"
 #include "io/keyboard/keyboard.hpp"
 
@@ -42,6 +43,8 @@ cSystem_Commodore_64::cSystem_Commodore_64( cSepr *pSepr ) : cSystem("Commodore6
 
 
 	mDisk = new cDrive_Commodore_1541_II("1541-II", pSepr);
+
+	mCia2->setDataPortA( mDisk->serialPortAGet() );
 
 	mWindow = new cVideoWindow( 403, 284, 1, false );
 
@@ -89,7 +92,8 @@ bool cSystem_Commodore_64::prepare() {
 	mDisk->reset();
 	// Force debug mode if compiled as debug build
 #ifdef _DEBUG
-	mCpu->mDebugSet(true);
+	//mCpu->mDebugSet(true);
+	mDisk->mDebugSet(true);
 #endif
 
 	return true;

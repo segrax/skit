@@ -8,12 +8,7 @@ cVia_Mos_6522::cVia_Mos_6522( std::string pName, cSepr *pSepr, cSystem *pSystem,
 
 }
 
-byte cVia_Mos_6522::busReadByte( size_t pAddress ) {
+size_t cVia_Mos_6522::cycle() {
 
-	return 0;
-}
-
-void cVia_Mos_6522::busWriteByte( size_t pAddress, byte pData ) {
-
-
+	return 1;
 }

@@ -2,6 +2,7 @@
 #include "device/deviceConnection.hpp"
 #include "device/device.hpp"
 #include "systems/system.hpp"
+#include "io/port/port.hpp"
 #include "chips/interfaceAdapter/mos/6526.hpp"
 #include "io/keyboard/keyboard.hpp"
 #include "c64_keyboard.hpp"

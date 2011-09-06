@@ -6,6 +6,8 @@ protected:
 	byte 				 mRegPeripheralDataA, mRegPeripheralDataB;
 	byte 				 mRegDataDirectionA, mRegDataDirectionB;
 
+	cPort<byte>			*mPortA, *mPortB;
+
 	word 				 mRegTimerA, mRegTimerLatchA, mRegTimerB, mRegTimerLatchB;
 	dword				 mRegTimerTmp;
 
@@ -25,6 +27,9 @@ public:
 	
 	virtual byte		 busReadByte( size_t pAddress );
 	virtual void		 busWriteByte( size_t pAddress, byte pData );
+
+	void				 setDataPortA( cPort<byte> *pPort ) { mPortA = pPort; }
+	void				 setDataPortB( cPort<byte> *pPort ) { mPortB = pPort; }
 
 	void				 interruptFire( size_t pInterrupt );
 	void				 TimeOfDayCount();

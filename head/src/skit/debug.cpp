@@ -25,8 +25,8 @@ void cDebug::device( eDebug_Level pLevel, cSepr *pSepr, cDevice *pDevice, std::s
 	if( pLevel > mLevel && !pDevice->mDebugGet() )
 		return;
 
-	std::cout << "[" << pDevice->mNameGet() << "]: ";
-	std::cout << pMessage;
+	std::cout << "[" << pDevice->mNameGet() << "]: " << pMessage;
+	std::cout << std::endl;
 
 	if( pDevice->mDebugGet() || pLevel <= eDebug_Stop )
 		waitUser( pDevice );
