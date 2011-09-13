@@ -59,7 +59,7 @@ void cCpu::opcodeExecute() {
 
 void cCpu::opcodeAnalyse() {
 	if( mDebug )
-		mSystem->mDebugGet()->device( eDebug_Message, mSepr, this, debug_CPU_Info_String() );
+		mSystem->mDebugGet()->device( mDebugLevel, mSepr, this, debug_CPU_Info_String() );
 
 	if( !mAnalyse )
 		return;

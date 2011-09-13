@@ -18,20 +18,26 @@ byte cCia_Mos_6526::busReadByte( dword		pAddress ) {
 	switch(pAddress) {
 		case	0x00:					// 
 			if( mPortA )
-				return mPortA->valueGet();
+				return mPortA->busReadByte(0);
 
 			return mRegPeripheralDataA;
 
 		case	0x01:					//
 			if( mPortB )
-				return mPortB->valueGet();
+				return mPortB->busReadByte(0);
 
 			return mRegPeripheralDataB;
 
 		case	0x02:
+            if( mPortA )
+                return mPortA->busReadByte(1);
+
 			return mRegDataDirectionA;
 
 		case	0x03:
+            if( mPortB )
+				return mPortB->busReadByte(1);
+
 			return mRegDataDirectionB;
 			
 		case	0x04:
@@ -82,19 +88,26 @@ byte cCia_Mos_6526::busReadByte( dword		pAddress ) {
 }
 
 void cCia_Mos_6526::busWriteByte( dword pAddress, byte  pData ) {
-	pAddress &= 0x0F;
 
-	switch(pAddress) {
+	switch(pAddress & 0x0F ) {
 		case	0x00:					// 
+			if( mPortA )
+				return mPortA->busWriteByte(0, pData);
 			mRegPeripheralDataA = pData;
 			break;
 		case	0x01:					//
+			if( mPortB )
+				return mPortB->busWriteByte(0, pData);
 			mRegPeripheralDataB = pData;
 			break;
 		case	0x02:
+            if( mPortA )
+				return mPortA->busWriteByte(1, pData);
 			mRegDataDirectionA = pData;
 			break;
 		case	0x03:
+            if( mPortB )
+				return mPortB->busWriteByte(1, pData);
 			mRegDataDirectionB = pData;
 			break;
 		case	0x04:

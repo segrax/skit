@@ -145,7 +145,7 @@ void cCpu_Mos_6502::o_Interrupt() {
 		stackPush( regPC() >> 8 );
 	
 	CYCLE(3)
-		stackPush( regPC() );
+		stackPush( regPC() & 0xFF );
 
 	CYCLE(4)
 		stackPush( (byte) regFL.value() );
@@ -155,6 +155,9 @@ void cCpu_Mos_6502::o_Interrupt() {
 
 	CYCLE(6) {
 		regPC |= (mSystem->busReadByte( mTmpWord ) << 8);
+
+		if( regPC() != 0xFE67 && regPC() != 0xFF48 )
+			return;
 
 		// Disable Interrupts
 		flagInterrupt = true;

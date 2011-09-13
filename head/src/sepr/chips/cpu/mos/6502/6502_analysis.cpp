@@ -135,6 +135,16 @@ void cCpu_Mos_6502::a_Jump_Absolute() {
 
 }
 
+// 50:
+void cCpu_Mos_6502::a_Branch_If_Overflow_Clear() {
+
+}
+
+// 51: 
+void cCpu_Mos_6502::a_Exclusive_Or_Indirect_Y() {
+
+}
+
 // 56:
 void cCpu_Mos_6502::a_Logical_Shift_Right_ZeroPage_X() {
 
@@ -182,6 +192,11 @@ void cCpu_Mos_6502::a_Jump_Indirect() {
 
 // 70: 
 void cCpu_Mos_6502::a_Branch_If_Overflow() {
+
+}
+
+// 71:
+void cCpu_Mos_6502::a_Add_With_Carry_IndirectY() {
 
 }
 
@@ -285,6 +300,11 @@ void cCpu_Mos_6502::a_Load_Index_Y_Immediate() {
 
 }
 
+// A1: 
+void cCpu_Mos_6502::a_Load_Accumulator_Indirect_X() {
+
+}
+
 // A2: Load X Register with Immediate Value
 void cCpu_Mos_6502::a_Load_Index_X_Immediate() {
 	
@@ -367,6 +387,11 @@ void cCpu_Mos_6502::a_Load_A_Absolute_X() {
 
 // C0:
 void cCpu_Mos_6502::a_Compare_Index_Y_Immediate() {
+
+}
+
+// C1:
+void cCpu_Mos_6502::a_Compare_Indirect_X() {
 
 }
 
@@ -484,6 +509,11 @@ void cCpu_Mos_6502::a_Branch_Equal() {
 // F6: 
 void cCpu_Mos_6502::a_Increase_Memory_ZeroPage_X() {
 
+}
+
+// F8:
+void cCpu_Mos_6502::a_Flag_Decimal_Set() {
+	
 }
 
 // F9:

@@ -91,7 +91,9 @@ protected:
 	void					 o_Push_Accumulator();					// 48:
 	void					 o_Exclusive_Or();						// 49: 
 	void					 o_Logical_Shift_Right();				// 4A: 
-	void					 o_Jump_Absolute();						// 4C: Jump
+	void					 o_Jump_Absolute();						// 4C: 
+    void                     o_Branch_If_Overflow_Clear();          // 50:
+	void					 o_Exclusive_Or_Indirect_Y();			// 51:
 	void					 o_Logical_Shift_Right_ZeroPage_X();	// 56: 
 	void					 o_Flag_Interrupt_Clear();				// 58: 
 	void					 o_Return_From_Subroutine();			// 60: Return From Subroutine
@@ -102,6 +104,7 @@ protected:
 	void					 o_Rotate_Right_Accumulator();			// 6A: 
 	void					 o_Jump_Indirect();						// 6C: 
 	void					 o_Branch_If_Overflow();				// 70: 
+	void					 o_Add_With_Carry_IndirectY();			// 71:
 	void					 o_Rotate_Right_ZeroPage_X();			// 76: 
 	void					 o_Flag_Interrupt_Disable_Set();		// 78: Set Interrupt Disable
 	void					 o_Add_With_Carry_Absolute_Y();			// 79: 
@@ -122,6 +125,7 @@ protected:
 	void					 o_Transfer_X_to_StackPtr();			// 9A: Transfer X to Stack
 	void					 o_Store_Accumulator_Absolute_X();		// 9D: 
 	void					 o_Load_Index_Y_Immediate();			// A0: Load Y Immediate
+	void					 o_Load_Accumulator_Indirect_X();		// A1: 
 	void					 o_Load_Index_X_Immediate();			// A2: Load X Immediate
 	void					 o_Load_Index_Y_ZeroPage();				// A4: 
 	void					 o_Load_Accumulator_ZeroPage();			// A5: 
@@ -140,6 +144,7 @@ protected:
 	void					 o_Transfer_S_To_IndexX();				// BA: 
 	void					 o_Load_A_Absolute_X();					// BD: Load A from Absolute_X
 	void					 o_Compare_Index_Y_Immediate();			// C0:
+	void					 o_Compare_Indirect_X();				// C1: 
 	void					 o_Compare_Index_Y_ZeroPage();			// C4:
 	void					 o_Compare_Accumulator_ZeroPage();		// C5:
 	void					 o_Decrease_Memory_ZeroPage();			// C6:
@@ -163,6 +168,7 @@ protected:
 	void					 o_Increase_Memory_Absolute();			// EE: 
 	void					 o_Branch_If_Zero_Set();				// F0: Branch If Equal
 	void					 o_Increase_Memory_ZeroPage_X();		// F6: 
+	void					 o_Flag_Decimal_Set();					// F8:
 	void					 o_Subtract_With_Carry_Absolute_Y();	// F9: 
 
 	// Analyse Opcodes
@@ -192,6 +198,8 @@ protected:
 	void					 a_Exclusive_Or();						// 49: 
 	void					 a_Logical_Shift_Right();				// 4A: 
 	void					 a_Jump_Absolute();						// 4C: Jump
+    void                     a_Branch_If_Overflow_Clear();          // 50: 
+	void					 a_Exclusive_Or_Indirect_Y();			// 51: 
 	void					 a_Logical_Shift_Right_ZeroPage_X();	// 56: 
 	void					 a_Flag_Interrupt_Clear();				// 58: 
 	void					 a_Return_From_Subroutine();			// 60: Return From Subroutine
@@ -202,6 +210,7 @@ protected:
 	void					 a_Rotate_Right_Accumulator();			// 6A: 
 	void					 a_Jump_Indirect();						// 6C:
 	void					 a_Branch_If_Overflow();				// 70: 
+	void					 a_Add_With_Carry_IndirectY();			// 71: 
 	void					 a_Rotate_Right_ZeroPage_X();			// 76: 
 	void					 a_Flag_Interrupt_Disable_Set();		// 78: Set Interrupt Disable
 	void					 a_Add_With_Carry_Absolute_Y();			// 79: 
@@ -222,6 +231,7 @@ protected:
 	void					 a_Transfer_X_to_StackPtr();			// 9A: Transfer X to Stack
 	void					 a_Store_Accumulator_Absolute_X();		// 9D: 
 	void					 a_Load_Index_Y_Immediate();			// A0: Load Y Immediate
+	void					 a_Load_Accumulator_Indirect_X();		// A1: 
 	void					 a_Load_Index_X_Immediate();			// A2: Load X Immediate
 	void					 a_Load_Index_Y_ZeroPage();				// A4: 
 	void					 a_Load_Accumulator_ZeroPage();			// A5: 
@@ -240,6 +250,7 @@ protected:
 	void					 a_Transfer_S_To_IndexX();				// BA: 
 	void					 a_Load_A_Absolute_X();					// BD: Load A from Absolute_X
 	void					 a_Compare_Index_Y_Immediate();			// C0:
+	void					 a_Compare_Indirect_X();				// C1: 
 	void					 a_Compare_Index_Y_ZeroPage();			// C4:
 	void					 a_Compare_Accumulator_ZeroPage();		// C5:
 	void					 a_Decrease_ZeroPage();					// C6:
@@ -263,5 +274,6 @@ protected:
 	void					 a_Increase_Memory_Absolute();			// EE: 
 	void					 a_Branch_Equal();						// F0: Branch If Equal
 	void					 a_Increase_Memory_ZeroPage_X();		// F6: 
+	void					 a_Flag_Decimal_Set();					// F8:
 	void					 a_Subtract_With_Carry_Absolute_Y();	// F9: 
 };

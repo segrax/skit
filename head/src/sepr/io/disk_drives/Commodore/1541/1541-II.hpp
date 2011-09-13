@@ -2,74 +2,16 @@ class cCpu_Mos_6510;
 class cChip_Rom;
 
 #include "chips/interfaceAdapter/mos/6522.hpp"
+#include "via1.hpp"
+#include "via2.hpp"
 
-class cSerialPortA : public cVia_Mos_6522, public cPort<byte> {
-
-
-public:
-	cSerialPortA(cSepr *pSepr, cSystem *pSystem, cDevice *pDevice ) : cVia_Mos_6522( "VIA1", pSepr, pSystem, pDevice ) {
-
-	}
-
-	virtual byte		 busReadByte( size_t pAddress ) {
-
-		switch( pAddress ) {
-
-			case 0x00:
-				return valueGet();
-
-			case 0x01:
-
-			case 0x02:
-				break;
-		}
-
-		return 0;
-	}
-
-	virtual void		 busWriteByte( size_t pAddress, byte pData ) {
-
-		switch( pAddress & 0x0F ) {
-
-			case 0x00:
-				return valueSet( pData );
-		
-			case 0x01:
-
-			case 0x02:
-				break;
-		}
-
-		return;
-	}
-};
-
-class cSerialPortB : public cVia_Mos_6522 {
-
-
-public:
-	cSerialPortB(cSepr *pSepr, cSystem *pSystem, cDevice *pDevice ) : cVia_Mos_6522( "VIA2", pSepr, pSystem, pDevice ) {
-
-	}
-
-	virtual byte		 busReadByte( size_t pAddress ) {
-		
-		return 0;
-	}
-
-	virtual void		 busWriteByte( size_t pAddress, byte pData ) {
-
-		return;
-	}
-};
-
-class cDrive_Commodore_1541_II : public cDrive {
+class cDrive_Commodore_1541_II : public cDisk_Drive {
 protected:
 	cCpu_Mos_6502			*mCpu;
 	cChip_Rom				*mRom;
 	cChip_Ram				*mRam;
-	cSerialPortA			*mSerialA;
-	cSerialPortB			*mSerialB;
+	cVia1					*mVia1;
+	cVia2					*mVia2;
 
 public:
 
@@ -89,5 +31,10 @@ public:
 	void					 reset();
 	bool					 prepare();
 
-	cPort<byte>				*serialPortAGet() { return mSerialA; }
+	void					 headMove(int pDirection);
+	void					 diskRotateStart();
+	void					 diskRotateStop();
+
+    inline cVia1            *via1Get() { return mVia1; }
+    inline cVia2            *via2Get() { return mVia2; }
 };

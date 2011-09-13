@@ -45,9 +45,9 @@ public:
 
 	virtual		void	 registerFlagSet( size_t pData ) = 0;
 
-	const cChip_Opcode	*mOpcodeCurrentGet() { return mOpcodeCurrent; }
+	inline const cChip_Opcode	*mOpcodeCurrentGet() { return mOpcodeCurrent; }
 
-		virtual cInterrupt_NMI	*interruptNMIFind( ) {
+    virtual cInterrupt_NMI	*interruptNMIFind( ) {
 		std::multimap< std::string, cInterrupt* >::iterator	intIT;
 
 		for( intIT = mInterrupts.begin(); intIT != mInterrupts.end(); ++intIT ) {
@@ -82,6 +82,10 @@ public:
 
 		return 0;
 	}
+
+    virtual cChip_Register* registerGet( std::string pName ) {
+        return mRegisters.get( pName );
+    }
 
 protected:
 

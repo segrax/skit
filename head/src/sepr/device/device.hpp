@@ -21,12 +21,13 @@ protected:
 	size_t								 mCycles;											// Cycles to be executed for this instruction
 	size_t								 mCyclesTotal;										// Total Cycle Count
 
+	eDebug_Level						 mDebugLevel;
+
 	size_t								 mSleepTime;										// Sleep Time between thread() loops, milliseconds
 
 	cSepr								*mSepr;
 	cSystem								*mSystem;
-
-	template< class tSystem > tSystem	*mSystemGet() { return dynamic_cast<tSystem*>( mSystem ); }
+	cDevice								*mParent;
 
 	virtual size_t						 cycle() = 0;										// Main device cycle
 	
@@ -67,11 +68,12 @@ public:
 	inline std::string					 mNameGet()					  { return mName; }				// Get the device name
 	inline void							 mNameSet( std::string pVal ) { mName = pVal; }				// Set the device name
 	
+    template< class tSystem > tSystem	*mSystemGet() { return dynamic_cast<tSystem*>( mSystem ); }
 	inline void							 mSleepTimeSet( size_t pVal ) { mSleepTime = pVal; }
 
 	inline bool							 mQuitThreadGet()			  { return mQuitThread; }
 	inline void							 mQuitThreadSet()			  { mQuitThread = true; }		// Exit main thread loop
 
 	inline bool							 mDebugGet()			{ return mDebug; }
-	void								 mDebugSet( bool pVal, bool pChildren = true);
+	void								 mDebugSet( bool pVal, eDebug_Level pLevel, bool pChildren = true );
 };

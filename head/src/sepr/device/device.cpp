@@ -29,6 +29,7 @@ cDevice::cDevice( std::string pName, cSepr *pSepr, cSystem *pSystem, cDevice *pP
 	//
 	mSepr = pSepr;
 	mSystem = pSystem;
+	mParent = pParent;
 	// Create the thread
 	mCycleThread = 0;
 
@@ -50,15 +51,17 @@ cDevice::~cDevice(void) {
 	pthread_mutex_destroy(&mCycleThreadMutex);
 }
 
-void cDevice::mDebugSet( bool pVal, bool pChildren ) {
+void cDevice::mDebugSet( bool pVal, eDebug_Level pLevel, bool pChildren  ) {
 	std::map< std::string, cDeviceConnection*>::iterator	devIT;
 	
 	mDebug = pVal;
+	mDebugLevel = pLevel;
+
 	if(!pChildren)
 		return;
 
 	for( devIT = mConnections.begin(); devIT != mConnections.end(); ++devIT )
-		devIT->second->mDeviceBGet()->mDebugSet( pVal, pChildren );
+		devIT->second->mDeviceBGet()->mDebugSet( pVal, pLevel, pChildren );
 }
 
 bool cDevice::deviceConnect( cDevice *pDevice, size_t pAddress, size_t pSize ) {

@@ -97,10 +97,12 @@ void cCommodore_64_Keyboard::releaseKey( SDL_keysym pKey ) {
 size_t cCommodore_64_Keyboard::SDLKeyToC64( SDL_keysym pKey ) {
 	int result = -1;
 	
-	if( pKey.mod == KMOD_LSHIFT || pKey.mod == KMOD_RSHIFT ) {
-		switch( toupper(pKey.scancode ) ) {
-		case 3:
+	if( pKey.mod & KMOD_LSHIFT || pKey.mod & KMOD_RSHIFT ) {
+		switch( toupper(pKey.sym ) ) {
+
+		case SDLK_2:
 			return MATRIX(7,3) | 0x80;
+
 		}
 
 		return -1;
@@ -129,6 +131,7 @@ size_t cCommodore_64_Keyboard::SDLKeyToC64( SDL_keysym pKey ) {
 	case '9': return MATRIX(4,0);
 	
 	case SDLK_COMMA: return MATRIX(5,7);
+
 	/*case VK_bracketleft: return MATRIX(5,6);
 	case VK_bracketright: return MATRIX(6,1);
 	case VK_slash: return MATRIX(6,7);

@@ -60,7 +60,7 @@
       <UniqueIdentifier>{270c9e1d-1fc8-44f4-a52f-c5a6b9d9150d}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source Files\io\port">
-      <UniqueIdentifier>{bbf3f7bd-353d-4455-bd58-e459dbc82236}</UniqueIdentifier>
+      <UniqueIdentifier>{f77203da-1cb9-473b-a886-edd5e55d5d3d}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -124,6 +124,12 @@
     <ClCompile Include="..\..\..\src\sepr\chips\interfaceAdapter\mos\6522.cpp">
       <Filter>Source Files\chips\interfaceAdapter\mos</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\src\sepr\io\disk_drives\Commodore\1541\via1.cpp">
+      <Filter>Source Files\io\disk_drives\Commodore\1541</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\sepr\systems\Commodore\C64\c64_serial.cpp">
+      <Filter>Source Files\systems\Commodore\C64</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\src\sepr\device\device.hpp">
@@ -186,14 +192,26 @@
     <ClInclude Include="..\..\..\src\sepr\io\disk_drives\Commodore\1541\1541-II.hpp">
       <Filter>Source Files\io\disk_drives\Commodore\1541</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\src\sepr\io\disk_drives\drive.hpp">
-      <Filter>Source Files\io\disk_drives</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\src\sepr\chips\interfaceAdapter\mos\6522.hpp">
       <Filter>Source Files\chips\interfaceAdapter\mos</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\src\sepr\io\disk_drives\Commodore\1541\via1.hpp">
+      <Filter>Source Files\io\disk_drives\Commodore\1541</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\sepr\io\disk_drives\Commodore\1541\via2.hpp">
+      <Filter>Source Files\io\disk_drives\Commodore\1541</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\sepr\io\drive.hpp">
+      <Filter>Source Files\io</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\sepr\io\disk_drives\disk_drive.hpp">
+      <Filter>Source Files\io\disk_drives</Filter>
+    </ClInclude>
     <ClInclude Include="..\..\..\src\sepr\io\port\port.hpp">
       <Filter>Source Files\io\port</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\sepr\systems\Commodore\C64\c64_serial.hpp">
+      <Filter>Source Files\systems\Commodore\C64</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

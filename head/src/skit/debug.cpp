@@ -10,7 +10,7 @@
 
 cDebug::cDebug( cSepr *pSepr ) {
 	mContinue = true;
-	mLevel = eDebug_Warning;
+	mLevel = eDebug_Message;
 	mSepr = pSepr;
 }
 
@@ -28,7 +28,7 @@ void cDebug::device( eDebug_Level pLevel, cSepr *pSepr, cDevice *pDevice, std::s
 	std::cout << "[" << pDevice->mNameGet() << "]: " << pMessage;
 	std::cout << std::endl;
 
-	if( pDevice->mDebugGet() || pLevel <= eDebug_Stop )
+	if( pDevice->mDebugGet() && pLevel <= eDebug_Stop )
 		waitUser( pDevice );
 }
 
@@ -60,7 +60,7 @@ void cDebug::waitUser( cDevice *pDevice ) {
 			// Resume execution
 			if( input == "x" ) {
 				mContinue = true;
-				pDevice->mDebugSet(false);
+				pDevice->mDebugSet(false, eDebug_Warning );
 			}
 		}
 

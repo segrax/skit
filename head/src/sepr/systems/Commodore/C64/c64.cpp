@@ -19,8 +19,11 @@
 #include "c64_keyboard.hpp"
 #include "c64.hpp"
 
-#include "io/disk_drives/drive.hpp"
+#include "io/drive.hpp"
+#include "io/disk_drives/disk_drive.hpp"
 #include "io/disk_drives/Commodore/1541/1541-II.hpp"
+
+#include "c64_serial.hpp"
 
 cSystem_Commodore_64::cSystem_Commodore_64( cSepr *pSepr ) : cSystem("Commodore64", pSepr) {
 	
@@ -44,7 +47,7 @@ cSystem_Commodore_64::cSystem_Commodore_64( cSepr *pSepr ) : cSystem("Commodore6
 
 	mDisk = new cDrive_Commodore_1541_II("1541-II", pSepr);
 
-	mCia2->setDataPortA( mDisk->serialPortAGet() );
+	mCia2->setDataPortA( new cCommodore_64_Serial( "Serial_Connection_0", mSepr, mSystem, this, mDisk->via1Get()->mPortBGet() ) );
 
 	mWindow = new cVideoWindow( 403, 284, 1, false );
 
@@ -92,8 +95,8 @@ bool cSystem_Commodore_64::prepare() {
 	mDisk->reset();
 	// Force debug mode if compiled as debug build
 #ifdef _DEBUG
-	//mCpu->mDebugSet(true);
-	mDisk->mDebugSet(true);
+	mCpu->mDebugSet(false, eDebug_End );
+	mDisk->mDebugSet(false, eDebug_Message );
 #endif
 
 	return true;
