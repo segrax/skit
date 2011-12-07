@@ -3,6 +3,7 @@
 #include "device/device.hpp"
 #include "chips/memory/rom.hpp"
 #include "chips/memory/ram.hpp"
+#include "chips/opcode.hpp"
 #include "chips/register.hpp"
 #include "chips/cpu/cpu.hpp"
 #include "chips/cpu/mos/6502/6502.hpp"
@@ -99,6 +100,7 @@ bool cSystem_Commodore_64::prepare() {
 	mDisk->mDebugSet(false, eDebug_Message );
 #endif
 
+    this->mAnalyseSet(true);
 	return true;
 }
 

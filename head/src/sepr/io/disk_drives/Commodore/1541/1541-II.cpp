@@ -30,10 +30,10 @@ void cDrive_Commodore_1541_II::reset() {
 }
 
 size_t cDrive_Commodore_1541_II::cycle()  {
-    cChip_Register_Word *PC = (cChip_Register_Word*) mCpu->registerGet("PC");
+    //cChip_Register_Word *PC = (cChip_Register_Word*) mCpu->registerGet("PC");
 
     // Temp break
-    //if( (*PC)() == 0xEC04 )
+    //if( (*PC)() == 0xEC00 )
     //    return 1;
 
 	mCpu->cycle();

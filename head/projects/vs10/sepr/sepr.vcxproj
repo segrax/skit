@@ -11,6 +11,8 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\..\src\sepr\analyse\analyse.hpp" />
+    <ClInclude Include="..\..\..\src\sepr\analyse\analyseJournal.hpp" />
     <ClInclude Include="..\..\..\src\sepr\chips\cpu\cpu.hpp" />
     <ClInclude Include="..\..\..\src\sepr\chips\cpu\interrupt.hpp" />
     <ClInclude Include="..\..\..\src\sepr\chips\cpu\mos\6502\6502.hpp" />
@@ -40,6 +42,8 @@
     <ClInclude Include="..\..\..\src\sepr\systems\systems.hpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\..\src\sepr\analyse\analyse.cpp" />
+    <ClCompile Include="..\..\..\src\sepr\analyse\analyseJournal.cpp" />
     <ClCompile Include="..\..\..\src\sepr\chips\cpu\cpu.cpp" />
     <ClCompile Include="..\..\..\src\sepr\chips\cpu\interrupt.cpp" />
     <ClCompile Include="..\..\..\src\sepr\chips\cpu\mos\6502\6502.cpp" />
@@ -50,6 +54,7 @@
     <ClCompile Include="..\..\..\src\sepr\chips\interfaceAdapter\mos\6526.cpp" />
     <ClCompile Include="..\..\..\src\sepr\chips\memory\ram.cpp" />
     <ClCompile Include="..\..\..\src\sepr\chips\memory\rom.cpp" />
+    <ClCompile Include="..\..\..\src\sepr\chips\opcode.cpp" />
     <ClCompile Include="..\..\..\src\sepr\chips\register.cpp" />
     <ClCompile Include="..\..\..\src\sepr\chips\video\mos\8567.cpp" />
     <ClCompile Include="..\..\..\src\sepr\chips\video\video.cpp" />

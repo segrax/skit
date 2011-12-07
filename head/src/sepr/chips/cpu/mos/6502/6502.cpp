@@ -3,6 +3,7 @@
 #include "device/device.hpp"
 #include "systems/system.hpp"
 #include "chips/opcode.hpp"
+
 #include "chips/register.hpp"
 #include "chips/cpu/cpu.hpp"
 #include "6502.hpp"
@@ -16,7 +17,7 @@ cCpu_Mos_6502::cCpu_Mos_6502( std::string pName, cSepr *pSepr, cSystem *pSystem,
 
 	// Create the reset and interrupt opcodes
 	mOpcode_Reset->_OPCODE( cCpu_Mos_6502, o_Reset, a_Nop, 8 );
-	mOpcode_Interrupt->_OPCODE( cCpu_Mos_6502, o_Interrupt, o_Interrupt, 8);
+	mOpcode_Interrupt->_OPCODE( cCpu_Mos_6502, o_Interrupt, a_Interrupt, 8);
 
 }
 
@@ -95,10 +96,15 @@ size_t cCpu_Mos_6502::cycle() {
 
 		byte op = mTmpOpcode;
 
-		if( !op )
-			op = mSystem->busReadByte( regPC++ );
+		if( !op ) {
+			op = mSystem->busReadByte( regPC() );
+            opcodeSet( op );
+            ++regPC;
 
-		opcodeSet( op );
+        } else
+    		opcodeSet( op );
+
+        
 
 		cycleNext();
 
@@ -205,6 +211,33 @@ void cCpu_Mos_6502::registersPrepare() {
 
 	// Set the registers to default values
 	(*mFlagReserved) = true;
+}
+
+cChip_Registers *cCpu_Mos_6502::registersClone() {
+
+    cChip_Registers *Regs = new cChip_Registers();
+    
+    Regs->add( new cChip_Register_Byte( *mRegA ) );
+	Regs->add( new cChip_Register_Byte( *mRegX ) );
+	Regs->add( new cChip_Register_Byte( *mRegY ) );
+	Regs->add( new cChip_Register_Byte( *mRegStack ) );
+	Regs->add( new cChip_Register_Word( *mRegPC ) );
+	
+    
+    cChip_Register_Flags *Flags = new cChip_Register_Flags( this, "Flags");
+
+	Flags->add( new cChip_Register_Flag(*mFlagNegative) );
+	Flags->add( new cChip_Register_Flag(*mFlagOverflow) );
+	Flags->add( new cChip_Register_Flag(*mFlagReserved) );
+	Flags->add( new cChip_Register_Flag(*mFlagBreak) );
+	Flags->add( new cChip_Register_Flag(*mFlagDecimal) );
+	Flags->add( new cChip_Register_Flag(*mFlagInterrupt) );
+	Flags->add( new cChip_Register_Flag(*mFlagZero) );
+	Flags->add( new cChip_Register_Flag(*mFlagCarry) );
+
+    Regs->add( Flags );
+
+    return Regs;
 }
 
 void cCpu_Mos_6502::o__Bit() {

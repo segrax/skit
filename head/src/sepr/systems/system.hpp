@@ -1,9 +1,11 @@
 class cDebug;
 class cVideoWindow;
+class cAnalyse;
 
 class cSystem : public cDevice {
 private:
 	cDebug					*mDebug;
+    cAnalyse                *mAnalyse;
 
 protected:
 	std::vector<SDL_Event>	 mEvents;
@@ -34,6 +36,9 @@ public:
 	virtual SDL_Surface		*videoGet() = 0;
 
 	std::string				 systemDataPath( std::string pFile );
-	cVideoWindow			*mWindowGet() { return mWindow; }
+
+	inline cVideoWindow			    *mWindowGet() { return mWindow; }
+
+    inline cAnalyse                 *mAnalyseGet() { return mAnalyse; }
 
 };

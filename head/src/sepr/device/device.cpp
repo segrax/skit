@@ -20,6 +20,8 @@ cDevice::cDevice( std::string pName, cSepr *pSepr, cSystem *pSystem, cDevice *pP
 	mCycle = 0;
 	mCyclesTotal = 0;
 	mCyclesRemaining = 0;
+    mCycles = 0;
+
 	mName = pName;
 	
 	//

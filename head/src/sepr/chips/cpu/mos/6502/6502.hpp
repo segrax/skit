@@ -25,6 +25,8 @@ enum eChip_Cpu_Mos_6502_Flags {
 	flagNEGATIVE	= 0x80,
 };
 
+class cChip_Opcode_Analysis;
+
 class cCpu_Mos_6502 : public cCpu {
 private:
 	cChip_Register_Byte		*mRegA, *mRegX, *mRegY, *mRegStack;
@@ -56,6 +58,7 @@ protected:
 
 	virtual void			 opcodesPrepare();
 	virtual void			 registersPrepare();
+    virtual cChip_Registers *registersClone();
 
 	virtual void			 o_Reset();								// Reset Routine
 	virtual void			 o_Unknown_Opcode();					// Unknown Opcode
@@ -198,13 +201,13 @@ protected:
 	void					 a_Exclusive_Or();						// 49: 
 	void					 a_Logical_Shift_Right();				// 4A: 
 	void					 a_Jump_Absolute();						// 4C: Jump
-    void                     a_Branch_If_Overflow_Clear();          // 50: 
+    void					 a_Branch_If_Overflow_Clear();          // 50: 
 	void					 a_Exclusive_Or_Indirect_Y();			// 51: 
 	void					 a_Logical_Shift_Right_ZeroPage_X();	// 56: 
 	void					 a_Flag_Interrupt_Clear();				// 58: 
 	void					 a_Return_From_Subroutine();			// 60: Return From Subroutine
 	void					 a_Add_With_Carry_ZeroPage();			// 65:
-	void 					 a_Rotate_Right_ZeroPage();				// 66: 
+	void                     a_Rotate_Right_ZeroPage();				// 66: 
 	void					 a_Pull_Accumulator();					// 68: 
 	void					 a_Add_With_Carry_Immediate();			// 69: 
 	void					 a_Rotate_Right_Accumulator();			// 6A: 

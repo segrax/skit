@@ -62,6 +62,9 @@
     <Filter Include="Source Files\io\port">
       <UniqueIdentifier>{f77203da-1cb9-473b-a886-edd5e55d5d3d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\analyse">
+      <UniqueIdentifier>{ac99f370-e052-4fb5-b8fb-13bae3211422}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\src\sepr\device\device.cpp">
@@ -129,6 +132,15 @@
     </ClCompile>
     <ClCompile Include="..\..\..\src\sepr\systems\Commodore\C64\c64_serial.cpp">
       <Filter>Source Files\systems\Commodore\C64</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\sepr\chips\opcode.cpp">
+      <Filter>Source Files\chips</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\sepr\analyse\analyse.cpp">
+      <Filter>Source Files\analyse</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\sepr\analyse\analyseJournal.cpp">
+      <Filter>Source Files\analyse</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -212,6 +224,12 @@
     </ClInclude>
     <ClInclude Include="..\..\..\src\sepr\systems\Commodore\C64\c64_serial.hpp">
       <Filter>Source Files\systems\Commodore\C64</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\sepr\analyse\analyse.hpp">
+      <Filter>Source Files\analyse</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\sepr\analyse\analyseJournal.hpp">
+      <Filter>Source Files\analyse</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

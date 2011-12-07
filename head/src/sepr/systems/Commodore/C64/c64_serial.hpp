@@ -1,6 +1,6 @@
 class cCommodore_64_Serial : public cPort<byte> {
     cVia1_SerialPort    *mConnectedDevice;
-    byte                 mDataDirection;
+    byte                 mData, mDataDirection;
 
 protected:
 

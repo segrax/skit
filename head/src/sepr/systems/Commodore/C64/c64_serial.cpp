@@ -20,13 +20,17 @@ cCommodore_64_Serial::cCommodore_64_Serial( std::string pName, cSepr *pSepr, cSy
 void cCommodore_64_Serial::busWriteByte( dword pAddress, byte  pData ) {
     switch( pAddress ) {
         case 0:
-            valueSet( pData );
+            mData = pData;
+            valueSet( mData | ~mDataDirection );
 
-            mConnectedDevice->pinsCiaUpdate( pData, mDataDirection );
+            mConnectedDevice->pinsCiaUpdate( mData, mDataDirection );
             return;
 
         case 1:
+
             mDataDirection = pData;
+            valueSet( mData | ~mDataDirection );
+            mConnectedDevice->pinsCiaUpdate( mData, mDataDirection );
             return;
     }
 
@@ -35,9 +39,7 @@ void cCommodore_64_Serial::busWriteByte( dword pAddress, byte  pData ) {
 byte cCommodore_64_Serial::busReadByte( dword		pAddress ) {
     switch( pAddress ) {
     case 0: {
-        byte result = valueGet();
-
-        result &= 0x3F;
+        byte result = (valueGet() & 0x3F);
         result |= (mConnectedDevice->lineClock() ? 0x40 : 0x00);
         result |= (mConnectedDevice->lineData() ? 0x80 : 0x00);
                

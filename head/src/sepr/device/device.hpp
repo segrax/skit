@@ -35,7 +35,6 @@ public:
 										 cDevice( std::string pName, cSepr *pSepr, cSystem *pSystem, cDevice *pParent );	
 										~cDevice(void);										
 	
-
 	virtual bool						 deviceConnect( cDevice *pDevice, size_t pAddress, size_t pSize );	// Connect a device
 	
 	template <class tDev>	tDev		*deviceFind( std::string pName, bool pRead ) {
@@ -63,6 +62,8 @@ public:
 	void								 mCyclesRemainingAdd( size_t pVal );
 	inline size_t						 mCyclesRemainingGet()		  { return mCyclesRemaining; }	// Number of cycles remaining
 	
+    inline size_t                        mCycleGet() { return mCycle; }
+
 	void								 mAnalyseSet( bool pVal );
 
 	inline std::string					 mNameGet()					  { return mName; }				// Get the device name

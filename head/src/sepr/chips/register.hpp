@@ -36,11 +36,13 @@ private:
 	std::map< std::string, cChip_Register* >			mRegisters;
 
 public:
-									
 									~cChip_Registers();
 
 	void							 add( cChip_Register *pRegister );
 	cChip_Register					*get( std::string pName );
+
+
+    std::map< std::string, cChip_Register* > *getRegisters() { return &mRegisters; }
 };
 
 template <class tSize> class cChip_Register_Value : public cChip_Register {
@@ -59,6 +61,7 @@ public:
 				mCpu->registerFlagSet( mData );
 		}
 
+        inline tSize     mDataGet()                { return mData; }
 		inline tSize	 operator()()				{ return mData;   }					// Return value
 
 		inline void		 operator*( tSize pVal )	{ mData = pVal; }					// Set value, but don't adjust flags
@@ -91,15 +94,19 @@ public:
 
 			msg << std::setfill('0');
 			
-			if( mType == eData_Type_Byte )
-				msg << std::setw(2);
+            switch( mType ) {
+                case eData_Type_Byte:
+				    msg << std::setw(2);
+                    break;
 
-			if( mType == eData_Type_Word )
-				msg << std::setw(4);
+                case eData_Type_Word:
+				    msg << std::setw(4);
+                    break;
 
-			if( mType == eData_Type_DWord )
-				msg << std::setw(8);
-
+			    case eData_Type_DWord:
+				    msg << std::setw(8);
+                    break;
+            }
 			msg << value;
 
 			return msg.str();

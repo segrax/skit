@@ -431,7 +431,7 @@ void cVideo_Mos_8567::decode_StandardText() {
 	for( size_t bit = 0; bit < 8; ++bit, ++mBufferPtr ) {
 		
 		if( data & 0x80 )
-			*mBufferPtr = color;
+			*mBufferPtr = (byte) color;
 		else
 			*mBufferPtr = mRegBackgroundColor[0];
 

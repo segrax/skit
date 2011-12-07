@@ -307,7 +307,9 @@ void cCpu_Mos_6502::a_Load_Accumulator_Indirect_X() {
 
 // A2: Load X Register with Immediate Value
 void cCpu_Mos_6502::a_Load_Index_X_Immediate() {
-	
+
+    mOpcodeAnalysis->typeSet( OPCODE_TYPE_LOAD );
+
 }
 
 // A4: 

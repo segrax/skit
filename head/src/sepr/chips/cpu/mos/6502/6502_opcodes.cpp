@@ -19,7 +19,7 @@ void cCpu_Mos_6502::opcodesPrepare() {
 	mOpcodes = new cChip_Opcode[0x100];
 
 	// Link the opcodes to the opcode/analysis functions
-	OPCODE(0x05,	o_Or_Accumulator_ZeroPage,		o_Or_Accumulator_ZeroPage,		3);
+	OPCODE(0x05,	o_Or_Accumulator_ZeroPage,		a_Or_Accumulator_ZeroPage,		3);
 	OPCODE(0x06,	o_Arith_Shift_Left_ZeroPage,	a_Arith_Shift_Left_ZeroPage,	5);
 	OPCODE(0x08,	o_Push_Flags,					a_Push_Flags,					3);
 	OPCODE(0x09,	o_Or_Accumulator,				a_Or_Accumulator,				2);
@@ -49,7 +49,7 @@ void cCpu_Mos_6502::opcodesPrepare() {
 	OPCODE(0x4A,	o_Logical_Shift_Right,			a_Logical_Shift_Right,			2);
 	OPCODE(0x4C,	o_Jump_Absolute,				a_Jump_Absolute,				3);	
 
-    OPCODE(0x50,    o_Branch_If_Overflow_Clear,     o_Branch_If_Overflow_Clear,     2);
+    OPCODE(0x50,    o_Branch_If_Overflow_Clear,     a_Branch_If_Overflow_Clear,     2);
 	OPCODE(0x51,	o_Exclusive_Or_Indirect_Y,		a_Exclusive_Or_Indirect_Y,		5);
 	OPCODE(0x56,	o_Logical_Shift_Right_ZeroPage_X,a_Logical_Shift_Right_ZeroPage_X, 6);
 	OPCODE(0x58,	o_Flag_Interrupt_Clear,			a_Flag_Interrupt_Clear,			2);

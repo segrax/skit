@@ -1,4 +1,5 @@
 
+// Base Function call
 template<class tResult>
 struct cFunctionCall_Null {
 	virtual ~cFunctionCall_Null() {}
@@ -7,6 +8,7 @@ struct cFunctionCall_Null {
 	virtual tResult operator()() const = 0;
 };
 
+// Function call with no parameters
 template<class tResult, class tClass>
 class cFunctionCall_NoParams : public cFunctionCall_Null<tResult> {
 public:
@@ -26,6 +28,7 @@ private:
 
 typedef cFunctionCall_Null<void> tFunctionCall;
 
+// Opcode
 class cChip_Opcode {
 public:
 	tFunctionCall	*mOpcodeFunction, *mOpcodeFunctionAnalyse;
@@ -53,5 +56,18 @@ public:
 		mCycles = pCycles;
 	}
 }; 
+
+class cChip_Registers;
+class cCpu;
+
+class cChip_Opcode_Analysis {
+private:
+    cChip_Registers     *mRegisters;
+
+    
+public:
+                         cChip_Opcode_Analysis( cCpu *pCpu, cChip_Opcode_Analysis *pPrevious );
+
+};
 
 #define _OPCODE(ver, o, a, c) setProc(	new cFunctionCall_NoParams<void, ver>(this, &ver::o), new cFunctionCall_NoParams<void, ver>(this, &ver::a), #o, c) 
