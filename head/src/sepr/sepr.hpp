@@ -14,6 +14,7 @@
 
 #include "common/types.hpp"
 #include "common/endian.hpp"
+#include "baseTypes.hpp"
 
 #include "skit/debug.hpp"
 

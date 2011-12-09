@@ -1,26 +1,17 @@
 #include <iomanip>
 
-enum eChip_Data_Type {
-	eData_Type_Byte		= 0,
-	eData_Type_Word		= 1,
-	eData_Type_DWord	= 2,
-	eData_Type_Flag		= 3,
-	eData_Type_Flags	= 4,
-};
-
 class cChip_Registers;
 class cCpu;
 
 class cChip_Register {
 private:
 	std::string					 mName;
-	
+    eBase_Data_Type              mType;
 protected:
-	eChip_Data_Type				 mType;
 	cCpu						*mCpu;
 
 public:
-						 cChip_Register( cCpu *pCpu, std::string pName, eChip_Data_Type pType ) : mName( pName ), mType( pType ), mCpu(pCpu) { }
+						 cChip_Register( cCpu *pCpu, eBase_Data_Type pType, std::string pName ) : mName( pName ), mType( pType), mCpu(pCpu) { }
 
 	virtual std::string	 debug_CPU_Info_String() {
 
@@ -30,30 +21,13 @@ public:
 	inline std::string	 mNameGet()		{ return mName; }
 };
 
-// Class which holds ptrs to all the CPU Registers
-class cChip_Registers {
-private:
-	std::map< std::string, cChip_Register* >			mRegisters;
-
-public:
-									~cChip_Registers();
-
-	void							 add( cChip_Register *pRegister );
-	cChip_Register					*get( std::string pName );
-
-
-    std::map< std::string, cChip_Register* > *getRegisters() { return &mRegisters; }
-};
-
-template <class tSize> class cChip_Register_Value : public cChip_Register {
+template <class tSize> class cChip_Register_Value : public cBase_Value<tSize>, public cChip_Register {
 protected:
-	tSize				 mData;
 	bool				 mFlagSet;
 
 public:
-						 cChip_Register_Value( cCpu *pCpu, std::string pName, eChip_Data_Type pType, tSize pVal, bool pFlagSet ) : cChip_Register( pCpu, pName, pType ) { 
+						 cChip_Register_Value( cCpu *pCpu, std::string pName, eBase_Data_Type pType, tSize pVal, bool pFlagSet ) : cChip_Register( pCpu, pType, pName ), cBase_Value( pType, pVal ) { 
 							 mFlagSet = pFlagSet;
-							 mData = pVal; 
 						 }
 
 		void			 flagSet() {
@@ -87,51 +61,50 @@ public:
 			std::stringstream	msg;
 
 			msg << cChip_Register::debug_CPU_Info_String();
-			msg << "0x" << std::hex;
+			
 			
 			if( mNameGet() == "PC" )
 				--value;
 
-			msg << std::setfill('0');
-			
-            switch( mType ) {
-                case eData_Type_Byte:
-				    msg << std::setw(2);
-                    break;
-
-                case eData_Type_Word:
-				    msg << std::setw(4);
-                    break;
-
-			    case eData_Type_DWord:
-				    msg << std::setw(8);
-                    break;
-            }
-			msg << value;
+			msg << cBase_Value::debug_String();
 
 			return msg.str();
 		}
+};
+
+// Class which holds ptrs to all the CPU Registers
+class cChip_Registers {
+private:
+	std::map< std::string, cChip_Register* >			mRegisters;
+
+public:
+									~cChip_Registers();
+
+	void							 add( cChip_Register *pRegister );
+	cChip_Register					*get( std::string pName );
+
+
+    std::map< std::string, cChip_Register* > *getRegisters() { return &mRegisters; }
 };
 
 class cChip_Register_Byte : public cChip_Register_Value<byte> {
 private:
 
 public:
-						 cChip_Register_Byte(cCpu *pCpu, std::string pName, byte pValue, bool pFlagSet) : cChip_Register_Value<byte>( pCpu, pName, eData_Type_Byte, pValue, pFlagSet ) {
+    cChip_Register_Byte(cCpu *pCpu, std::string pName, byte pValue, bool pFlagSet) : cChip_Register_Value( pCpu, pName, eData_Type_Byte, pValue, pFlagSet ) {
 
 						 }
 
 	inline void		 operator=( byte pVal )	{ mData = pVal; flagSet(); }		// Set Value, adjust flags (if required)
-
 };
 
 class cChip_Register_Word : public cChip_Register_Value<word> {
 private:
 
 public:
-						 cChip_Register_Word(cCpu *pCpu, std::string pName, word pValue, bool pFlagSet) : cChip_Register_Value( pCpu, pName, eData_Type_Word, pValue, pFlagSet ) {
+		cChip_Register_Word(cCpu *pCpu, std::string pName, word pValue, bool pFlagSet) : cChip_Register_Value( pCpu, pName, eData_Type_Word, pValue, pFlagSet ) {
 						
-						 }
+		}
 
 	inline void		 operator=( word pVal )	{ mData = pVal; flagSet(); }		// Set Value, adjust flags (if required)
 
@@ -144,7 +117,7 @@ private:
 	std::map< std::string, cChip_Register_Flag* >			mRegisters;
 
 public:
-								 	 cChip_Register_Flags(cCpu *pCpu, std::string pName ) : cChip_Register( pCpu, pName, eData_Type_Flags ) { }
+								 	 cChip_Register_Flags(cCpu *pCpu, std::string pName ) : cChip_Register( pCpu, eData_Type_Flags, pName ) { }
 									~cChip_Register_Flags();
 
 	void							 add( cChip_Register_Flag *pRegister );
@@ -169,7 +142,7 @@ protected:
 	cChip_Register_Flags	*mFlags;
 
 public:
-						 cChip_Register_Flag(cCpu *pCpu, cChip_Register_Flags *pFlags, std::string pName, size_t pValue ) : cChip_Register( pCpu, pName, eData_Type_Flag ) {
+						 cChip_Register_Flag(cCpu *pCpu, cChip_Register_Flags *pFlags, std::string pName, size_t pValue ) : cChip_Register( pCpu, eData_Type_Flag, pName ) {
 							 mSet = false;
 							 mValue = pValue;
 							 mFlags = pFlags;

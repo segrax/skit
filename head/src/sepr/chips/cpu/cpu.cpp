@@ -6,7 +6,6 @@
 #include "chips/cpu/cpu.hpp"
 #include "systems/system.hpp"
 
-#include "../../analyse/analyseJournal.hpp"
 #include "../../analyse/analyse.hpp"
 
 cCpu::cCpu( std::string pName, cSepr *pSepr, cSystem *pSystem, cDevice *pParent ) : cDevice( pName, pSepr, pSystem, pParent ) {
@@ -18,7 +17,7 @@ cCpu::cCpu( std::string pName, cSepr *pSepr, cSystem *pSystem, cDevice *pParent 
 	mOpcodeCurrent = 0;
 	mOpcodeNumber = 0;
 
-    mOpcode_Analysis = 0;
+    mOpcodeAnalysis = 0;
 
 	mOpcode_Reset =  new cChip_Opcode();
 	mOpcode_Reset->_OPCODE( cCpu, o_Reset, a_Reset, 8 );
@@ -69,20 +68,26 @@ void cCpu::opcodeAnalyse() {
 	if( !mAnalyse )
 		return;
 
-    mOpcode_Analysis = new cChip_Opcode_Analysis( this, mOpcode_Analysis );
+    mOpcodeAnalysis = new cAnalysis_Opcode( this, mOpcodeAnalysis );
 
 	if(mOpcodeCurrent)
 		(*mOpcodeCurrent->mOpcodeFunctionAnalyse)();
 
     // Add opcode to journal
-    mSystem->mAnalyseGet()->opcodeAdd( mOpcode_Analysis );
+    mSystem->mAnalyseGet()->opcodeAdd( mOpcodeAnalysis );
 }
 
 void cCpu::cycleNext()  {
 	++mCycle;
 
-	if(mCycle >= mCycles)
+	if(mCycle >= mCycles) {
+
+        if( mOpcodeAnalysis )
+            mOpcodeAnalysis->OpcodeComplete();
+
 		mOpcodeCurrent = 0;
+
+    }
 }
 
 void cCpu::o_Unknown_Opcode() {

@@ -63,6 +63,7 @@ public:
 	inline size_t						 mCyclesRemainingGet()		  { return mCyclesRemaining; }	// Number of cycles remaining
 	
     inline size_t                        mCycleGet() { return mCycle; }
+    inline size_t                        mCyclesTotalGet() { return mCyclesTotal; }
 
 	void								 mAnalyseSet( bool pVal );
 

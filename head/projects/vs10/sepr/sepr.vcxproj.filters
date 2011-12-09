@@ -65,6 +65,9 @@
     <Filter Include="Source Files\analyse">
       <UniqueIdentifier>{ac99f370-e052-4fb5-b8fb-13bae3211422}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\analyse\opcode">
+      <UniqueIdentifier>{2297e8b0-0ba8-4631-b99b-46e6a65d2b1d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\src\sepr\device\device.cpp">
@@ -133,13 +136,19 @@
     <ClCompile Include="..\..\..\src\sepr\systems\Commodore\C64\c64_serial.cpp">
       <Filter>Source Files\systems\Commodore\C64</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\src\sepr\chips\opcode.cpp">
-      <Filter>Source Files\chips</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\src\sepr\analyse\analyse.cpp">
       <Filter>Source Files\analyse</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\src\sepr\analyse\analyseJournal.cpp">
+    <ClCompile Include="..\..\..\src\sepr\analyse\opcode\parameter.cpp">
+      <Filter>Source Files\analyse\opcode</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\sepr\analyse\opcode\opcode.cpp">
+      <Filter>Source Files\analyse\opcode</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\sepr\analyse\Journal.cpp">
+      <Filter>Source Files\analyse</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\sepr\analyse\Block.cpp">
       <Filter>Source Files\analyse</Filter>
     </ClCompile>
   </ItemGroup>
@@ -228,8 +237,20 @@
     <ClInclude Include="..\..\..\src\sepr\analyse\analyse.hpp">
       <Filter>Source Files\analyse</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\src\sepr\analyse\analyseJournal.hpp">
+    <ClInclude Include="..\..\..\src\sepr\analyse\opcode\parameter.hpp">
+      <Filter>Source Files\analyse\opcode</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\sepr\analyse\opcode\opcode.hpp">
+      <Filter>Source Files\analyse\opcode</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\sepr\analyse\Journal.hpp">
       <Filter>Source Files\analyse</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\sepr\analyse\Block.hpp">
+      <Filter>Source Files\analyse</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\sepr\baseTypes.hpp">
+      <Filter>Source Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

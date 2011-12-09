@@ -57,17 +57,4 @@ public:
 	}
 }; 
 
-class cChip_Registers;
-class cCpu;
-
-class cChip_Opcode_Analysis {
-private:
-    cChip_Registers     *mRegisters;
-
-    
-public:
-                         cChip_Opcode_Analysis( cCpu *pCpu, cChip_Opcode_Analysis *pPrevious );
-
-};
-
 #define _OPCODE(ver, o, a, c) setProc(	new cFunctionCall_NoParams<void, ver>(this, &ver::o), new cFunctionCall_NoParams<void, ver>(this, &ver::a), #o, c) 

@@ -1,6 +1,11 @@
 class cAnalyseJournal;
-class cChip_Opcode_Analysis;
+class cAnalysis_Opcode;
 class cSepr;
+
+#include "analyse/opcode/opcode.hpp"
+#include "analyse/opcode/parameter.hpp"
+#include "analyse/Journal.hpp"
+#include "analyse/Block.hpp"
 
 class cAnalyse {
 private:
@@ -10,5 +15,5 @@ private:
 public:
                          cAnalyse(  cSepr *pSepr  );
 
-    void                 opcodeAdd( cChip_Opcode_Analysis *pOpcode );
+    void                 opcodeAdd( cAnalysis_Opcode *pOpcode );
 };

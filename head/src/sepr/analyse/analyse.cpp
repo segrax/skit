@@ -1,6 +1,5 @@
 #include "sepr.hpp"
 
-#include "analyseJournal.hpp"
 #include "analyse.hpp"
 
 #include "device/deviceConnection.hpp"
@@ -12,7 +11,7 @@ cAnalyse::cAnalyse( cSepr *pSepr ) {
     mSepr = pSepr;
 }
 
-void cAnalyse::opcodeAdd( cChip_Opcode_Analysis *pOpcode ) {
+void cAnalyse::opcodeAdd( cAnalysis_Opcode *pOpcode ) {
     
-    mJournal.journalAdd( mSepr->mSystemGet()->mCycleGet(), pOpcode );
+    mJournal.journalAdd( mSepr->mSystemGet()->mCyclesTotalGet(), pOpcode );
 }

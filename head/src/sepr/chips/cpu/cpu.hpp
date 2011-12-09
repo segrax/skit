@@ -1,5 +1,5 @@
 class cChip_Opcode;
-class cChip_Opcode_Analysis;
+class cAnalysis_Opcode;
 
 #include "sepr/chips/cpu/interrupt.hpp"
 
@@ -18,7 +18,7 @@ protected:
 	cChip_Opcode		*mOpcode_Unknown,		*mOpcode_Reset;	// Handlers for reset and unknown
 	cChip_Opcode		*mOpcode_Interrupt;
     
-    cChip_Opcode_Analysis *mOpcodeAnalysis;
+    cAnalysis_Opcode *mOpcodeAnalysis;
 
     cChip_Registers      mRegistersCycleStart;
 	cChip_Registers		 mRegisters;
@@ -33,7 +33,7 @@ protected:
 
 	virtual void		 opcodesPrepare() = 0;
 	void				 opcodeSet( size_t pOp );
-	void				 opcodeAnalyse();
+	virtual void	     opcodeAnalyse();
 	void				 opcodeExecute();
 
 	virtual 	void	 registersPrepare() = 0;
@@ -41,7 +41,7 @@ protected:
 public:
 						 cCpu( std::string pName, cSepr *pSepr, cSystem *pSystem, cDevice *pParent );
 						~cCpu();
-	
+
 	virtual void		 interruptAdd( cInterrupt *pInterrupt );
 	virtual void		 interruptRemove( cInterrupt *pInterrupt );
 	virtual void		 interruptRemove( std::string pName );

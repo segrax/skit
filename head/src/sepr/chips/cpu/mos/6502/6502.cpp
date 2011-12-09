@@ -213,6 +213,18 @@ void cCpu_Mos_6502::registersPrepare() {
 	(*mFlagReserved) = true;
 }
 
+void cCpu_Mos_6502::opcodeAnalyse() {
+    word tmpPC;
+
+    // Save the PC, as its modified as bytes are read
+    tmpPC = mRegPC->mDataGet();
+
+    cCpu::opcodeAnalyse();
+
+    mRegPC->mDataSet( tmpPC );
+}
+
+
 cChip_Registers *cCpu_Mos_6502::registersClone() {
 
     cChip_Registers *Regs = new cChip_Registers();
@@ -304,4 +316,9 @@ void cCpu_Mos_6502::o__SubWithCarry() {
 
 		flagCarry = ((mTmpWord < 0x100 ) ? true : false);
 	}
+}
+
+byte cCpu_Mos_6502::readImmediate() { 
+
+    return mSystem->busReadByte( regPC++ ); 
 }

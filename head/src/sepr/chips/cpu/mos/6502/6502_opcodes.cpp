@@ -1067,7 +1067,7 @@ void cCpu_Mos_6502::o_Load_Accumulator_Indirect_X() {
 void cCpu_Mos_6502::o_Load_Index_X_Immediate() {
 
 	CYCLE(1)
-		regX = mSystem->busReadByte( regPC++ );
+		regX = readImmediate();
 }
 
 // A4: 

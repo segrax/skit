@@ -7,6 +7,8 @@
 #include "6502.hpp"
 #include "systems/system.hpp"
 
+#include "analyse/analyse.hpp"
+
 void cCpu_Mos_6502::a_Nop() {
 
 }
@@ -307,8 +309,9 @@ void cCpu_Mos_6502::a_Load_Accumulator_Indirect_X() {
 
 // A2: Load X Register with Immediate Value
 void cCpu_Mos_6502::a_Load_Index_X_Immediate() {
+   
+   mOpcodeAnalysis->ParameterAdd( new cAnalysis_Opcode_Parameter_Value_Byte( readImmediate() ) );
 
-    mOpcodeAnalysis->typeSet( OPCODE_TYPE_LOAD );
 
 }
 

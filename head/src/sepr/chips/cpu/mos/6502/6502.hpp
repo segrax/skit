@@ -25,7 +25,7 @@ enum eChip_Cpu_Mos_6502_Flags {
 	flagNEGATIVE	= 0x80,
 };
 
-class cChip_Opcode_Analysis;
+class cAnalysis_Opcode;
 
 class cCpu_Mos_6502 : public cCpu {
 private:
@@ -54,6 +54,7 @@ public:
 	void					 reset();								// Set opcode to reset opcode
 
 protected:
+    virtual void             opcodeAnalyse();
 	virtual std::string		 debug_CPU_Info_String();
 
 	virtual void			 opcodesPrepare();
@@ -64,6 +65,9 @@ protected:
 	virtual void			 o_Unknown_Opcode();					// Unknown Opcode
 	virtual void			 o_Interrupt();
 	
+    // Memory Access
+    byte                     readImmediate();
+
 	// Opcodes
 	void					 o_Nop();
 	void					 o__Bit();

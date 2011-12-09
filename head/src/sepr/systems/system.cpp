@@ -2,8 +2,7 @@
 #include "device/deviceConnection.hpp"
 #include "device/device.hpp"
 #include "system.hpp"
-#include "analyse\analyseJournal.hpp"
-#include "analyse\analyse.hpp"
+#include "analyse/analyse.hpp"
 
 cSystem::cSystem( std::string pName, cSepr *pSepr ) : cDevice( pName, pSepr, 0, 0 ) {
 	mDebug = new cDebug( pSepr );
