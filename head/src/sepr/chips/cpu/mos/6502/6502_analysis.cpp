@@ -312,6 +312,7 @@ void cCpu_Mos_6502::a_Load_Index_X_Immediate() {
    
    mOpcodeAnalysis->ParameterAdd( new cAnalysis_Opcode_Parameter_Value_Byte( readImmediate() ) );
 
+   mOpcodeAnalysis->CommandAdd( new cAnalysis_Opcode_Command( OP_COMMAND_SET, CMD_OPT_REG, "X", CMD_OPT_PARAM, 0 ) );
 
 }
 
