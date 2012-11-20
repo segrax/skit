@@ -96,7 +96,7 @@ size_t cVideo_Mos_8567::cycle() {
 	// Top and Bottom Border
 	if(  mRegRasterY < 50 || mRegRasterY > 249 ) {
 
-		// 8 Pixels per row
+		// 8 Bytes per row
 		for(int i = 0; i < 8; ++i)
 			*mBufferPtr++ = mRegBorderColor;
 
@@ -264,7 +264,6 @@ byte cVideo_Mos_8567::busReadByte( size_t pAddress ) {
 						}
 		case 0x20:		// Border Color (Upper4bits return 1111)
 			return (mRegBorderColor | 0xF0);
-
 
 		case 0x21:		// Background color (Upper4bits return 1111)
 		case 0x22:

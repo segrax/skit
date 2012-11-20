@@ -151,6 +151,9 @@
     <ClCompile Include="..\..\..\src\sepr\analyse\Block.cpp">
       <Filter>Source Files\analyse</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\src\sepr\analyse\opcode\command.cpp">
+      <Filter>Source Files\analyse\opcode</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\src\sepr\device\device.hpp">
@@ -251,6 +254,9 @@
     </ClInclude>
     <ClInclude Include="..\..\..\src\sepr\baseTypes.hpp">
       <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\sepr\analyse\opcode\command.hpp">
+      <Filter>Source Files\analyse\opcode</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

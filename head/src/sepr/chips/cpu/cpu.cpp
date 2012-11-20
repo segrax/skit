@@ -46,7 +46,7 @@ void cCpu::opcodeSet( size_t pOp ) {
 	mCycles = mOpcodeCurrent->mCycles;
 	mCycle = 0;
 
-	opcodeAnalyse();
+	//opcodeAnalyse();
 
 	// Not implemented opcode?
 	if( !mOpcodeCurrent->mOpcodeFunction ) {

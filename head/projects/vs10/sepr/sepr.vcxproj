@@ -14,6 +14,7 @@
     <ClInclude Include="..\..\..\src\sepr\analyse\analyse.hpp" />
     <ClInclude Include="..\..\..\src\sepr\analyse\Block.hpp" />
     <ClInclude Include="..\..\..\src\sepr\analyse\Journal.hpp" />
+    <ClInclude Include="..\..\..\src\sepr\analyse\opcode\command.hpp" />
     <ClInclude Include="..\..\..\src\sepr\analyse\opcode\opcode.hpp" />
     <ClInclude Include="..\..\..\src\sepr\analyse\opcode\parameter.hpp" />
     <ClInclude Include="..\..\..\src\sepr\baseTypes.hpp" />
@@ -49,6 +50,7 @@
     <ClCompile Include="..\..\..\src\sepr\analyse\analyse.cpp" />
     <ClCompile Include="..\..\..\src\sepr\analyse\Block.cpp" />
     <ClCompile Include="..\..\..\src\sepr\analyse\Journal.cpp" />
+    <ClCompile Include="..\..\..\src\sepr\analyse\opcode\command.cpp" />
     <ClCompile Include="..\..\..\src\sepr\analyse\opcode\opcode.cpp" />
     <ClCompile Include="..\..\..\src\sepr\analyse\opcode\parameter.cpp" />
     <ClCompile Include="..\..\..\src\sepr\chips\cpu\cpu.cpp" />
